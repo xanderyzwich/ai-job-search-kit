@@ -111,20 +111,28 @@ lose context entirely or re-derive decisions that were already carefully made.
 Both failure modes are expensive: the first repeats work, the second can
 silently reverse a considered decision without anyone noticing it happened.
 
-`SESSION_INIT.md` is the fix: a fixed entry point every session reads first,
-covering what currently exists, what's already decided, and what's still open.
-It is deliberately generic at the public root and has a private overlay for the
-person-specific current state, for the same reason `profile.yml` is separated
-from the methodology: the pattern is reusable even though the content isn't.
+`SESSION_INIT.md` is the fix: a fixed entry point every session reads first.
+The public root version is deliberately generic, it checks whether a private,
+filled-in skill exists (`private/skills/session_init.md`) and loads it if
+present, for the same reason `profile.yml` is separated from the methodology:
+the pattern is reusable even though the content isn't. That private skill
+itself splits into two files with different lifecycles: a stable map (safe to
+load once into a Claude Project and forget about) and a dynamic log (read
+fresh each session for what currently exists, what's decided, and what's
+still open). Conflating those two, letting dated facts creep into the stable
+map, is the failure mode that motivated the split; see
+`framework/skills/session-continuity.md` for the fuller reasoning.
 
 A second continuity problem shows up at scale rather than on day one: a
 methodology document that starts small tends to grow, every session adds a
 section, until it's an 800-plus-line file that gets fully re-read for every task
 regardless of relevance. The fix is decomposition into small, single-purpose
 skill files, each with a one-line description of when it applies, loaded only
-when the task at hand actually needs it. `SESSION_INIT.md` acts as the index:
-it doesn't contain the methodology, it says which smaller file contains the
-methodology relevant to today's task.
+when the task at hand actually needs it. The session-init skill acts as the
+index: it doesn't contain the methodology, it says which smaller file contains
+the methodology relevant to today's task, with one exception, it's the one
+skill that loads unconditionally rather than on demand, since its whole job is
+telling a session what else to load.
 
 ---
 

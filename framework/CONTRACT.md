@@ -23,7 +23,6 @@ private/
 ├── profile.yml              structured facts (see schema below)
 ├── experience_summary.md    verified source of truth
 ├── job_tracker.csv          application log
-├── SESSION_INIT.md          personal overlay: current positioning, open threads
 │
 ├── skills/                  filled-in methodology, one file per concern —
 │                            resume/lane strategy, search criteria, application
@@ -31,6 +30,9 @@ private/
 │                            positioning notes. Mirrors framework/skills/ in
 │                            spirit (small, focused, loaded on demand) but
 │                            contains real content, not the generic pattern.
+│                            One exception: session_init.md always loads first,
+│                            unconditionally, rather than on demand — see
+│                            framework/skills/session-continuity.md for why.
 │
 ├── feedback/                external input received along the way — advice
 │                            from a specific person, a shared template, anything
@@ -48,7 +50,7 @@ private/
 | `private/experience_summary.md` | The verified source of truth for every role, claim, and number. Everything else defers to this file; if a document and this file disagree, this file wins. Exists specifically to prevent claim drift across sessions — a resume bullet or cover letter line should never introduce a fact that isn't traceable back here. | `framework/templates/experience_summary.md` |
 | `private/skills/*.md` | The filled-in version of the framework's methodology, one file per concern: which resume leads with what, actual board filters and saved queries, application history, session notes, any domain-specific positioning. | `framework/skills/*.md` — same names, generic version |
 | `private/job_tracker.csv` | Application log. Column schema below. | `framework/templates/tracker_schema.csv` |
-| `private/SESSION_INIT.md` | Personal overlay: current positioning and open threads. Loaded alongside the public root `SESSION_INIT.md`, which stays generic. | `framework/templates/session_init_overlay.md` |
+| `private/skills/session_init.md` | The one skill that loads every session unconditionally rather than on demand: directory map, startup checklist, tool notes. Meant to be stable, safe to load once into a persistent context feature and mostly forget about. The public root `SESSION_INIT.md` checks for this file and loads it if present. | `framework/templates/session_init.md` |
 
 ## Optional / generated (not required for the framework to function, but expected to exist once in use)
 

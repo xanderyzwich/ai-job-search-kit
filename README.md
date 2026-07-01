@@ -42,7 +42,8 @@ ai-job-search-kit/
 ├── ARCHITECTURE.md        — the design decisions and why they were made
 ├── QUICKSTART.md          — step-by-step setup, including how to generate
 │                           experience_summary.md
-├── SESSION_INIT.md        — generic startup checklist, loaded every session
+├── SESSION_INIT.md        — entry point; checks for and loads the private
+│                           session-init skill if one exists
 ├── .gitignore              — excludes private/, output/, temp/
 │
 ├── framework/              — the reusable system (tracked in git, no personal data)
@@ -87,10 +88,13 @@ lane a given role actually falls into.
 
 **Session continuity as a first-class concern.**
 `SESSION_INIT.md` exists because an assistant with no memory of yesterday's
-decisions will happily re-litigate them today. It's the entry point every session
-reads first: what's been decided, what's still open, and which of the smaller
-skill files are actually relevant to today's task, so a session doesn't have to
-load the entire methodology to answer one narrow question.
+decisions will happily re-litigate them today. The public root version checks
+for a private, filled-in session-init skill and loads it if present; that skill
+splits into a stable map (safe to load once into a Claude Project and forget
+about) and a dynamic log read fresh each session, so current state never goes
+stale in static context. From there, loading only the smaller skill files
+relevant to today's task keeps a session from re-reading the entire methodology
+to answer one narrow question.
 
 **A human-writing quality gate.**
 Every piece of generated copy that will actually be sent passes a standards check
@@ -108,8 +112,8 @@ couple of decisions that were wrong on the first pass and had to be corrected.
 The full walkthrough is in `QUICKSTART.md`. The short version: read
 `framework/CONTRACT.md` for the file shapes, copy the templates from
 `framework/templates/` into your own gitignored `private/`, fill them in,
-and point an assistant at the repo root with `SESSION_INIT.md` as the entry
-point.
+and point an assistant at the repo root. `SESSION_INIT.md` checks for a
+private session-init skill and loads it automatically once one exists.
 
 One file in that list deserves more than a copy-and-fill treatment.
 

@@ -28,8 +28,14 @@ way.
 cp framework/templates/profile.yml           private/profile.yml
 cp framework/templates/experience_summary.md private/experience_summary.md
 cp framework/templates/tracker_schema.csv    private/job_tracker.csv
-cp framework/templates/session_init_overlay.md private/SESSION_INIT.md
+cp framework/templates/session_init.md       private/skills/session_init.md
 ```
+
+There's no template for your session log, it starts empty and grows as you use
+it. Create `private/skills/session_log.md` with a one-line header and your
+first dated entry whenever you actually start working (or let the assistant
+create it during your first real session). `session_init.md` points to it, so
+it needs to exist by the time anyone reads that pointer.
 
 ## 3. Fill in `profile.yml`
 
@@ -94,10 +100,13 @@ as you need each one, not as a batch, there's no requirement to have all of
 
 ## 6. Point an assistant at the repo
 
-Have it read the root `SESSION_INIT.md` first, then `private/SESSION_INIT.md`
-and `private/profile.yml`. From there it should be able to work the same way
-this project's own sessions do, loading individual `framework/skills/` files
-only when the task at hand actually needs them.
+Have it read the root `SESSION_INIT.md` first. It checks for
+`private/skills/session_init.md` and loads it automatically, that file has
+its own checklist folded in (read `profile.yml`, read the top of
+`session_log.md`, read `experience_summary.md`, and so on), so you don't need
+to point at each private file individually. From there it should be able to
+work the same way this project's own sessions do, loading individual
+`framework/skills/` files only when the task at hand actually needs them.
 
 ## 7. Build your first resume
 
