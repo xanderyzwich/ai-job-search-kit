@@ -13,15 +13,40 @@ into `private/` under the name listed here, then fill it in.
 
 ---
 
+## Required layout
+
+`private/` is organized into three subdirectories, plus a small set of root files
+that are pure structured or verified data rather than methodology.
+
+```
+private/
+├── profile.yml              structured facts (see schema below)
+├── experience_summary.md    verified source of truth
+├── job_tracker.csv          application log
+├── SESSION_INIT.md          personal overlay: current positioning, open threads
+│
+├── skills/                  filled-in methodology, one file per concern —
+│                            resume/lane strategy, search criteria, application
+│                            history, session notes, any domain-specific
+│                            positioning notes. Mirrors framework/skills/ in
+│                            spirit (small, focused, loaded on demand) but
+│                            contains real content, not the generic pattern.
+│
+├── feedback/                external input received along the way — advice
+│                            from a specific person, a shared template, anything
+│                            that's a source document rather than a work product
+│
+└── resume/                  generated resume files and the script that builds
+                             them
+```
+
 ## Required files
 
 | Path | Purpose | Template |
 |---|---|---|
-| `private/profile.yml` | Structured facts: identity, comp floor, location constraints, role criteria, lane definitions, title lists. The one file every generic reference to "the candidate's floor" or "the candidate's constraints" resolves against. | `framework/templates/profile.yml` |
+| `private/profile.yml` | Structured facts: identity, comp floor, location constraints, role criteria, lane definitions, title lists, contact/EEO defaults. The one file every generic reference to "the candidate's floor" or "the candidate's constraints" resolves against. | `framework/templates/profile.yml` |
 | `private/experience_summary.md` | The verified source of truth for every role, claim, and number. Everything else defers to this file; if a document and this file disagree, this file wins. Exists specifically to prevent claim drift across sessions — a resume bullet or cover letter line should never introduce a fact that isn't traceable back here. | `framework/templates/experience_summary.md` |
-| `private/job_search_skill.md` (or its decomposed equivalents under `private/skills/`) | The filled-in version of the framework's methodology: your actual lane assignments, your actual search history and session notes. | `framework/skills/*.md` |
-| `private/resume_strategy.md` | Which resume leads with what, and why, for your specific lanes. | `framework/templates/resume_strategy.md` |
-| `private/search_criteria.md` | Your actual board filters, saved queries, and lane-tagged search results. | `framework/templates/search_criteria.md` |
+| `private/skills/*.md` | The filled-in version of the framework's methodology, one file per concern: which resume leads with what, actual board filters and saved queries, application history, session notes, any domain-specific positioning. | `framework/skills/*.md` — same names, generic version |
 | `private/job_tracker.csv` | Application log. Column schema below. | `framework/templates/tracker_schema.csv` |
 | `private/SESSION_INIT.md` | Personal overlay: current positioning and open threads. Loaded alongside the public root `SESSION_INIT.md`, which stays generic. | `framework/templates/session_init_overlay.md` |
 
@@ -29,8 +54,8 @@ into `private/` under the name listed here, then fill it in.
 
 | Path | Purpose |
 |---|---|
-| `private/resume_ic.docx` / `.pdf` | Current IC-lane resume, built by `framework/scripts/build_resume.py` from `profile.yml` + `experience_summary.md`. |
-| `private/resume_lane_a.docx` / `.pdf` | Current Lane A resume, same build path, different ordering. |
+| `private/resume/*.docx` / `.pdf` | Generated resumes, one pair per lane, built by `private/resume/build_resume.py` (or `framework/scripts/build_resume.py` if using the generic build path) from `profile.yml` + `experience_summary.md`. |
+| `private/feedback/*.md` | External input: feedback received on a resume or approach, a template shared by someone else, written up with enough context (who, when, on what) to still make sense read cold later. |
 | `output/*.pdf` (repo-root sibling, also gitignored) | Generated cover letters and one-off deliverables. Not part of the contract since these are per-application artifacts, not standing state. |
 
 ---
@@ -42,7 +67,18 @@ identity:
   name: string
   email: string
   linkedin: string
+  website: string                   # optional
+  phone: string
   location: string
+  address: string                   # optional, only if a form needs a street address
+
+application_defaults:
+  authorized_to_work_us: boolean
+  requires_sponsorship: boolean
+  desired_salary_usd: number         # what to type in a "desired salary" field
+  eeo_policy: string                 # the standing instruction for demographic questions
+  reasons_for_leaving:               # per employer, the stated reason if asked
+    <employer_key>: string
 
 constraints:
   remote: string                    # e.g. "fully remote only"
