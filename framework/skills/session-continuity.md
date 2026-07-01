@@ -2,7 +2,8 @@
 
 **Load when:** starting any new session in this workspace, before any other task.
 
-**Depends on:** `private/SESSION_INIT.md` (personal overlay) and `private/profile.yml`.
+**Depends on:** `private/SESSION_INIT.md` (the stable map) and whichever file the
+private instance uses as its dynamic log (e.g. `private/skills/session_log.md`).
 
 ---
 
@@ -18,12 +19,33 @@ more dangerous, because it doesn't look like a mistake in the moment.
 
 A generic root file (this repo's own public `SESSION_INIT.md` is itself an
 example) states the checklist: what to read, in what order, before doing
-anything else. A private overlay file carries the person-specific version: what
-is currently decided, what is currently open, what changed since the last
-session.
+anything else. A private overlay file carries the person-specific version:
+where things live, and how the environment works.
 
-The overlay should answer three questions on its own, without requiring the
-reader to reconstruct them from a long history:
+Split that overlay's job into two files with two different lifecycles, not one:
+
+- **A stable map.** Directory structure, tool/environment quirks, pointers to
+  where each kind of information lives. This changes rarely, only when the
+  structure itself changes. This is the file safe to load once into a
+  persistent context feature (a Claude Project's knowledge base, or similar)
+  without needing to re-upload it every session.
+- **A dynamic log.** What's currently decided, what's currently open, what
+  changed recently. This changes every session, sometimes several times a
+  session, and needs to be read fresh from the live repository rather than
+  baked into static context. A dated, chronological entry file works well here
+  (see `application-tracking.md`'s tracker pattern for a similar idea applied
+  to structured data).
+
+Conflating these two is the single most common way this pattern degrades. A
+map file that also carries dated facts ("current strategy as of March," "open
+threads as of last Tuesday") either goes stale the moment it's loaded into
+static context, or turns into something that needs constant editing, at which
+point it's not really serving as a stable map anymore. The tell is syntactic:
+if a sentence needs a date or an "as of" attached to make sense, it belongs in
+the log, not the map.
+
+The log file should answer three questions on its own reading its most recent
+entry, without requiring the reader to reconstruct them from a long history:
 
 1. What is the current strategy, stated as a conclusion, not a narrative of how
    it was reached?

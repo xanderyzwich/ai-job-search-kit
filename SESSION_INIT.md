@@ -12,6 +12,15 @@ gitignored repo, never committed here). See `README.md`, `ARCHITECTURE.md`, and
 `framework/CONTRACT.md` for the full pitch, design rationale, and the exact file
 contract `private/` is expected to satisfy.
 
+**Both `SESSION_INIT.md` files (this one and `private/SESSION_INIT.md`) are meant
+to be stable.** If you're using this framework with a persistent context feature
+(Claude Projects or similar), these are the files to load there once, they should
+rarely need editing. Neither one carries current, dated state, that lives in
+`private/skills/session_log.md` (or wherever the private overlay's own skill files
+put it), which is read fresh each session rather than baked into static context.
+If a fact needs a date attached to it ("as of," "currently," "this week"), it
+belongs in the log, not in either init file.
+
 ---
 
 ## Directory Location
@@ -29,12 +38,15 @@ ai-job-search-kit/
 │   └── templates/            blank versions of tracker.csv, experience-summary.md, etc.
 │
 ├── private/               — the user's actual data (GITIGNORED — its own git repo)
-│   ├── SESSION_INIT.md      personal overlay: current positioning, open threads
+│   ├── SESSION_INIT.md      personal overlay: directory map, environment/tool notes.
+│   │                        Stable, see the note above; not where current state lives.
 │   ├── profile.yml          structured personal data: comp floor, constraints, lanes
 │   ├── experience_summary.md   verified source of truth
-│   ├── job_search_skill.md           full personal workflow doc (being decomposed)
 │   ├── job_tracker.csv               application log
-│   └── (resumes, cover letters, build scripts)
+│   ├── skills/                        filled methodology, one file per concern, includes
+│   │                                  session_log.md, the actual current-state log
+│   ├── feedback/                      external input received along the way
+│   └── resume/                        generated resumes and their build scripts
 │
 ├── output/                — generated deliverables (GITIGNORED)
 └── temp/                  — scratch (GITIGNORED)
@@ -50,7 +62,10 @@ Run in order at the start of every session:
    lane definitions, title lists). Framework skills reference these as variables;
    never hardcode a personal figure into anything that could end up in `framework/`
    or the public repo root.
-2. **Read `private/SESSION_INIT.md`** — current positioning and open threads.
+2. **Read `private/SESSION_INIT.md`** — the directory map and tool notes. Then read
+   the top (most recent) entry of `private/skills/session_log.md` for current
+   positioning and open threads, that's the file that actually changes session to
+   session.
 3. **Read `private/experience_summary.md`** — the verified backbone.
 4. **Load only the `framework/skills/` files relevant to the task at hand** (see each
    skill's one-line description in its own header — don't load all of them by default).
@@ -78,8 +93,10 @@ after creating a new file or file type.
 
 ## What to Update Each Session
 
-End-of-session, update `private/SESSION_INIT.md` (open threads, positioning changes)
-and `private/job_search_skill.md` or its decomposed skill files (session notes, new
-facts). If a change is generally useful — a better search pattern, a refined
-triage rule — consider whether it belongs in `framework/skills/` too, generalized
-and stripped of personal specifics, so the public side of the repo stays current.
+End-of-session, update `private/skills/session_log.md` with a new dated entry
+(open threads, positioning changes, what happened). Leave `private/SESSION_INIT.md`
+alone unless the directory structure or tool environment itself changed, that file
+is meant to be stable. If a change is generally useful — a better search pattern, a
+refined triage rule — consider whether it belongs in `framework/skills/` too,
+generalized and stripped of personal specifics, so the public side of the repo
+stays current.
