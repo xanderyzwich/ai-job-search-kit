@@ -108,10 +108,16 @@ number, add a key to this schema instead.
 ## `job_tracker.csv` column schema
 
 ```
-date_applied, company, role, salary_range, location, remote, job_url,
-application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
-referral_source, notes
+date_applied, response_date, company, role, salary_range, location, remote,
+job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
+hiring_manager, notes
 ```
+
+**`response_date`** is when the company responded (rejection, screen invite,
+etc.), left blank until something happens. **`dm_recipient`** is who an
+outreach DM was actually sent to (may be a recruiter); **`hiring_manager`** is
+the identified hiring manager for the role, if known, which may be the same
+person or someone different from `dm_recipient`.
 
 **`application_status` values:** `researching` (identified, not yet applied) ·
 `applied` · `dm_sent` (outreach sent to a hiring manager or recruiter) ·
