@@ -85,11 +85,11 @@ A single positioning strategy doesn't fit every role a search actually targets.
 Two org shapes produce very different screening logic even when the underlying
 candidate and facts are identical:
 
-- **Lane B** (large-org IC, or a small platform team inside a larger company):
+- **IC** (large-org individual-contributor roles, or a small platform team inside a larger company):
   the opening impression needs to read as deep technical ownership first, or a
   reviewer misfiles a leadership-forward candidate as a manager rather than a
   senior IC.
-- **Lane A** (small-org hands-on leadership): the team-and-judgment story *is*
+- **PC** (small-org hands-on leadership): the team-and-judgment story *is*
   the qualification a reviewer is screening for, so leading with technical detail
   buries the actual signal.
 

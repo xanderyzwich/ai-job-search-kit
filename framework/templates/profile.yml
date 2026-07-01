@@ -43,19 +43,19 @@ constraints:
 
 role_criteria:
   seniority: []                     # e.g. ["Senior", "Staff", "Principal"]
-  scope: ""                         # e.g. "IC with architectural influence, not pure management"
+  scope: ""                         # e.g. "hands-on with architectural influence, IC or PC, not pure management"
   domain: ""                        # e.g. "backend / platform / distributed systems"
   title_is_secondary_to: []         # what actually matters more than the title — e.g. ["compensation", "scope"]
 
 # The lane pattern is explained in framework/skills/resume-lane-strategy.md.
 # You don't have to use two lanes — if your search only has one shape, just
-# fill in lane_b and leave lane_a's titles empty.
+# fill in ic and leave pc's titles empty.
 lanes:
-  lane_a:
+  pc:
     label: ""                      # e.g. "small-org hands-on leadership"
     org_size: ""                   # e.g. "~10-30 engineers"
     titles: []
-  lane_b:
+  ic:
     label: ""                      # e.g. "large-org IC / platform bridge"
     org_size: ""
     titles: []

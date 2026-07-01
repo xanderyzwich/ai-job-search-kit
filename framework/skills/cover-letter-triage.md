@@ -31,7 +31,7 @@ drafting, not after.
   worth naming.
 - **Letter required by the application:** write a short, specific one. Don't
   pad it to fill space just because a field exists.
-- **Lane A roles (see `resume-lane-strategy.md`):** always write one, and make
+- **PC roles (see `resume-lane-strategy.md`):** always write one, and make
   it the most voice-driven, specific version possible. At this org size a human,
   often the actual hiring decision-maker, is likely to read it, and it can
   meaningfully shape how the role is perceived to fit. This is where letter

@@ -31,7 +31,7 @@ independent verification they need:
   organization's size and conventions. Never apply on title alone here.
 
 The actual title lists for each tier, and which lane they map to, live in
-`private/profile.yml` (`lanes.lane_a.titles`, `lanes.lane_b.titles`) and the
+`private/profile.yml` (`lanes.pc.titles`, `lanes.ic.titles`) and the
 person's own filled `search_criteria.md`.
 
 ## Org shape, not title, is the real filter

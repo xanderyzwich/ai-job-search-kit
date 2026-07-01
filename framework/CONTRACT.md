@@ -95,8 +95,8 @@ role_criteria:
   title_is_secondary_to: [string]
 
 lanes:
-  lane_a: { label: string, org_size: string, titles: [string] }
-  lane_b: { label: string, org_size: string, titles: [string] }
+  pc: { label: string, org_size: string, titles: [string] }
+  ic: { label: string, org_size: string, titles: [string] }
 
 linkedin_open_to_work_titles: [string]
 ```
