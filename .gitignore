@@ -1,0 +1,25 @@
+# --- Personal data: never tracked ---
+/private/
+/output/
+/temp/
+
+# --- Windows/WSL artifacts ---
+*:Zone.Identifier
+.DS_Store
+Thumbs.db
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- Editor/OS cruft ---
+*.swp
+*~
+
+# --- Generated documents: belt-and-suspenders. These should only ever
+#     exist under /private or /output (already ignored above), but block
+#     by extension too in case one gets created somewhere else by mistake.
+*.docx
+*.pdf
