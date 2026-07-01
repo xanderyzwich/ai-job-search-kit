@@ -40,6 +40,8 @@ handle them by default.
 ai-job-search-kit/
 ├── README.md              — this file
 ├── ARCHITECTURE.md        — the design decisions and why they were made
+├── QUICKSTART.md          — step-by-step setup, including how to generate
+│                           experience_summary.md
 ├── SESSION_INIT.md        — generic startup checklist, loaded every session
 ├── .gitignore              — excludes private/, output/, temp/
 │
@@ -103,15 +105,38 @@ couple of decisions that were wrong on the first pass and had to be corrected.
 
 ## Using this for your own search
 
-1. Read `framework/CONTRACT.md` for the full list of files `private/` needs to
-   provide, and their exact shape.
-2. Copy each template from `framework/templates/` into your own `private/`
-   directory (gitignored by the root `.gitignore` already) and fill it in with
-   your real information.
-3. Point an AI assistant with file access at the repo root and have it read
-   `SESSION_INIT.md` first, every session.
-4. Load only the `framework/skills/` files relevant to what you're doing that day,
-   rather than the full methodology, to keep sessions fast and focused.
+The full walkthrough is in `QUICKSTART.md`. The short version: read
+`framework/CONTRACT.md` for the file shapes, copy the templates from
+`framework/templates/` into your own gitignored `private/`, fill them in,
+and point an assistant at the repo root with `SESSION_INIT.md` as the entry
+point.
+
+One file in that list deserves more than a copy-and-fill treatment.
+
+### On generating `experience_summary.md`
+
+Every other template is mechanical: `profile.yml` is a form, the skill
+templates are a pattern to apply. `experience_summary.md` is different,
+and it's worth understanding why before treating it as one more file to
+fill in.
+
+This file didn't get built by transcribing a resume into a nicer format. It
+came out of an adversarial interview: going claim by claim and asking what
+was actually done versus what a team or predecessor did, what the real
+mechanism behind an outcome was, whether a stated number had been verified
+or just sounded about right. Several lines that started out clean and
+resume-ready got walked back mid-conversation once they were actually
+pushed on, "built fraud detection" became "built the data layer behind a
+detection system someone else owned," which is a less flashy sentence and a
+considerably more defensible one.
+
+That process, not the document it produces, is the thing worth replicating.
+Doing it well means asking an assistant to find the soft spot in each claim
+rather than to make your experience sound better, and being willing to have
+something you're proud of turn out rounder than the truth. `QUICKSTART.md`
+has the full walkthrough, including a starter prompt, and `ARCHITECTURE.md`
+covers why a single verified source of truth matters enough to justify the
+extra effort.
 
 ---
 
