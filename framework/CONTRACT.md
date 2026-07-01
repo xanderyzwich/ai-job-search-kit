@@ -113,6 +113,10 @@ application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
 referral_source, notes
 ```
 
+**`application_status` values:** `researching` (identified, not yet applied) ·
+`applied` · `dm_sent` (outreach sent to a hiring manager or recruiter) ·
+`phone_screen` · `interview` · `offer` · `declined_by_us` · `declined_by_them`.
+
 ---
 
 ## Why this split exists
