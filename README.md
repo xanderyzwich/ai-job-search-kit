@@ -40,23 +40,26 @@ handle them by default.
 ai-job-search-kit/
 ├── README.md              — this file
 ├── ARCHITECTURE.md        — the design decisions and why they were made
+├── CHANGELOG.md           — how the framework evolved, tied to real failures
 ├── QUICKSTART.md          — step-by-step setup, including how to generate
 │                           experience_summary.md
 ├── SESSION_INIT.md        — entry point; checks for and loads the private
 │                           session-init skill if one exists
+├── LICENSE                — MIT
 ├── .gitignore              — excludes private/, output/, temp/
 │
 ├── framework/              — the reusable system (tracked in git, no personal data)
 │   ├── CONTRACT.md           the exact file contract private/ must satisfy
 │   ├── skills/                small, focused methodology files, loaded on
 │   │                          demand: search, triage, resume lanes, tracking,
-│   │                          writing standards, session continuity, and a
+│   │                          writing standards, session continuity, the
+│   │                          verified-experience interview, and a
 │   │                          communications/ set for warm outreach and
 │   │                          screen-call prep
-│   ├── scripts/                working tooling: a layout-only resume renderer
-│   │                          driven by a content file, a tracker-to-history
-│   │                          generator, a one-commit-per-day log tool, and a
-│   │                          funnel report
+│   ├── scripts/                working tooling: a one-command bootstrap, a
+│   │                          layout-only resume renderer driven by a content
+│   │                          file, a tracker-to-history generator, a
+│   │                          one-commit-per-day log tool, and a funnel report
 │   └── templates/              blank versions of every file private/ needs
 │
 ├── private/                — the user's actual data (its own gitignored repo)
@@ -151,8 +154,9 @@ information, and how an error got caught says more about the builder than
 the parts that went right the first time.
 
 The short tour: this file for the what, `ARCHITECTURE.md` for the why
-(including two recorded mistakes and their corrections), `framework/CONTRACT.md`
-for the interface discipline, and `framework/scripts/` for working code.
+(including two recorded mistakes and their corrections), `CHANGELOG.md` for
+how it evolved, `framework/CONTRACT.md` for the interface discipline, and
+`framework/scripts/` for working code.
 
 ---
 
@@ -188,8 +192,11 @@ considerably more defensible one.
 That process, not the document it produces, is the thing worth replicating.
 Doing it well means asking an assistant to find the soft spot in each claim
 rather than to make your experience sound better, and being willing to have
-something you're proud of turn out rounder than the truth. `QUICKSTART.md`
-has the full walkthrough, including a starter prompt, and `ARCHITECTURE.md`
+something you're proud of turn out rounder than the truth. The full
+methodology is a loadable skill,
+`framework/skills/verified-experience-interview.md` — what to push on, the
+walk-back protocol, the overclaim patterns worth hunting. `QUICKSTART.md`
+has the walkthrough including a starter prompt, and `ARCHITECTURE.md`
 covers why a single verified source of truth matters enough to justify the
 extra effort.
 

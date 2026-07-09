@@ -39,13 +39,16 @@ Before anything else, check whether `private/skills/session_init.md` exists.
 ai-job-search-kit/
 ├── README.md              — portfolio pitch: what this is, why it exists
 ├── ARCHITECTURE.md        — how the pieces fit together, design decisions
+├── CHANGELOG.md           — the framework's public history
 ├── SESSION_INIT.md        — this file (generic, public)
 ├── QUICKSTART.md          — step-by-step setup for a fresh clone
+├── LICENSE                — MIT
 ├── .gitignore             — excludes private/, output/, temp/
 │
 ├── framework/             — the reusable system (tracked in git, no personal data)
 │   ├── skills/              small, focused methodology files, loaded on demand
-│   ├── scripts/              generators (e.g. resume builder), parameterized
+│   ├── scripts/              working tooling: bootstrap, resume renderer,
+│   │                         history generator, daily-log tool, funnel report
 │   └── templates/            blank versions of profile.yml, session_init.md, etc.
 │
 ├── private/               — the user's actual data (GITIGNORED — its own git repo)
