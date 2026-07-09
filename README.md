@@ -48,12 +48,20 @@ ai-job-search-kit/
 │
 ├── framework/              — the reusable system (tracked in git, no personal data)
 │   ├── CONTRACT.md           the exact file contract private/ must satisfy
-│   ├── skills/                small, focused methodology files, loaded on demand
-│   ├── scripts/                generators (e.g. a resume builder), parameterized
+│   ├── skills/                small, focused methodology files, loaded on
+│   │                          demand: search, triage, resume lanes, tracking,
+│   │                          writing standards, session continuity, and a
+│   │                          communications/ set for warm outreach and
+│   │                          screen-call prep
+│   ├── scripts/                working tooling: a layout-only resume renderer
+│   │                          driven by a content file, a tracker-to-history
+│   │                          generator, a one-commit-per-day log tool, and a
+│   │                          funnel report
 │   └── templates/              blank versions of every file private/ needs
 │
 ├── private/                — the user's actual data (its own gitignored repo)
-│   └── (see framework/CONTRACT.md — never committed to this repo)
+│   └── (see framework/CONTRACT.md — never committed to this repo. Canonical
+│        facts at the root, methodology in skills/, working state in data/)
 │
 └── output/                 — generated deliverables (gitignored, not tracked)
 ```
@@ -89,12 +97,33 @@ lane a given role actually falls into.
 **Session continuity as a first-class concern.**
 `SESSION_INIT.md` exists because an assistant with no memory of yesterday's
 decisions will happily re-litigate them today. The public root version checks
-for a private, filled-in session-init skill and loads it if present; that skill
-splits into a stable map (safe to load once into a Claude Project and forget
-about) and a dynamic log read fresh each session, so current state never goes
-stale in static context. From there, loading only the smaller skill files
-relevant to today's task keeps a session from re-reading the entire methodology
-to answer one narrow question.
+for a private, filled-in session-init skill and loads it if present; once your
+private instance exists, that private file supersedes the generic one
+permanently. That skill splits into a stable map (safe to load once into a
+Claude Project and forget about) and a dynamic log read fresh each session,
+so current state never goes stale in static context. A small open-threads
+file, overwritten at every session close, answers "what's due" without
+digging through the log, and a daily-log tool folds each day's notes into one
+amended commit, so the bookkeeping never becomes debt. From there, loading
+only the smaller skill files relevant to today's task keeps a session from
+re-reading the entire methodology to answer one narrow question.
+
+**State kept apart from methodology, and views generated rather than mirrored.**
+Working state (the session log, open threads, dated market snapshots,
+per-company call briefs) lives in its own data layer, separate from the skill
+files that describe method. A methodology file never carries an "as of" fact;
+a snapshot never hides in a file that's assumed to be timelessly true. The
+application tracker is the single hand-edited record, and the human-readable
+history is rendered from it by script. Two hand-maintained files describing
+the same applications will eventually disagree; a generated view can't. This
+rule was adopted after that exact drift happened once in practice.
+
+**A funnel that gets measured, not felt.**
+Every application row carries its source, its lane, and which resume version
+went out, and a small script turns the tracker into response and advance
+rates split by each. "The volume isn't converting" stops being a feeling and
+becomes a number, including a clean before/after read any time the resume
+changes.
 
 **A human-writing quality gate.**
 Every piece of generated copy that will actually be sent passes a standards check
@@ -107,13 +136,35 @@ couple of decisions that were wrong on the first pass and had to be corrected.
 
 ---
 
+## If you found this through my resume
+
+Then this repo is doing its second job: it's a work sample. The search it
+runs is mine, and none of my actual data appears here, but the engineering is
+all visible. Config is separated from content the way production systems
+separate secrets from logic. Human-readable views are generated from a single
+record instead of maintained as mirrors, a rule adopted after mirror drift
+bit once and cost a rebuild. State lives apart from methodology so nothing
+dated can hide in a file that's supposed to stay true. The funnel is
+measured, not felt. And the mistakes in `ARCHITECTURE.md` are recorded on
+purpose: a system that only shows its finished state hides the most useful
+information, and how an error got caught says more about the builder than
+the parts that went right the first time.
+
+The short tour: this file for the what, `ARCHITECTURE.md` for the why
+(including two recorded mistakes and their corrections), `framework/CONTRACT.md`
+for the interface discipline, and `framework/scripts/` for working code.
+
+---
+
 ## Using this for your own search
 
 The full walkthrough is in `QUICKSTART.md`. The short version: read
 `framework/CONTRACT.md` for the file shapes, copy the templates from
-`framework/templates/` into your own gitignored `private/`, fill them in,
-and point an assistant at the repo root. `SESSION_INIT.md` checks for a
-private session-init skill and loads it automatically once one exists.
+`framework/templates/` (and the tooling from `framework/scripts/`) into your
+own gitignored `private/`, fill them in, and point an assistant at the repo
+root. `SESSION_INIT.md` bootstraps a fresh clone; once your private
+session-init skill exists, it supersedes the generic checklist for good, and
+every session after that starts from your own map.
 
 One file in that list deserves more than a copy-and-fill treatment.
 
@@ -146,10 +197,13 @@ extra effort.
 
 ## Status
 
-Actively developed alongside a real job search. `framework/` is being extracted
+Actively developed alongside a real job search. `framework/` is extracted
 from a working personal instance rather than designed in the abstract, so it
-reflects what actually held up under repeated use, not a theoretical best practice.
-Current state and what's still in progress: see `ARCHITECTURE.md`.
+reflects what actually held up under repeated use, and what broke and got
+fixed. The drift-prevention rules, the generated-views rule, and the data
+layer all exist because the failure they prevent happened at least once in
+practice. Current state and what's still soft: see `ARCHITECTURE.md`,
+"Known limitations."
 
 ---
 

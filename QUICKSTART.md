@@ -14,28 +14,42 @@ once you're actually using this for a search), initialize it as its own
 independent git repository:
 
 ```bash
-mkdir -p private/skills private/feedback private/resume
+mkdir -p private/skills private/data/companies private/data/archive \
+         private/scripts private/feedback private/resume private/temp
 cd private && git init && cd ..
 ```
 
 Nothing about the public repo needs to know this happened. See
 `ARCHITECTURE.md`, "The three-layer separation," for why it's structured this
-way.
+way. The `data/` directory is your working state, kept apart from the
+methodology in `skills/` — see `framework/CONTRACT.md` for what goes where.
 
-## 2. Copy the templates in
+## 2. Copy the templates and tooling in
 
 ```bash
 cp framework/templates/profile.yml           private/profile.yml
 cp framework/templates/experience_summary.md private/experience_summary.md
 cp framework/templates/tracker_schema.csv    private/job_tracker.csv
 cp framework/templates/session_init.md       private/skills/session_init.md
+cp framework/templates/resume_content.yml    private/resume/resume_content.yml
+cp framework/scripts/build_resume.py         private/resume/build_resume.py
+cp framework/scripts/build_history.py        private/scripts/build_history.py
+cp framework/scripts/daily_log.py            private/scripts/daily_log.py
 ```
 
-There's no template for your session log, it starts empty and grows as you use
-it. Create `private/skills/session_log.md` with a one-line header and your
-first dated entry whenever you actually start working (or let the assistant
-create it during your first real session). `session_init.md` points to it, so
-it needs to exist by the time anyone reads that pointer.
+The three scripts compute their paths relative to where they sit, which is
+why they get copied into place rather than run from `framework/` (the
+framework copies are the canonical source; if you improve one, improve it
+there). `build_history.py` renders your human-readable application history
+from the tracker, `daily_log.py` runs the one-commit-per-day log workflow,
+and `build_resume.py` renders your resume lanes from the content file.
+
+There's no template for your session log or open-threads file — they start
+empty and grow with use. Create `private/data/session_log.md` with a one-line
+header, and `private/data/open_threads.md` empty, whenever you actually start
+working (or let the assistant create them during your first real session).
+`session_init.md` points to both, so they need to exist by the time anyone
+reads that pointer.
 
 ## 3. Fill in `profile.yml`
 
@@ -100,18 +114,33 @@ as you need each one, not as a batch, there's no requirement to have all of
 
 ## 6. Point an assistant at the repo
 
-Have it read the root `SESSION_INIT.md` first. It checks for
-`private/skills/session_init.md` and loads it automatically, that file has
-its own checklist folded in (read `profile.yml`, read the top of
-`session_log.md`, read `experience_summary.md`, and so on), so you don't need
-to point at each private file individually. From there it should be able to
-work the same way this project's own sessions do, loading individual
-`framework/skills/` files only when the task at hand actually needs them.
+Have it read the root `SESSION_INIT.md` first. That file is a two-stage
+bootstrap by design: on a fresh clone it walks the generic checklist, but
+once `private/skills/session_init.md` exists (step 2 above put it there),
+the root file's only job is finding and loading it — your private
+session-init supersedes the generic one from then on, permanently. That
+private file has its own checklist folded in (read `profile.yml`, read
+`data/open_threads.md` and the top of `data/session_log.md`, read
+`experience_summary.md`, and so on), so you never point at each private file
+individually. If you use a persistent-context feature (a Claude Project or
+similar), the private session-init is the one file to load there directly.
+From there a session loads individual `framework/skills/` files only when
+the task at hand actually needs them, and ends by running
+`python3 private/scripts/daily_log.py close` — one commit per day, no
+bookkeeping debt.
 
 ## 7. Build your first resume
 
-`private/resume/` is where generated resumes live. There's no required tool
-here, `framework/scripts/` is intentionally unopinionated about how you go
-from `profile.yml` + `experience_summary.md` to an actual document. A
-generated `.docx` built with a small Python script is one way; anything that
-produces a document from the verified facts works.
+Fill in `private/resume/resume_content.yml` — every bullet traced to your
+`experience_summary.md` — then:
+
+```bash
+python3 private/resume/build_resume.py
+```
+
+One layout-only renderer, one content file, one docx per lane you defined.
+Reordering bullets, changing which bullet leads, or rewording a summary is
+an edit to the YAML; the script never changes for a strategy change. If you
+prefer a different document pipeline entirely, nothing else in the system
+depends on this one — any process that produces a document from the verified
+facts works.
