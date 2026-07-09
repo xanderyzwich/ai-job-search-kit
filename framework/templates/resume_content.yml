@@ -1,0 +1,50 @@
+# Template: resume_content.yml
+#
+# Copy to private/resume/resume_content.yml and fill in. This is the single
+# source both (or all) of your resume lanes render from — the renderer
+# (framework/scripts/build_resume.py, copied beside this file) is layout
+# only, so changing positioning strategy is an edit here, not a code change.
+#
+# The discipline that makes this safe: every bullet must trace to your
+# private/experience_summary.md, and gets checked against its
+# overclaims-to-avoid list before being added or reordered.
+#
+# Bullets live in a per-employer POOL keyed by a short id; each lane picks
+# and orders them. Two lanes can share most bullets and differ only in
+# lead, inclusion, and wording of the summary — see
+# framework/skills/resume-lane-strategy.md for why the lead matters.
+
+identity:
+  name: ""
+  contact_line: ""            # e.g. "(555) 555-5555  ·  you@example.com  ·  linkedin.com/in/you"
+  footer: ""                  # page-two continuity, e.g. "Your Name  ·  you@example.com"
+
+education: ""                 # e.g. "B.S. Computer Science  ·  University  ·  Year"
+
+skills:                       # label/value pairs, rendered as single lines (ATS-safe, no table)
+  - ["Languages", ""]
+  - ["Cloud & Infra", ""]
+
+community: []                 # optional: volunteer work, talks, writing — one bullet per entry
+
+employers:
+  - key: employer_one         # short id, referenced by lane orders below
+    heading: ""               # e.g. "COMPANY NAME, City, ST" — renders bold with right-tab dates
+    dates: ""                 # e.g. "Jan 2020 – Present"
+    title: ""                 # your title there
+    scope: {}                 # optional per-lane parenthetical after the title,
+                              #   e.g. {ic: "(Staff Engineer scope)", pc: "(Engineering Lead scope)"}
+    context: {}               # optional per-lane italic context line under the title
+    bullets:                  # the pool: result-first, one job per bullet, real numbers
+      bullet_id: ""
+    order: [bullet_id]        # default order; lanes may override below
+
+lanes:
+  ic:                         # one entry per lane; single-lane searches just define one
+    output: resume_ic.docx
+    title_line: ""            # the headline under your name
+    tagline: ""               # bold pipe-separated positioning line
+    summary: ""               # the dense opening paragraph — lead with impact, not tenure
+    competencies: ""          # bold pipe-separated Core Competencies line
+    orders: {}                # per-employer override of bullet selection/order,
+                              #   e.g. {employer_one: [strongest_bullet, second, ...]}
