@@ -49,6 +49,15 @@ reconstruction. Every fix became a rule, and most rules became structure:
   measured-funnel design ideas, an explicit two-stage session-init
   lifecycle, and a work-sample section; the private instance documented a
   full run-it-by-hand fallback.
+- **Maintenance became a skill.** The framework describes itself in seven
+  places, and self-description drifts like any other mirror — so the
+  ripple map (when X changes, also touch Y, including the bootstrap
+  script's deliberate layout duplication), the change workflow (fidelity
+  gates, migration backups, boundary checks), and two closing audits now
+  live in `framework/skills/framework-maintenance.md`. It also sets the
+  skill header contract: complete routing information in the first 8 lines
+  of every skill, Load-when at most 3 lines, so one grep scans every
+  skill's purpose in a single call.
 
 ## 2026-07-06 — Published
 

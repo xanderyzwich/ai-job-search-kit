@@ -1,10 +1,8 @@
 # Skill: The Verified-Experience Interview
 
 **Load when:** generating or substantially revising an
-`experience_summary.md` — the adversarial interview that turns a
-self-description into a source of truth. Also load when a single new claim
-is being added to an existing summary; new claims get the same scrutiny the
-originals did.
+`experience_summary.md`, or adding any single new claim to an existing
+one — new claims get the same scrutiny the originals did.
 
 **Depends on:** whatever raw material exists (a resume, a LinkedIn About
 section, notes), and a person willing to have something they're proud of
