@@ -4,6 +4,18 @@ A step-by-step walkthrough for setting this up as your own workspace. If
 you just want to understand the system, `README.md` and `ARCHITECTURE.md`
 cover that. This document is for actually using it.
 
+**The fast path:** steps 1 and 2 below are one command —
+
+```bash
+python3 framework/scripts/bootstrap.py
+```
+
+It creates the whole `private/` layout, copies every template and tool into
+place, seeds the empty state files, initializes `private/` as its own git
+repository, and never overwrites anything that already exists. If you ran
+it, skip to step 3. The manual steps stay documented below because knowing
+what the bootstrap did is worth more than having run it.
+
 ---
 
 ## 1. Set up `private/`
@@ -65,10 +77,12 @@ restating your numbers.
 This is the one file that can't be filled in quickly. It's the source of
 truth every resume, cover letter, and piece of outreach copy has to trace
 back to, and the whole point is that it's been stress-tested, not just
-self-reported. See `ARCHITECTURE.md`, "Source of truth, not just a reference
-document," for why this matters.
-
-**How to actually do it:**
+self-reported. The full methodology — what to push on, the walk-back
+protocol, the overclaim patterns worth hunting specifically — lives in
+`framework/skills/verified-experience-interview.md`; load that skill into
+the session that does this work. See `ARCHITECTURE.md`, "Source of truth,
+not just a reference document," for why this matters. The short version of
+how to actually do it:
 
 1. Start from whatever self-description you already have, a resume, a
    LinkedIn About section, notes on your own experience.
