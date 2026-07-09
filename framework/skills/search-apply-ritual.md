@@ -1,8 +1,8 @@
 # Skill: The Search & Apply Ritual
 
-**Load when:** running a board sweep, vetting candidate roles, or
-submitting an application — the ordered runbook that sequences the other
-skills.
+**Load when:** running a board sweep, vetting candidate roles, submitting
+an application, or doing the weekly pipeline review — the ordered runbook
+that sequences the other skills.
 
 ---
 
@@ -56,3 +56,37 @@ end-of-day — live in the private session_init, which always loads.)
    warm-outreach skill apply — apply first, then message, and close the
    loop with anyone who helped.
 8. **Views regenerate at close**; don't hand-edit the history file.
+
+## The weekly review ritual
+
+Several of this system's rules are "re-verify if stale" rules, and stale
+things don't announce themselves — so once a week, one bounded pass owns
+all the clocks:
+
+1. **Run the funnel report** (application-tracking skill has the
+   interpretation guidance and the latency caveat).
+2. **Sweep the pending-outreach queue for age.** Every item older than a
+   couple of weeks gets an explicit decision — nudge, retire, or keep
+   waiting with a reason — rather than another week of silence by default.
+3. **Check dated snapshots** (market context and the like) against their
+   as-of headers; anything past its shelf life gets refreshed or marked
+   unreliable before it misleads a vetting decision.
+4. **Scan open threads for passed dates** — anything that was due and
+   didn't happen becomes a today-item, not an artifact.
+5. **If the instance has an application-aging policy**, apply it here;
+   if it deliberately doesn't (a legitimate choice), the funnel report's
+   no-response counts still get read with age in mind.
+
+Log that the review ran; a weekly ritual with no record of running is
+indistinguishable from one that doesn't exist.
+
+## Releasing a new resume version
+
+Not a weekly event, but it belongs in this file's jurisdiction because its
+ripple crosses the pipeline: platforms store their own copies of the
+resume, and stored copies are mirrors that drift — one auto-attached a
+stale cached file to live applications before this rule existed. The
+private instance keeps an inventory of every platform-stored copy in its
+data layer; a release walks that inventory, sets the new `resume_version`
+tag for all subsequent applications, and notes the date so the funnel's
+before/after read has a clean starting line.

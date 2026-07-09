@@ -54,6 +54,16 @@ split it before padding it.
   public. Nothing enumerates skills by design (discovery is the header
   scan), so there's no index to update — keep it that way.
 - **A template** → bootstrap.py's COPIES list · QUICKSTART.
+- **The private session_init** → refresh any persistent-context copy of it
+  (a Claude Project or similar). The whole point of loading it into static
+  context is that it rarely changes; when it DOES change, the loaded copy
+  is stale until someone re-uploads it — a drift that produced eight stale
+  states in one day of heavy maintenance before this entry existed.
+- **A new resume version** → the instance's platform-copies inventory
+  (every ATS/board that stores its own copy of the resume — those are
+  mirrors, and one auto-attached a stale file in practice) · the
+  `resume_version` tag on subsequent applications · a dated log note that
+  starts the funnel's before/after clock.
 - **Anything public-visible** → a CHANGELOG entry, tied to the failure or
   need that motivated it.
 
