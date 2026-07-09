@@ -4,7 +4,7 @@
 
 **Depends on:** `private/skills/session_init.md` (the stable map, itself a skill
 file, see below for why) and whichever file the private instance uses as its
-dynamic log (e.g. `private/skills/session_log.md`).
+dynamic log (e.g. `private/data/session_log.md`).
 
 ---
 
@@ -57,6 +57,43 @@ entry, without requiring the reader to reconstruct them from a long history:
 2. What is explicitly still open or undecided?
 3. What was corrected recently, and why, so a stale assumption doesn't get
    silently reintroduced?
+
+### The open-threads file
+
+"Read the top entry" degrades on heavy days: a single date can accumulate
+several entries, and the open items end up scattered across all of them rather
+than sitting in whichever one happens to be on top. The fix is a second, even
+smaller state file (an `open_threads.md` in the private instance's data layer)
+that is overwritten — not appended to — at every session close: what's open,
+what's due, who's owed a follow-up, and nothing else. The log stays the
+append-only history; the open-threads file is the current-state view of it.
+Read the open-threads file first at session start, then the log's top entry
+for recent context.
+
+## Drift-prevention rules
+
+Three rules, each earned by a real failure this pattern is meant to prevent
+from recurring:
+
+- **Policy changes land in the canonical file in the same session they're
+  decided.** A revised constraint, default answer, or standing policy gets
+  written into the canonical config (e.g. `profile.yml`) immediately — the
+  session log entry references the change, it never substitutes for it. A log
+  that records a decision the canonical file doesn't reflect is drift with a
+  timestamp: a future session loading the canonical file as authoritative will
+  apply the superseded rule.
+- **Scrubbing a claim means searching everything, not just the obvious
+  documents.** When an overclaim is added to the avoid list, grep the entire
+  private instance for its phrasing — including sample copy and examples
+  embedded inside skill files. A stale example in a methodology file is a
+  reintroduction vector: future drafts pattern-match on the example, not on
+  the positioning doc that corrected it.
+- **Dated content lives in the data layer, never in methodology files.** If a
+  sentence needs a date or an "as of" attached to make sense, it belongs in a
+  state file — the session log, or a snapshot file with an explicit as-of
+  header — not in a skill. Methodology files are loaded on the assumption that
+  they're timelessly true; a snapshot embedded in one goes stale silently,
+  with no header to warn the reader.
 
 ## Loading only what's relevant
 

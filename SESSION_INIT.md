@@ -51,11 +51,16 @@ ai-job-search-kit/
 ├── private/               — the user's actual data (GITIGNORED — its own git repo)
 │   ├── profile.yml          structured personal data: comp floor, constraints, lanes
 │   ├── experience_summary.md   verified source of truth
-│   ├── job_tracker.csv               application log
+│   ├── job_tracker.csv               application log — the only hand-edited
+│   │                                  application record; other views are generated
 │   ├── skills/                        filled methodology, one file per concern.
 │   │                                  Includes session_init.md (the stable map,
-│   │                                  loaded first) and session_log.md (the
-│   │                                  actual current-state log)
+│   │                                  loaded first). Methodology only — no state.
+│   ├── data/                          working state: session_log.md (the dynamic
+│   │                                  log), open_threads.md (read at startup),
+│   │                                  dated snapshots, per-company briefs, and
+│   │                                  generated views of the tracker
+│   ├── scripts/                       history generator + daily-log tool
 │   ├── feedback/                      external input received along the way
 │   └── resume/                        generated resumes and their build scripts
 │

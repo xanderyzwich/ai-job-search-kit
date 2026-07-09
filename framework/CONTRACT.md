@@ -15,24 +15,42 @@ into `private/` under the name listed here, then fill it in.
 
 ## Required layout
 
-`private/` is organized into three subdirectories, plus a small set of root files
-that are pure structured or verified data rather than methodology.
+`private/` is organized into five subdirectories, plus a small set of root files
+that are pure structured or verified data rather than methodology. The organizing
+principle: root files are canonical facts, `skills/` is methodology, `data/` is
+working state, `feedback/` is external input, `resume/` and `scripts/` are
+artifacts and tooling. If a file mixes methodology with dated state, it's in the
+wrong place — split it.
 
 ```
 private/
 ├── profile.yml              structured facts (see schema below)
 ├── experience_summary.md    verified source of truth
-├── job_tracker.csv          application log
+├── job_tracker.csv          application log — the ONLY hand-edited application
+│                            record; every other view of it is generated
 │
 ├── skills/                  filled-in methodology, one file per concern —
-│                            resume/lane strategy, search criteria, application
-│                            history, session notes, any domain-specific
-│                            positioning notes. Mirrors framework/skills/ in
-│                            spirit (small, focused, loaded on demand) but
-│                            contains real content, not the generic pattern.
-│                            One exception: session_init.md always loads first,
-│                            unconditionally, rather than on demand — see
-│                            framework/skills/session-continuity.md for why.
+│                            resume/lane strategy, search criteria, outreach and
+│                            screen-call patterns (a communications/ subdirectory
+│                            is a reasonable grouping), any domain-specific
+│                            positioning notes. Methodology only: nothing in
+│                            skills/ carries dated state or snapshots. Mirrors
+│                            framework/skills/ in concern (small, focused, loaded
+│                            on demand) but contains real content, not the
+│                            generic pattern. One exception to on-demand loading:
+│                            session_init.md always loads first, unconditionally —
+│                            see framework/skills/session-continuity.md for why.
+│
+├── data/                    working state, separated from methodology — the
+│                            session log (dated diary, newest first), a small
+│                            mutable open-threads file read at session start,
+│                            dated snapshots with as-of headers, the pending
+│                            outreach queue, per-company call briefs, and
+│                            generated views (e.g. application_history.md,
+│                            rendered from job_tracker.csv, never hand-edited)
+│
+├── scripts/                 tooling for the data layer — the history generator
+│                            and the daily-log split/assemble/commit tool
 │
 ├── feedback/                external input received along the way — advice
 │                            from a specific person, a shared template, anything
@@ -48,14 +66,21 @@ private/
 |---|---|---|
 | `private/profile.yml` | Structured facts: identity, comp floor, location constraints, role criteria, lane definitions, title lists, contact/EEO defaults. The one file every generic reference to "the candidate's floor" or "the candidate's constraints" resolves against. | `framework/templates/profile.yml` |
 | `private/experience_summary.md` | The verified source of truth for every role, claim, and number. Everything else defers to this file; if a document and this file disagree, this file wins. Exists specifically to prevent claim drift across sessions — a resume bullet or cover letter line should never introduce a fact that isn't traceable back here. | `framework/templates/experience_summary.md` |
-| `private/skills/*.md` | The filled-in version of the framework's methodology, one file per concern: which resume leads with what, actual board filters and saved queries, application history, session notes, any domain-specific positioning. | `framework/skills/*.md` — same names, generic version |
-| `private/job_tracker.csv` | Application log. Column schema below. | `framework/templates/tracker_schema.csv` |
+| `private/skills/*.md` | The filled-in version of the framework's methodology, one file per concern: which resume leads with what, actual board filters and saved queries, outreach and screen-call patterns, any domain-specific positioning. Methodology only — state (logs, queues, snapshots) lives in `data/`. | `framework/skills/*.md` — same concern, generic version. The mapping is by concern, not filename; a private instance may use different names (e.g. `resume-lane-strategy.md` ↔ `resume_strategy.md`) |
+| `private/job_tracker.csv` | Application log, and the ONLY hand-edited application record. Column schema below. Every human-readable view of it (history tables, summaries) is generated by script rather than maintained in parallel — two hand-maintained files describing the same applications will eventually disagree. | `framework/templates/tracker_schema.csv` |
+| `private/data/session_log.md` | The dynamic log: dated, chronological session entries, newest first. Read fresh from the live repo each session (top entry), never baked into static context. | none — starts empty, grows with use |
+| `private/data/open_threads.md` | Small, mutable statement of what's currently open and due. Overwritten (not appended to) at every session close, and read first at every session start — so open state never depends on which log entry happens to be on top. | none — starts empty |
 | `private/skills/session_init.md` | The one skill that loads every session unconditionally rather than on demand: directory map, startup checklist, tool notes. Meant to be stable, safe to load once into a persistent context feature and mostly forget about. The public root `SESSION_INIT.md` checks for this file and loads it if present. | `framework/templates/session_init.md` |
 
 ## Optional / generated (not required for the framework to function, but expected to exist once in use)
 
 | Path | Purpose |
 |---|---|
+| `private/data/application_history.md` | GENERATED from `job_tracker.csv` by a script in `private/scripts/` — human-readable submitted/closed/vetted tables plus summary counts. Never hand-edited; fix the tracker and regenerate. |
+| `private/data/companies/*.md` | One glanceable brief per company with a live thread: contacts and relationship state, open roles and their gates, gaps to name proactively, next actions. Built to be read mid-phone-call. |
+| `private/data/*_snapshot.md` | Dated state with an explicit as-of header (market/layoff context, employer research, anything that rots). Snapshots live here so methodology files stay timelessly true. |
+| `private/data/pending_outreach.md` | The outreach queue: connection requests sent, messages queued for acceptance. State only — the how-to lives in `skills/`. |
+| `private/scripts/*.py` | The history generator and the daily-log tool (fold the day's working entries into the log, archive old entries, regenerate views, make or amend the single daily commit). |
 | `private/resume/*.docx` / `.pdf` | Generated resumes, one pair per lane, built by `private/resume/build_resume.py` (or `framework/scripts/build_resume.py` if using the generic build path) from `profile.yml` + `experience_summary.md`. |
 | `private/feedback/*.md` | External input: feedback received on a resume or approach, a template shared by someone else, written up with enough context (who, when, on what) to still make sense read cold later. |
 | `output/*.pdf` (repo-root sibling, also gitignored) | Generated cover letters and one-off deliverables. Not part of the contract since these are per-application artifacts, not standing state. |
@@ -112,7 +137,7 @@ number, add a key to this schema instead.
 ```
 date_applied, response_date, company, role, salary_range, location, remote,
 job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
-hiring_manager, notes
+hiring_manager, source, lane, resume_version, notes
 ```
 
 **`response_date`** is when the company responded (rejection, screen invite,
@@ -121,9 +146,21 @@ outreach DM was actually sent to (may be a recruiter); **`hiring_manager`** is
 the identified hiring manager for the role, if known, which may be the same
 person or someone different from `dm_recipient`.
 
+**`source`** is where the role was found or how it arrived: a board name
+(`linkedin`, `wellfound`, `indeed`, `wttj`, ...), `referral` (a warm contact
+pointed at it), `recruiter` (inbound outreach), or `direct` (found on the
+company's own site). **`lane`** is which lane the application ran in (`ic` or
+`pc` in the two-lane pattern). **`resume_version`** identifies which resume
+build was submitted (a filename or a date tag, e.g. `ic_2026-07-01`). These
+three exist for funnel analysis: response rate by source, by lane, and by
+resume version is the difference between "volume isn't working" as a feeling
+and as a measurement.
+
 **`application_status` values:** `researching` (identified, not yet applied) ·
-`applied` · `dm_sent` (outreach sent to a hiring manager or recruiter) ·
-`phone_screen` · `interview` · `offer` · `declined_by_us` · `declined_by_them`.
+`skipped` (vetted, decided not to apply — keeps the judgment on record so the
+same role isn't re-evaluated from scratch) · `applied` · `dm_sent` (outreach
+sent to a hiring manager or recruiter) · `phone_screen` · `interview` ·
+`offer` · `declined_by_us` (withdrew after applying) · `declined_by_them`.
 
 ---
 
