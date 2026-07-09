@@ -58,6 +58,12 @@ reconstruction. Every fix became a rule, and most rules became structure:
   skill header contract: complete routing information in the first 8 lines
   of every skill, Load-when at most 3 lines, so one grep scans every
   skill's purpose in a single call.
+- **The pipeline's rituals got runbooks.** Session boundaries (init and
+  end-of-day) live in the private session map; the search and apply
+  sequences live in a new ordered runbook skill that sequences the other
+  skills by pointer rather than copying their content — including the
+  verify-what-the-ATS-actually-attached step, earned when a platform
+  auto-attached a cached stale resume.
 
 ## 2026-07-06 — Published
 

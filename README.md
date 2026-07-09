@@ -50,12 +50,14 @@ ai-job-search-kit/
 │
 ├── framework/              — the reusable system (tracked in git, no personal data)
 │   ├── CONTRACT.md           the exact file contract private/ must satisfy
-│   ├── skills/                small, focused methodology files, loaded on
-│   │                          demand: search, triage, resume lanes, tracking,
-│   │                          writing standards, session continuity, the
-│   │                          verified-experience interview, and a
-│   │                          communications/ set for warm outreach and
-│   │                          screen-call prep
+│   ├── skills/                small, focused methodology files covering the
+│   │                          whole pipeline — search, applying, outreach,
+│   │                          writing, continuity, and maintaining the
+│   │                          framework itself. Deliberately not enumerated
+│   │                          here: every skill declares its own purpose in
+│   │                          a "Load when" header within its first 8 lines,
+│   │                          so one grep lists them all, current by
+│   │                          construction
 │   ├── scripts/                working tooling: a one-command bootstrap, a
 │   │                          layout-only resume renderer driven by a content
 │   │                          file, a tracker-to-history generator, a
