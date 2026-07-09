@@ -64,6 +64,18 @@ the *same section* within that resume:
 - **PC ordering:** open with the strongest team-judgment or ownership story.
   Technical delivery material follows, still substantial, but not the lead.
 
+## Where ordering actually lives
+
+Ordering decisions are data, not code, and not document edits. Each lane's
+bullet selection and order live in the content file
+(`private/resume/resume_content.yml` — bullets in a shared per-employer
+pool, lanes referencing them by key), and the renderer
+(`private/resume/build_resume.py`) rebuilds the docx from it. Applying this
+skill's ordering principles means editing the YAML and re-rendering; editing
+a generated docx directly creates exactly the kind of unrecorded divergence
+the rest of this system exists to prevent. Every new or reworded bullet
+still traces to the verified experience summary first.
+
 ## A reconciliation trap worth naming explicitly
 
 General resume advice ("don't bury your most differentiated material at the

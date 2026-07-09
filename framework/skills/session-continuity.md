@@ -70,6 +70,12 @@ append-only history; the open-threads file is the current-state view of it.
 Read the open-threads file first at session start, then the log's top entry
 for recent context.
 
+Both files have tooling: `private/scripts/daily_log.py open` creates a cheap
+working file for the day's notes, and `close` folds it into the log's top,
+archives old entries, regenerates the tracker views, and makes (or amends) a
+single dated commit — so a session's end-of-day obligation is one command
+plus rewriting the open-threads file, not a bookkeeping ritual.
+
 ## Drift-prevention rules
 
 Three rules, each earned by a real failure this pattern is meant to prevent
