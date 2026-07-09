@@ -158,7 +158,7 @@ for the interface discipline, and `framework/scripts/` for working code.
 
 ## Using this for your own search
 
-The full walkthrough is in `QUICKSTART.md`. The short version: read
+The full walkthrough is in `QUICKSTART.md`, and `framework/scripts/bootstrap.py` does the file setup in one command. The short version: read
 `framework/CONTRACT.md` for the file shapes, copy the templates from
 `framework/templates/` (and the tooling from `framework/scripts/`) into your
 own gitignored `private/`, fill them in, and point an assistant at the repo
@@ -209,4 +209,7 @@ practice. Current state and what's still soft: see `ARCHITECTURE.md`,
 
 ## License
 
-Not yet decided. Treat as all-rights-reserved until a license file is added.
+MIT — use it, adapt it, run your own search on it. The one condition is the
+one intended: the copyright notice travels with any copies or substantial
+portions, so credit follows the work wherever it's distributed or forked.
+See `LICENSE`.
