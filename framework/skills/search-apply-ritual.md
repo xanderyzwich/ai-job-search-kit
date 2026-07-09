@@ -65,20 +65,26 @@ all the clocks:
 
 1. **Run the funnel report** (application-tracking skill has the
    interpretation guidance and the latency caveat).
-2. **Sweep the pending-outreach queue for age.** Every item older than a
+2. **Compare the resume build record against the platform-copies
+   inventory** — any platform confirmed before the last build timestamp
+   is serving a stale resume.
+3. **Sweep the pending-outreach queue for age.** Every item older than a
    couple of weeks gets an explicit decision — nudge, retire, or keep
    waiting with a reason — rather than another week of silence by default.
-3. **Check dated snapshots** (market context and the like) against their
+4. **Check dated snapshots** (market context and the like) against their
    as-of headers; anything past its shelf life gets refreshed or marked
    unreliable before it misleads a vetting decision.
-4. **Scan open threads for passed dates** — anything that was due and
+5. **Scan open threads for passed dates** — anything that was due and
    didn't happen becomes a today-item, not an artifact.
-5. **If the instance has an application-aging policy**, apply it here;
+6. **If the instance has an application-aging policy**, apply it here;
    if it deliberately doesn't (a legitimate choice), the funnel report's
    no-response counts still get read with age in mind.
 
-Log that the review ran; a weekly ritual with no record of running is
-indistinguishable from one that doesn't exist.
+Stamp that the review ran (the instance's daily-log tool has a
+`ritual` subcommand writing last-run dates to a stamps file, and warns at
+session start when a cadence has elapsed) — a weekly ritual with no
+record of running is indistinguishable from one that doesn't exist, and
+a stamp the tooling checks is better than a record someone must read.
 
 ## Releasing a new resume version
 

@@ -13,8 +13,14 @@ Usage:
   python3 build_resume.py path/to/content.yml pc
 
 Output files land next to the content file, named by each lane's `output`.
+Every build also updates `build_record.yml` beside the content file — per
+lane: build timestamp, output name, and a hash of the content file — so
+"is any platform-stored copy older than the last build" is a mechanical
+compare, not an act of memory.
 """
+import hashlib
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -139,6 +145,26 @@ class Builder:
         return out
 
 
+def write_build_record(content_path, built):
+    """Update build_record.yml beside the content file. `built` maps lane
+    key -> output Path for the lanes rendered in this run; lanes not
+    rebuilt keep their previous record entry."""
+    record_path = content_path.parent / "build_record.yml"
+    record = {}
+    if record_path.exists():
+        record = yaml.safe_load(record_path.read_text(encoding="utf-8")) or {}
+    content_hash = hashlib.sha256(content_path.read_bytes()).hexdigest()[:16]
+    for lane_key, out in built.items():
+        record[lane_key] = {
+            "built": datetime.now().isoformat(timespec="seconds"),
+            "output": out.name,
+            "content_sha256_16": content_hash,
+        }
+    record_path.write_text(yaml.safe_dump(record, sort_keys=False),
+                           encoding="utf-8")
+    return record_path
+
+
 def main():
     args = sys.argv[1:]
     content_path = Path(__file__).resolve().parent / "resume_content.yml"
@@ -150,12 +176,16 @@ def main():
             lanes = [a]
     with open(content_path, encoding="utf-8") as f:
         content = yaml.safe_load(f)
+    built = {}
     for lane_key in lanes or list(content["lanes"]):
         if lane_key not in content["lanes"]:
             sys.exit(f"Unknown lane '{lane_key}'. "
                      f"Available: {', '.join(content['lanes'])}")
         out = Builder(content).build(lane_key, content_path.parent)
+        built[lane_key] = out
         print("SAVED", out)
+    record = write_build_record(content_path, built)
+    print("RECORDED", record)
 
 
 if __name__ == "__main__":

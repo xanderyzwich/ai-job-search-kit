@@ -53,6 +53,14 @@ SEEDS = {
         "# Pending Outreach Queue\n\n> State only: connection requests"
         " sent, messages queued for acceptance, threads awaiting a reply."
         " The how-to lives in skills/communications/.\n",
+    "data/rituals.yml":
+        "# Last-run stamps for non-daily rituals (machine-managed).\n"
+        "# daily_log.py open/status warn when cadence_days has elapsed;\n"
+        "# stamp with: daily_log.py ritual <name>."
+        " cadence_days null = on demand.\n"
+        "weekly_review:\n  cadence_days: 7\n  last_run: null\n"
+        "  note: funnel report + staleness sweeps — see the"
+        " search-apply-ritual skill\n",
 }
 
 

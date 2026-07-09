@@ -63,7 +63,11 @@ reconstruction. Every fix became a rule, and most rules became structure:
   sequences live in a new ordered runbook skill that sequences the other
   skills by pointer rather than copying their content — including the
   verify-what-the-ATS-actually-attached step, earned when a platform
-  auto-attached a cached stale resume.
+  auto-attached a cached stale resume. Non-daily rituals get machine-
+  checked stamps: the daily-log tool records last-run dates and warns at
+  session start when a cadence has elapsed, and the resume renderer
+  writes a build record (timestamp plus content hash) so platform-copy
+  staleness is a mechanical compare instead of an act of memory.
 
 ## 2026-07-06 — Published
 

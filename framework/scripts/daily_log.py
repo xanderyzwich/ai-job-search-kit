@@ -11,6 +11,14 @@ Workflow:
           commit as the single daily commit "log: YYYY-MM-DD" — amending
           today's commit if it exists and hasn't been pushed yet
   status  show whether a working file and/or today's commit exist
+  ritual NAME
+          stamp a non-daily ritual as run today in data/rituals.yml —
+          e.g. `daily_log.py ritual weekly_review`
+
+`open` and `status` also print overdue warnings for any ritual in
+data/rituals.yml whose cadence_days has elapsed since its last_run, so a
+skipped weekly ritual announces itself at session start instead of waiting
+to be discovered.
 
 Notes:
   - close stages the whole working tree (git add -A), on purpose: the daily
@@ -31,9 +39,58 @@ ROOT = Path(__file__).resolve().parent.parent
 LOG = ROOT / "data" / "session_log.md"
 TODAY_FILE = ROOT / "temp" / "today.md"
 ARCHIVE_DIR = ROOT / "data" / "archive"
+RITUALS = ROOT / "data" / "rituals.yml"
 ARCHIVE_DAYS = 21
 
 HEADER_RE = re.compile(r"^## Session Notes \((\w{3} \d{1,2} \d{4})", re.M)
+
+
+def load_rituals():
+    if not RITUALS.exists():
+        return {}
+    import yaml
+    return yaml.safe_load(RITUALS.read_text(encoding="utf-8")) or {}
+
+
+def ritual_warnings():
+    lines = []
+    for name, info in load_rituals().items():
+        if not isinstance(info, dict):
+            continue
+        cadence = info.get("cadence_days")
+        if not cadence:
+            continue  # on-demand rituals are stamped for reference only
+        last = info.get("last_run")
+        if last is None:
+            lines.append(f"!! ritual '{name}' has never run"
+                         f" (cadence: every {cadence}d)")
+            continue
+        days = (date.today() - date.fromisoformat(str(last))).days
+        if days > cadence:
+            lines.append(f"!! ritual '{name}' overdue: last run {last}"
+                         f" ({days}d ago, cadence {cadence}d)")
+    return lines
+
+
+def print_ritual_warnings():
+    for line in ritual_warnings():
+        print(line)
+
+
+def cmd_ritual(name):
+    import yaml
+    data = load_rituals()
+    if name not in data:
+        known = ", ".join(data) or "(none — seed data/rituals.yml first)"
+        sys.exit(f"Unknown ritual '{name}'. Known: {known}")
+    data[name]["last_run"] = date.today().isoformat()
+    header = ("# Last-run stamps for non-daily rituals (machine-managed).\n"
+              "# daily_log.py open/status warn when cadence_days has"
+              " elapsed;\n# stamp with: daily_log.py ritual <name>."
+              " cadence_days null = on demand.\n")
+    RITUALS.write_text(header + yaml.safe_dump(data, sort_keys=False),
+                       encoding="utf-8")
+    print(f"Stamped '{name}': {date.today().isoformat()}")
 
 
 def git(*args, check=True):
@@ -171,14 +228,23 @@ def cmd_status():
         print(f"Today's commit exists: {commit_message()} — {pushed}")
     else:
         print("No commit for today yet.")
+    print_ritual_warnings()
 
 
 def main():
+    args = sys.argv[1:]
+    if args and args[0] == "ritual":
+        if len(args) != 2:
+            sys.exit("usage: daily_log.py ritual <name>")
+        cmd_ritual(args[1])
+        return
     commands = {"open": cmd_open, "close": cmd_close, "status": cmd_status}
-    if len(sys.argv) != 2 or sys.argv[1] not in commands:
+    if len(args) != 1 or args[0] not in commands:
         print(__doc__)
         sys.exit(1)
-    commands[sys.argv[1]]()
+    commands[args[0]]()
+    if args[0] == "open":
+        print_ritual_warnings()
 
 
 if __name__ == "__main__":
