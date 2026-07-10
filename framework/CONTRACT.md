@@ -139,7 +139,7 @@ number, add a key to this schema instead.
 ```
 date_applied, response_date, company, role, salary_range, location, remote,
 job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
-hiring_manager, source, lane, resume_version, notes
+hiring_manager, source, lane, resume_version, notes, found_via
 ```
 
 **`response_date`** is when the company responded (rejection, screen invite,
@@ -151,12 +151,17 @@ person or someone different from `dm_recipient`.
 **`source`** is where the role was found or how it arrived: a board name
 (`linkedin`, `wellfound`, `indeed`, `wttj`, ...), `referral` (a warm contact
 pointed at it), `recruiter` (inbound outreach), or `direct` (found on the
-company's own site). **`lane`** is which lane the application ran in (`ic` or
-`pc` in the two-lane pattern). **`resume_version`** identifies which resume
-build was submitted (a filename or a date tag, e.g. `ic_2026-07-01`). These
-three exist for funnel analysis: response rate by source, by lane, and by
-resume version is the difference between "volume isn't working" as a feeling
-and as a measurement.
+company's own site). **`found_via`** sharpens `source` to the specific
+discovery point: the board listing URL where the role was first seen (which
+may differ from `job_url` when the JD lives on the company's ATS), a search
+query, a newsletter, or a person's name for referrals. URL preferred, short
+text allowed, blank when it would only repeat `source`. **`lane`** is which
+lane the application ran in (`ic` or `pc` in the two-lane pattern).
+**`resume_version`** identifies which resume build was submitted (a filename
+or a date tag, e.g. `ic_2026-07-01`). These exist for funnel analysis:
+response rate by source, discovery point, lane, and resume version is the
+difference between "volume isn't working" as a feeling and as a measurement —
+including which specific places keep turning up roles worth applying to.
 
 **`application_status` values:** `researching` (identified, not yet applied) ·
 `skipped` (vetted, decided not to apply — keeps the judgment on record so the

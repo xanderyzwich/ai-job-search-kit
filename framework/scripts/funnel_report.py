@@ -2,9 +2,9 @@
 """Funnel report: turn a job_tracker.csv into conversion measurements.
 
 Reads a tracker following framework/CONTRACT.md's column schema and reports
-response and advance rates overall and split by source, lane, and
-resume_version — the difference between "volume isn't working" as a feeling
-and as a measurement.
+response and advance rates overall and split by source, found_via (discovery
+point; URLs are grouped by domain), lane, and resume_version — the
+difference between "volume isn't working" as a feeling and as a measurement.
 
 Definitions:
   submitted  status in {applied, dm_sent, phone_screen, interview, offer,
@@ -21,6 +21,7 @@ import csv
 import sys
 from collections import defaultdict
 from pathlib import Path
+from urllib.parse import urlparse
 
 SUBMITTED = {"applied", "dm_sent", "phone_screen", "interview", "offer",
              "declined_by_us", "declined_by_them"}
@@ -39,10 +40,21 @@ def pct(part, whole):
     return f"{part}/{whole} ({part / whole:.0%})" if whole else "0/0 (n/a)"
 
 
-def split_report(rows, key, label):
+def normalize_place(value):
+    """Group discovery-point URLs by domain so a split doesn't fragment."""
+    v = (value or "").strip()
+    if v.startswith(("http://", "https://")):
+        return urlparse(v).netloc.replace("www.", "") or v
+    return v
+
+
+def split_report(rows, key, label, normalize=None):
     groups = defaultdict(list)
     for row in rows:
-        groups[(row.get(key) or "").strip() or "(blank)"].append(row)
+        v = (row.get(key) or "").strip()
+        if normalize:
+            v = normalize(v)
+        groups[v or "(blank)"].append(row)
     lines = [f"\nBy {label}:"]
     for name in sorted(groups, key=lambda n: -len(groups[n])):
         g = groups[name]
@@ -75,6 +87,8 @@ def main():
     for key, label in (("source", "source"), ("lane", "lane"),
                        ("resume_version", "resume version")):
         print("\n".join(split_report(rows, key, label)))
+    print("\n".join(split_report(rows, "found_via", "discovery point",
+                                 normalize=normalize_place)))
 
 
 if __name__ == "__main__":

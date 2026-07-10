@@ -6,6 +6,18 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-10 — Discovery-point tracking in the funnel
+
+The tracker's `source` column answers "which channel"; it can't answer
+"which specific place keeps turning up roles worth applying to" — a board
+listing URL, a saved search, a person. New `found_via` column (URL
+preferred, short text allowed, blank when it would only repeat `source`),
+added per the standing schema rule: columns are added, never renamed, and
+readers treat absent as blank. The funnel report gains a discovery-point
+split, grouping URL values by domain so the report measures places rather
+than fragmenting into one-row groups. The application-tracking skill now
+lists four analysis columns to fill at log time.
+
 ## 2026-07-10 — The public half got its own index
 
 Earned by a real failure: a per-company call brief was regenerated without

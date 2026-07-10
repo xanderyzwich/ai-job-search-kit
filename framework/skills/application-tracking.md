@@ -27,10 +27,12 @@ application resurfaces later.
 At minimum, every logged application should capture: date, organization,
 role, whether a referral or warm contact was involved, whether a cover letter
 was sent (and where the file lives, if generated), and current status. Also
-fill the three analysis columns at log time, while they're still known:
-`source` (which board, or referral/recruiter/direct), `lane` (which resume
-lane ran), and `resume_version` (which build went out). They cost seconds to
-record and are unrecoverable weeks later.
+fill the four analysis columns at log time, while they're still known:
+`source` (which board, or referral/recruiter/direct), `found_via` (the
+specific discovery point — the listing URL where the role was first seen, a
+search query, or a person's name; blank if it would only repeat `source`),
+`lane` (which resume lane ran), and `resume_version` (which build went out).
+They cost seconds to record and are unrecoverable weeks later.
 
 ## The tracker is the only hand-edited record
 
@@ -68,8 +70,8 @@ pattern matters as much as any individual row.
 
 The aggregate pattern is a measurement, not an impression:
 `framework/scripts/funnel_report.py` turns the tracker into response and
-advance rates, overall and split by source, lane, and resume version, with a
-warm-versus-cold comparison. Run it (from the repo root, no arguments needed)
+advance rates, overall and split by source, discovery point, lane, and
+resume version, with a warm-versus-cold comparison. Run it (from the repo root, no arguments needed)
 on a regular cadence — weekly is enough — and additionally after any resume
 rebuild, where the `resume_version` split gives a clean before/after read
 once the new version has had a few weeks to draw responses. Interpret with
