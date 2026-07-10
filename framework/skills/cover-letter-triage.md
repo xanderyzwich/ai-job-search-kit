@@ -21,6 +21,13 @@ the letter, converts at a meaningfully different rate.
 **A cover letter is not a default step.** Decide whether to write one before
 drafting, not after.
 
+**Check the actual form before drafting anything.** A JD's quality or fit
+doesn't imply the application has anywhere to put a letter — open the form
+first and confirm a letter field or open upload exists. Three tailored
+letters were once written for one company's reqs whose forms, it turned
+out, had no letter field at all. The triage below only applies once the
+form is known to accept one.
+
 ## Triage
 
 - **Cold application, larger organization, no cover-letter field:** skip it.
