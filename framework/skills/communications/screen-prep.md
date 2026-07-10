@@ -19,8 +19,9 @@ live company, built to be read mid-call on a phone.
 
 ## The company brief
 
-One file per company with a live thread, in the private data layer. It must
-answer, at a glance:
+One file per company with a live thread, in the private data layer. It is
+created from `framework/templates/company_brief.md` and keeps that
+template's sections through every later edit. It must answer, at a glance:
 
 1. **Contacts and history** — every prior touch, who introduced whom, what
    each person has already offered or promised.

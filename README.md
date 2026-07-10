@@ -49,6 +49,8 @@ ai-job-search-kit/
 ├── .gitignore              — excludes private/, output/, temp/
 │
 ├── framework/              — the reusable system (tracked in git, no personal data)
+│   ├── README.md             the public half's index — read at session start;
+│   │                          routes to skills, templates, and scripts
 │   ├── CONTRACT.md           the exact file contract private/ must satisfy
 │   ├── skills/                small, focused methodology files covering the
 │   │                          whole pipeline — search, applying, outreach,

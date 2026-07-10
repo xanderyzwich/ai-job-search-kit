@@ -6,6 +6,29 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-10 — The public half got its own index
+
+Earned by a real failure: a per-company call brief was regenerated without
+its template because nothing at task time routed to `framework/templates/`
+— the directory existed only as a path inside one grep command, and the
+skills that govern brief-writing never named it. Three fixes, each at the
+layer that failed:
+
+- **`framework/README.md`** — a small routing index of the public half
+  (skills, templates, scripts, contract; what each is and when to read
+  it). A private instance's session init points here once; new skills and
+  templates announce themselves by adding a README line in the same commit
+  that adds them, so the always-loaded private map never needs editing to
+  keep discovery working.
+- **Templates rule** stated where it's discoverable: before creating any
+  new file, check `templates/` — if a template exists, the file is created
+  from it and keeps its sections through later edits. The screen-prep
+  skill now names `templates/company_brief.md` directly, and the
+  session-init template routes new instances through the README.
+- **Ripple map updated** in the maintenance skill: layout changes, new
+  templates, and script changes now list `framework/README.md` among the
+  mirrors to touch.
+
 ## 2026-07-09 — Drift prevention, the data layer, and working tooling
 
 A full-system review found the framework's own instance violating several of

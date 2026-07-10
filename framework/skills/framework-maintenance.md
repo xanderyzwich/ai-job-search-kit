@@ -35,15 +35,17 @@ split it before padding it.
 ## The ripple map: when X changes, also touch Y
 
 - **Directory layout** (framework or the private contract) → CONTRACT's
-  layout block · README tree · SESSION_INIT tree · the private instance's
-  session_init map and README tree · QUICKSTART steps 1–2 ·
+  layout block · README tree · SESSION_INIT tree · **framework/README.md**
+  (the public half's own index) · the private instance's session_init map
+  and README tree · QUICKSTART steps 1–2 ·
   **bootstrap.py's DIRS/COPIES/SEEDS lists** — the one place layout is
   deliberately duplicated in code, and the easiest to forget.
 - **A script added or changed** → the task-time skill that governs its
   moment (a script referenced only from setup docs is invisible when it
   matters) · the private session_init's Scripts block · QUICKSTART's copy
-  step if it installs into `private/` · the scripts lines in README and
-  SESSION_INIT trees · CONTRACT if it's contract-level. Framework copies
+  step if it installs into `private/` · the scripts lines in README,
+  SESSION_INIT trees, and framework/README.md · CONTRACT if it's
+  contract-level. Framework copies
   are canonical; re-copy installed private copies after upstream changes.
 - **Tracker schema** → CONTRACT schema text · the template CSV · migrate
   the live CSV (backup to `temp/` first) · confirm the readers still
@@ -53,7 +55,10 @@ split it before padding it.
 - **A new skill** → the header contract above · a CHANGELOG line if
   public. Nothing enumerates skills by design (discovery is the header
   scan), so there's no index to update — keep it that way.
-- **A template** → bootstrap.py's COPIES list · QUICKSTART.
+- **A template** → bootstrap.py's COPIES list · QUICKSTART · its line in
+  framework/README.md's templates entry — the README is how an
+  always-loaded private map discovers new templates without being edited,
+  so a template missing from it is undiscoverable at task time.
 - **The private session_init** → refresh any persistent-context copy of it
   (a Claude Project or similar). The whole point of loading it into static
   context is that it rarely changes; when it DOES change, the loaded copy

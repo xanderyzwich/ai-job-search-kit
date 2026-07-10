@@ -46,6 +46,8 @@ ai-job-search-kit/
 ├── .gitignore             — excludes private/, output/, temp/
 │
 ├── framework/             — the reusable system (tracked in git, no personal data)
+│   ├── README.md            the public half's index — routes to skills,
+│   │                        templates, and scripts; read at session start
 │   ├── skills/              small, focused methodology files, loaded on demand
 │   ├── scripts/              working tooling: bootstrap, resume renderer,
 │   │                         history generator, daily-log tool, funnel report
