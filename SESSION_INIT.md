@@ -86,12 +86,24 @@ it supersedes this section.
    lane definitions, title lists). Framework skills reference these as variables;
    never hardcode a personal figure into anything that could end up in `framework/`
    or the public repo root.
-2. **Read `private/experience_summary.md`** — the verified backbone.
-3. **Load only the `framework/skills/` files relevant to the task at hand** (see each
-   skill's one-line description in its own header — don't load all of them by default).
-4. **Read `private/job_tracker.csv`** if the task touches applications.
-5. **Confirm browser** (if doing browser work): run `list_connected_browsers`.
-6. **Ask which thread** — resumes, warm outreach, new role search, or applications.
+2. **Read `private/data/open_threads.md` and the top entry of
+   `private/data/session_log.md`** if they exist — what's open and due, plus recent
+   context. A brand-new instance won't have these yet; that's expected.
+3. **Regenerate and read the context map**: run
+   `python3 framework/scripts/build_context_map.py`, then read
+   `private/temp/context_map.md` — skill routing plus the ripple map. Before editing
+   any `framework/` or root-doc file, consult its ripple section and touch every
+   mirror it names in the same batch. (Once your private instance has the daily-log
+   tool, its `open` step does this for you automatically.)
+4. **Read `private/experience_summary.md`** — the verified backbone, if the task
+   produces any content about the candidate.
+5. **Read `framework/README.md`** — the index of the public half; it routes to
+   skills, templates, and scripts. Then load only the `framework/skills/` files
+   relevant to the task at hand. One call scans every skill's routing:
+   `grep -rA2 --include='*.md' '^\*\*Load when' framework/skills private/skills`.
+6. **Read `private/job_tracker.csv`** if the task touches applications.
+7. **Confirm browser** (if doing browser work): run `list_connected_browsers`.
+8. **Ask which thread** — resumes, warm outreach, new role search, or applications.
 
 ---
 

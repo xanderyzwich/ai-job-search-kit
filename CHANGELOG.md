@@ -6,6 +6,21 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-16 — First-session parity with long-term usage
+
+The context-map/ripple discipline — and, further back, reading current state
+at startup — had landed in the mature private session-init checklist but not
+in the two first-time entry points: the public `SESSION_INIT.md` generic
+fallback and the `templates/session_init.md` a new instance inherits. A
+first-time user would have silently skipped checks that long-term usage
+treats as mandatory. Both were brought to parity with the mature checklist:
+read current state (open threads + session log) before acting; regenerate and
+read the context map, and consult its ripple section before editing any
+framework or root-doc file; and route skills through `framework/README.md`.
+The generic fallback calls `build_context_map.py` directly (it assumes no
+installed tooling); the template uses the daily-log tool's `open` when present
+and falls back to the script otherwise.
+
 ## 2026-07-16 — The context map: routing generated at load, not remembered
 
 The template-honesty change below shipped without its documentation ripples

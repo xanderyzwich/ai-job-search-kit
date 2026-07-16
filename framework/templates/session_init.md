@@ -34,16 +34,22 @@ can just point back there instead of repeating it.
 Adapt this to your actual file names, but the shape holds:
 
 1. Read `profile.yml`, the structured facts.
-2. Read the top (most recent) entry of your session log for current
-   positioning and open threads.
-3. Read `experience_summary.md`, the verified backbone.
-4. Read `framework/README.md` — the small index of the public half; it
+2. Read your open-threads / current-state file and the top (most recent)
+   entry of your session log — what's open and due, plus recent positioning.
+3. If your instance has the daily-log tool, run its `open` step: it creates
+   the day's working-notes file and regenerates a gitignored
+   `temp/context_map.md` — skill routing plus the ripple map. Read that map;
+   before editing any `framework/` or root-doc file, consult its ripple
+   section and touch every mirror it names in the same batch. (No daily-log
+   tool yet? Run `framework/scripts/build_context_map.py` directly.)
+4. Read `experience_summary.md`, the verified backbone.
+5. Read `framework/README.md` — the small index of the public half; it
    routes to skills, templates (canonical shapes for every generated file
    type — check before creating any file), and scripts. Then load only the
    `framework/skills/` files relevant to the task at hand.
-5. Read your tracker file if the task touches applications.
-6. Confirm any browser or tool state your workflow depends on.
-7. Ask which thread you're picking up, if it's not already obvious.
+6. Read your tracker file if the task touches applications.
+7. Confirm any browser or tool state your workflow depends on.
+8. Ask which thread you're picking up, if it's not already obvious.
 
 ## Where to find current state
 
