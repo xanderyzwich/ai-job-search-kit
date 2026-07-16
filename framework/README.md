@@ -22,7 +22,8 @@ No personal data lives anywhere in `framework/`.
   sections.** Structural edits to an existing instance preserve the
   template's sections too.
 - **`scripts/`** — canonical tooling (bootstrap, resume renderer, history
-  generator, daily-log tool, funnel report). Installed copies live in the
+  generator, daily-log tool, funnel report, session-start context-map
+  builder). Installed copies live in the
   private instance's `scripts/`; after upstream changes, re-copy.
 - **`CONTRACT.md`** — the exact file contract a private instance must
   satisfy for the framework to function.

@@ -26,6 +26,12 @@ if it doesn't exist yet, that's the signal this is a fresh clone with no
 private instance set up. That private skill carries the person-specific
 version: where things live, and how the environment works.
 
+That entry point also materializes a session context map: if the instance
+uses the daily-log tool, its `open` step regenerates a gitignored
+`temp/context_map.md` holding skill routing (every Load-when header) and the
+framework's ripple map, so "what to touch when" is in context from the start
+rather than depending on a mid-session decision to go scan for it.
+
 Split that private skill's job into two files with two different lifecycles,
 not one:
 

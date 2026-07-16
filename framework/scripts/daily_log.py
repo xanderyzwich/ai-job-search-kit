@@ -4,7 +4,8 @@
 Workflow:
   open    create temp/today.md, a cheap working file for the day's entries —
           append session notes there during the day instead of editing the
-          full log
+          full log. Also refreshes temp/context_map.md (skill routing + the
+          ripple map) so "what to touch when" is in context from the start.
   close   fold temp/today.md into the top of data/session_log.md, archive
           entries older than ARCHIVE_DAYS into data/archive/YYYY-MM.md,
           regenerate data/application_history.md, then stage everything and
@@ -111,8 +112,26 @@ def parse_header_date(text):
     return datetime.strptime(text, "%b %d %Y").date()
 
 
+def refresh_context_map():
+    """Best-effort: rebuild temp/context_map.md (skill routing + ripple map)
+    via the framework script, so the 'when to do what' reference is current in
+    context from the first moment of the session. Never blocks session start."""
+    script = ROOT.parent / "framework" / "scripts" / "build_context_map.py"
+    if not script.exists():
+        return
+    try:
+        result = subprocess.run([sys.executable, str(script)], check=False,
+                                capture_output=True, text=True)
+        first = (result.stdout or "").strip().splitlines()
+        if first:
+            print(first[0])
+    except Exception:
+        pass
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
+    refresh_context_map()  # always refresh, even on re-open
     if TODAY_FILE.exists():
         print(f"{TODAY_FILE.relative_to(ROOT)} already exists; append to it.")
         return

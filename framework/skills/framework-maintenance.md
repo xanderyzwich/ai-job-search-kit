@@ -32,6 +32,21 @@ grep -rA2 --include='*.md' '^\*\*Load when' framework/skills private/skills
 Load-when that outgrows 3 lines is a skill trying to cover two concerns —
 split it before padding it.
 
+## The context map (generated at session start — read it first)
+
+`daily_log.py open` runs `build_context_map.py`, which materializes the
+ripple map below plus every skill's `Load when` header into
+`private/temp/context_map.md` (gitignored, rebuilt each session — a view,
+never a source). It exists so "what do I touch when" is in context from the
+first moment instead of depending on a remembered header scan: this was
+added after a documentation ripple was missed because the routing scan is a
+session-start ritual and the edit that needed it arrived as a mid-session
+pivot. Before editing any `framework/` or root-doc file, read that file's
+obligations in the ripple section and touch every mirror it names in the same
+batch. The generator EXTRACTS the section below verbatim rather than
+re-encoding it, so this stays the one place the ripple map lives; it keys off
+this heading, which fails loudly (an empty section) if the heading is renamed.
+
 ## The ripple map: when X changes, also touch Y
 
 - **Directory layout** (framework or the private contract) → CONTRACT's

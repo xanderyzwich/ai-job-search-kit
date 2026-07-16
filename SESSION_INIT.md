@@ -50,7 +50,8 @@ ai-job-search-kit/
 │   │                        templates, and scripts; read at session start
 │   ├── skills/              small, focused methodology files, loaded on demand
 │   ├── scripts/              working tooling: bootstrap, resume renderer,
-│   │                         history generator, daily-log tool, funnel report
+│   │                         history generator, daily-log tool, funnel report,
+│   │                         context-map builder
 │   └── templates/            blank versions of profile.yml, session_init.md, etc.
 │
 ├── private/               — the user's actual data (GITIGNORED — its own git repo)

@@ -6,6 +6,33 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-16 — The context map: routing generated at load, not remembered
+
+The template-honesty change below shipped without its documentation ripples
+— the CHANGELOG, QUICKSTART, and bootstrap updates got caught only when
+asked about explicitly. The cause wasn't a bad skill header; it was trigger
+timing. The Load-when scan that routes tasks to skills is a session-start
+ritual, but framework edits arrive mid-session as a pivot, and nothing
+re-invoked the scan at the moment of the edit. The map existed; nobody
+opened it.
+
+Fix: stop relying on remembering to scan. `build_context_map.py` now runs
+from `daily_log.py open` at every session start and materializes
+`private/temp/context_map.md` — every skill's Load-when header (routing)
+plus the ripple map, lifted verbatim from `framework-maintenance.md`. It's
+generated, gitignored, and rebuilt each session, so it can't drift: a view,
+never a source. The point is that "what to touch when" sits in context from
+the first moment, so a mid-session pivot into a framework edit already has
+the ripple obligations in front of it. The generator extracts rather than
+re-encodes — skill headers and the ripple-map section stay the single
+sources of truth — so the only new coupling is the section heading the
+extractor keys off, which fails loudly (empty section) if renamed.
+
+Per the ripple map, adding the script also touched the scripts lines in the
+README, SESSION_INIT, and framework/README trees; the private session-init
+map's checklist and scripts block; CONTRACT's generated-files table; and
+session-continuity. Dogfooded: the map was run against its own change.
+
 ## 2026-07-16 — Template honesty, and a shape for feedback docs
 
 A documentation audit caught the root README claiming `templates/` held

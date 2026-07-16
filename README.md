@@ -63,7 +63,8 @@ ai-job-search-kit/
 │   ├── scripts/                working tooling: a one-command bootstrap, a
 │   │                          layout-only resume renderer driven by a content
 │   │                          file, a tracker-to-history generator, a
-│   │                          one-commit-per-day log tool, and a funnel report
+│   │                          one-commit-per-day log tool, a funnel report,
+│   │                          and a session-start context-map builder
 │   └── templates/              starter versions of the files that have a
 │                              canonical shape (profile, experience summary,
 │                              tracker schema, resume content, session init,
