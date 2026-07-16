@@ -14,9 +14,10 @@ No personal data lives anywhere in `framework/`.
   `skills/framework-maintenance.md`). Scan alongside the private
   instance's `skills/` at task time:
   `grep -rA2 --include='*.md' '^\*\*Load when' framework/skills private/skills`
-- **`templates/`** — the canonical shape of every generated file type
+- **`templates/`** — the canonical shape of every file type that has one
   (company brief, profile, experience summary, tracker schema, resume
-  content, session init). **Rule: before creating any new file, check
+  content, session init, feedback). State files (session log, open threads)
+  start empty; generated views come from `scripts/`. **Rule: before creating any new file, check
   here — if a template exists, the file is created from it and keeps its
   sections.** Structural edits to an existing instance preserve the
   template's sections too.

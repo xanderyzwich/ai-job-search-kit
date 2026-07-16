@@ -28,6 +28,10 @@ DIRS = [
 ]
 
 COPIES = [  # (source relative to framework/, destination relative to private/)
+    # On-demand templates (company_brief.md, feedback.md) are intentionally
+    # NOT listed here: they're canonical shapes created when the need arises,
+    # not files that must exist at setup. Don't "fix" their absence by adding
+    # them — see the 2026-07-16 CHANGELOG entry.
     ("templates/profile.yml", "profile.yml"),
     ("templates/experience_summary.md", "experience_summary.md"),
     ("templates/tracker_schema.csv", "job_tracker.csv"),

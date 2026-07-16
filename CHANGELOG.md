@@ -6,6 +6,27 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-16 — Template honesty, and a shape for feedback docs
+
+A documentation audit caught the root README claiming `templates/` held
+"blank versions of every file private/ needs." The framework deliberately
+templates only files with a canonical *shape*: state files (session log,
+open threads) start empty, and generated views (application history, build
+record) come from scripts — three buckets, not one. `CONTRACT.md` already
+sorted the files correctly; only the summary had drifted. Two fixes:
+
+- **Wording aligned to the design.** The root README's templates line now
+  names the three buckets instead of implying a template per file, and
+  `framework/README.md`'s templates entry reads "every file type that has
+  one."
+- **A feedback template, optional by design.** `framework/templates/feedback.md`
+  gives feedback docs a canonical shape — a free-text record of the feedback
+  plus an actionable takeaways list — without requiring any to exist. Like
+  the per-company brief, it's an on-demand template: created when feedback
+  actually arrives, not instantiated at bootstrap, so `bootstrap.py`'s COPIES
+  list is deliberately left untouched. QUICKSTART and CONTRACT note where the
+  shape lives.
+
 ## 2026-07-10 — Discovery-point tracking in the funnel
 
 The tracker's `source` column answers "which channel"; it can't answer

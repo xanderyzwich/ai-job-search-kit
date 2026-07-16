@@ -63,6 +63,11 @@ working (or let the assistant create them during your first real session).
 `session_init.md` points to both, so they need to exist by the time anyone
 reads that pointer.
 
+Two templates aren't copied here on purpose: `company_brief.md` and
+`feedback.md` are on-demand shapes, not setup files. Create one from its
+template the first time you actually have a company thread to brief or a
+piece of feedback to write up — the framework never requires either to exist.
+
 ## 3. Fill in `profile.yml`
 
 This part is mechanical. Every field is a fact about you: contact info, your

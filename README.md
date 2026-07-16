@@ -64,7 +64,11 @@ ai-job-search-kit/
 │   │                          layout-only resume renderer driven by a content
 │   │                          file, a tracker-to-history generator, a
 │   │                          one-commit-per-day log tool, and a funnel report
-│   └── templates/              blank versions of every file private/ needs
+│   └── templates/              starter versions of the files that have a
+│                              canonical shape (profile, experience summary,
+│                              tracker schema, resume content, session init,
+│                              company brief, feedback); state files start
+│                              empty and generated views come from the scripts
 │
 ├── private/                — the user's actual data (its own gitignored repo)
 │   └── (see framework/CONTRACT.md — never committed to this repo. Canonical
