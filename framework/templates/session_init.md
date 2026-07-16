@@ -66,6 +66,20 @@ captured elsewhere.
 
 ## What to update each session
 
-State plainly: update your session log at the end of every session, and
-leave this file alone unless the directory structure or your tool
-environment itself changed.
+During the session, log events as they happen — a submitted application, a
+learned ATS quirk — to your working-notes file, not from memory at the end.
+
+End of session, in order (the startup checklist reads these at the next
+session start, so they must be true at close):
+
+1. Rewrite your open-threads / current-state file to match reality — it's the
+   first thing the next session reads.
+2. Promote durable learnings into the relevant skill file — a rule that will
+   hold across sessions, not a one-off (those stay in the log).
+3. If you use the daily-log tool, run its `close` (folds the day's notes,
+   regenerates any generated views, makes the single daily commit); otherwise
+   update your session log by hand.
+
+Leave THIS file alone unless the directory structure or your tool environment
+itself changed — it's a stable map, not a log. The full end-of-session
+reasoning lives in `framework/skills/session-continuity.md`.

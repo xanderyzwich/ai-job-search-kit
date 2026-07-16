@@ -26,10 +26,15 @@ Before anything else, check whether `private/skills/session_init.md` exists.
 - **If it exists**, load it. It's self-sufficient, directory map, startup
   checklist, and tool notes for this person's actual setup, and it supersedes
   the generic checklist below. Follow it instead.
-- **If it doesn't exist**, there's no private instance set up yet. This is a
-  fresh clone of the framework. Read `QUICKSTART.md` and set one up before
-  doing anything else; the generic checklist below assumes `private/` exists
-  and is filled in.
+- **If it doesn't exist**, there's no private instance set up yet — this is a
+  fresh clone, and setting one up is your first task, before anything else.
+  Read `QUICKSTART.md` (or run `framework/scripts/bootstrap.py`), which
+  generates `private/skills/session_init.md` from
+  `framework/templates/session_init.md`. Then personalize that generated file
+  — your directory map, where your state lives, your tool notes. From the next
+  session on it supersedes this generic checklist permanently; you won't run
+  the steps below again. Until it exists, the generic checklist below is the
+  fallback and assumes `private/` has at least been scaffolded.
 
 ---
 

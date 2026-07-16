@@ -6,6 +6,20 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-16 — Public-to-private handoff prompt, and a template close ritual
+
+Two follow-ons to the first-session parity work. The template's end-of-session
+guidance was one thin sentence while the mature private map has a full close
+ritual, so the template now carries it: rewrite the open-threads file so the
+next startup reads truth, promote durable learnings into a skill file, and run
+the daily-log `close` (or update the log by hand). It stops short of
+prescribing optional files (`companies/`, outreach queues, rituals) a new user
+may not have. And the public-to-private transition is now prompted explicitly:
+`SESSION_INIT.md` spells out that the private map is generated from the
+template by bootstrap, must be personalized, and supersedes the generic
+checklist permanently from the next session on; `bootstrap.py`'s next-steps
+names personalizing it.
+
 ## 2026-07-16 — First-session parity with long-term usage
 
 The context-map/ripple discipline — and, further back, reading current state

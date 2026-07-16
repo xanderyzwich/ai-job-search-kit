@@ -108,7 +108,9 @@ Next steps (QUICKSTART.md has the detail):
   4. Generate private/experience_summary.md via the adversarial interview —
      load framework/skills/verified-experience-interview.md for the method.
   5. Fill in skills as you need them, not as a batch.
-  6. Point an assistant at the repo root; SESSION_INIT.md does the rest.""")
+  6. Personalize private/skills/session_init.md — it starts as the generic
+     template; fill in your directory map, where your state lives, tool notes.
+  7. Point an assistant at the repo root; SESSION_INIT.md does the rest.""")
 
 
 if __name__ == "__main__":
