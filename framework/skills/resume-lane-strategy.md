@@ -76,6 +76,17 @@ a generated docx directly creates exactly the kind of unrecorded divergence
 the rest of this system exists to prevent. Every new or reworded bullet
 still traces to the verified experience summary first.
 
+The content file also carries a **skills ledger**, and it does double duty.
+`skills` is a group → item → children tree of on-resume technologies, each node
+optionally tagged with `depth`, `years`, and `aliases` (the alternate spellings
+listings use, e.g. Vue.js / VueJS for Vue); a sibling `context_ledger` holds
+off-resume technologies (evaluated-not-adopted, tooling-only, honest gaps). The
+renderer prints names only — every tag is dropped — so the ledger enriches
+match/gap and interview prep without touching the resume. Match/gap resolves a
+JD's stack terms against both layers (see search-apply-ritual), never from
+memory, so depth and near-name mismatches (a decade of tooling is not
+production; Aurora is MySQL, not Postgres) are caught by data, not recall.
+
 ## A reconciliation trap worth naming explicitly
 
 General resume advice ("don't bury your most differentiated material at the

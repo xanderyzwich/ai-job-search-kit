@@ -21,9 +21,32 @@ identity:
 
 education: ""                 # e.g. "B.S. Computer Science  ·  University  ·  Year"
 
-skills:                       # label/value pairs, rendered as single lines (ATS-safe, no table)
-  - ["Languages", ""]
-  - ["Cloud & Infra", ""]
+# Skills ledger (Layer 1 — on the resume). group -> items -> optional children.
+# The renderer prints names only as "item (child, child), item, ..." (ATS-safe,
+# single lines, no table). `depth` / `years` / `note` / `aliases` are INTERNAL
+# metadata for match/gap analysis and are DROPPED at render. depth ∈
+# {production-deep, working, tooling-only}; `aliases` lists the alternate
+# spellings a JD may use (e.g. Vue.js / VueJS for Vue) — match/gap treats the
+# name or ANY alias as one identity, and alias sets never overlap across items
+# so distinct technologies can't collide.
+skills:
+  - group: Languages
+    items:
+      - name: ""              # e.g. Java
+        depth: ""             # production-deep | working | tooling-only
+      # - name: JavaScript    # an item with children renders "JavaScript (React, ...)"
+      #   children:
+      #     - name: React
+      #       aliases: [React.js, ReactJS]   # optional: alternate spellings a JD may use
+  - group: Cloud & Infra
+    items:
+      - name: ""
+
+# Context ledger (Layer 2 — NOT on the resume, never rendered). Off-resume tech
+# that still matters for match/gap and interviews. status ∈
+# {evaluated-not-adopted, tooling-only, familiar, honest-gap}. Match/gap resolves
+# a JD's terms against BOTH `skills` and this list — never from memory.
+context_ledger: []
 
 community: []                 # optional: volunteer work, talks, writing — one bullet per entry
 

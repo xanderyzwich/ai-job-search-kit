@@ -151,7 +151,9 @@ bookkeeping debt.
 ## 7. Build your first resume
 
 Fill in `private/resume/resume_content.yml` — every bullet traced to your
-`experience_summary.md` — then:
+`experience_summary.md`, plus the two-layer skills ledger (`skills` tree and
+`context_ledger`) that the renderer prints names-only and match/gap reads —
+then:
 
 ```bash
 python3 private/resume/build_resume.py

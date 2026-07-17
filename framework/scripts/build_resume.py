@@ -108,11 +108,21 @@ class Builder:
         self.runp(p, lane["competencies"], bold=True, size=10)
 
         self.heading("Technical Skills")
-        for label, value in c["skills"]:
+        for group in c["skills"]:
+            # Render names only: "item (child, child), item, ...".
+            # years / depth / note / canonical are internal ledger metadata,
+            # dropped here; context_ledger is never rendered.
+            parts = []
+            for item in group["items"]:
+                s = item["name"]
+                kids = item.get("children")
+                if kids:
+                    s += " (" + ", ".join(k["name"] for k in kids) + ")"
+                parts.append(s)
             p = self.para(space_after=2)
             p.paragraph_format.line_spacing = 1.05
-            self.runp(p, label + ": ", bold=True, size=BODY)
-            self.runp(p, value, size=BODY)
+            self.runp(p, group["group"] + ": ", bold=True, size=BODY)
+            self.runp(p, ", ".join(parts), size=BODY)
 
         self.heading("Professional Experience")
         for emp in c["employers"]:

@@ -84,6 +84,15 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   mirrors, and one auto-attached a stale file in practice) · the
   `resume_version` tag on subsequent applications · a dated log note that
   starts the funnel's before/after clock.
+- **The `resume_content.yml` schema** (the skills-ledger shape, or any new
+  content key the renderer reads) → `build_resume.py` (edit the canonical
+  framework copy, re-copy the private one, and fidelity-gate the render
+  byte-for-byte before trusting it) · the template `resume_content.yml` ·
+  CONTRACT's `resume_content.yml` row · the resume-strategy skill (framework
+  `resume-lane-strategy.md` and the private `resume_strategy.md`) · the
+  match/gap step in `search-apply-ritual.md`, which reads the ledger. The
+  ledger is a match/gap source of truth as well as a render input, so a shape
+  change ripples into both the renderer and the vetting rule.
 - **Anything public-visible** → a CHANGELOG entry, tied to the failure or
   need that motivated it.
 

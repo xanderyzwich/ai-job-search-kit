@@ -6,6 +6,25 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-17 — A skills ledger under the resume, so match/gap stops guessing
+
+Match/gap reads kept getting a candidate's own stack wrong — a language flagged
+as a gap when it was a decade of tooling, a database counted as a match when the
+real engine was a different one under a shared brand name. The facts were correct
+in the experience summary; the judgment step just wasn't consulting them, running
+off recall instead.
+
+So the resume content file now carries a two-layer skills ledger. `skills` became
+a group → item → children tree where each node can hold `depth`, `years`, and the
+`canonical` spelling listings use; a sibling `context_ledger` records off-resume
+technologies as evaluated-not-adopted, honest-gap, or tooling-only. The renderer
+prints names only and drops every tag, so the resume is unchanged (verified
+byte-for-byte across both lanes before the swap). The match/gap step in the search
+ritual now resolves every JD term against both layers rather than from memory, and
+the maintenance ripple map gained an entry so a future schema change touches the
+renderer, template, CONTRACT, the resume-strategy skill, and the vetting rule
+together.
+
 ## 2026-07-17 — The weekly review, anchored to Friday's close
 
 The weekly pipeline review used to ride a rolling seven-day timer, so it drifted

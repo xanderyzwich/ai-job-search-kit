@@ -23,7 +23,16 @@ end-of-day — live in the private session_init, which always loads.)
    activity at the organization, duplicates, answers already given.
 4. **Vet against hard constraints first** — location, travel, comp floor —
    then lane-route it (resume-lane-strategy) and make the honest gap read.
-   Add the one-line ownership/stability note (employer-risk methodology).
+   For the tech match/gap, resolve EVERY stack term the JD names against the
+   two-layer skills ledger in `resume/resume_content.yml` — the `skills` tree
+   (Layer 1: on-resume items with per-node `depth` and `aliases`, matched on
+   name or any alias)
+   and `context_ledger` (Layer 2: off-resume items tagged evaluated-not-adopted,
+   honest-gap, or tooling-only). Never call match or gap from memory: depth is
+   decisive (a decade of Python tooling is not production depth) and a near
+   name is not a match (Aurora is MySQL, not Postgres). The ledger, not recall,
+   is the source of truth for whether something is a match, a caveated match,
+   or a gap. Add the one-line ownership/stability note (employer-risk methodology).
 5. **Log every vetted role**, including the noes: `researching` or
    `skipped` with the fit note, so the judgment is on record and the role
    is never re-evaluated from scratch.
