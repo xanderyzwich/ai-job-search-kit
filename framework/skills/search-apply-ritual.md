@@ -80,11 +80,17 @@ all the clocks:
    if it deliberately doesn't (a legitimate choice), the funnel report's
    no-response counts still get read with age in mind.
 
-Stamp that the review ran (the instance's daily-log tool has a
-`ritual` subcommand writing last-run dates to a stamps file, and warns at
-session start when a cadence has elapsed) — a weekly ritual with no
-record of running is indistinguishable from one that doesn't exist, and
-a stamp the tooling checks is better than a record someone must read.
+This review is ANCHORED to Friday's daily close. The daily-log tool tracks it
+with an `anchor: friday` stamp: it comes due every Friday and STAYS due if a
+Friday is missed, surfacing at the next `open` rather than resetting a rolling
+clock. Running `close` on a due Friday performs the measurable part for you — it
+runs the funnel report, writes `data/funnel_report.md`, stamps the ritual, and
+makes its OWN `weekly-review: <date>` commit, separate from the daily `log:`
+commit so the week's measurement reads as its own event in history. The judgment
+steps above (staleness sweeps, the passed-date scan) are done in-session before
+that close. A weekly ritual with no record of running is indistinguishable from
+one that doesn't exist, and a stamp the tooling checks is better than a record
+someone must read.
 
 ## Releasing a new resume version
 

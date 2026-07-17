@@ -21,9 +21,22 @@ data/rituals.yml whose cadence_days has elapsed since its last_run, so a
 skipped weekly ritual announces itself at session start instead of waiting
 to be discovered.
 
+Weekly review — anchored to Friday's close (not a rolling 7-day timer):
+  A ritual carrying `anchor: <weekday>` in rituals.yml (weekly_review =
+  friday) is "due" whenever its last_run predates the most recent occurrence
+  of that weekday. So the weekly review comes due every Friday and STAYS due
+  until it runs — a skipped Friday simply carries forward. When `close` runs
+  and the weekly review is due, close first runs the funnel report, writes
+  data/funnel_report.md, stamps weekly_review, and makes its OWN commit
+  ("weekly-review: YYYY-MM-DD") — separate from the daily "log:" commit that
+  follows. `open` flags the weekly review when it's due so the next session
+  picks up a missed Friday and closes it out.
+
 Notes:
   - close stages the whole working tree (git add -A), on purpose: the daily
     commit carries the day's tracker edits and regenerated views together.
+    The weekly-review commit is made first and stages only its own two
+    artifacts (data/funnel_report.md, data/rituals.yml) so it stays distinct.
   - Remote pushes still happen through GitKraken; this script only makes
     local commits. Amending stops automatically once today's commit has
     been pushed (a pushed commit gets an addendum commit instead).
@@ -41,9 +54,20 @@ LOG = ROOT / "data" / "session_log.md"
 TODAY_FILE = ROOT / "temp" / "today.md"
 ARCHIVE_DIR = ROOT / "data" / "archive"
 RITUALS = ROOT / "data" / "rituals.yml"
+FUNNEL_MD = ROOT / "data" / "funnel_report.md"
 ARCHIVE_DAYS = 21
 
 HEADER_RE = re.compile(r"^## Session Notes \((\w{3} \d{1,2} \d{4})", re.M)
+
+ANCHOR_WEEKDAYS = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3,
+                   "friday": 4, "saturday": 5, "sunday": 6}
+
+RITUAL_HEADER = (
+    "# Last-run stamps for non-daily rituals (machine-managed).\n"
+    "# daily_log.py open/status warn when cadence_days has elapsed;\n"
+    "# stamp with: daily_log.py ritual <name>. cadence_days null = on demand.\n"
+    "# anchor: <weekday> makes a ritual due-by-weekday (weekly_review = friday);\n"
+    "# it runs and is committed separately at that day's `close`.\n")
 
 
 def load_rituals():
@@ -53,10 +77,60 @@ def load_rituals():
     return yaml.safe_load(RITUALS.read_text(encoding="utf-8")) or {}
 
 
+def write_rituals(data):
+    import yaml
+    RITUALS.write_text(RITUAL_HEADER + yaml.safe_dump(data, sort_keys=False),
+                       encoding="utf-8")
+
+
+def stamp_ritual(name):
+    """Set a ritual's last_run to today. Returns True if the name existed."""
+    data = load_rituals()
+    if name not in data or not isinstance(data[name], dict):
+        return False
+    data[name]["last_run"] = date.today().isoformat()
+    write_rituals(data)
+    return True
+
+
+def most_recent_weekday(weekday, ref=None):
+    """Date of the most recent given weekday (Mon=0..Sun=6) on or before ref."""
+    ref = ref or date.today()
+    return ref - timedelta(days=(ref.weekday() - weekday) % 7)
+
+
+def anchored_due(info, ref=None):
+    """True if a weekday-anchored ritual's last_run predates the most recent
+    occurrence of its anchor weekday (i.e. this week's — or a missed earlier
+    week's — instance hasn't run yet)."""
+    weekday = ANCHOR_WEEKDAYS.get(str(info.get("anchor", "")).lower())
+    if weekday is None:
+        return False
+    anchor_date = most_recent_weekday(weekday, ref)
+    last = info.get("last_run")
+    return last is None or date.fromisoformat(str(last)) < anchor_date
+
+
+def weekly_review_due(ref=None):
+    info = load_rituals().get("weekly_review")
+    return (isinstance(info, dict) and bool(info.get("anchor"))
+            and anchored_due(info, ref))
+
+
 def ritual_warnings():
     lines = []
     for name, info in load_rituals().items():
         if not isinstance(info, dict):
+            continue
+        if info.get("anchor"):
+            if anchored_due(info):
+                weekday = ANCHOR_WEEKDAYS[str(info["anchor"]).lower()]
+                anchor_date = most_recent_weekday(weekday)
+                last = info.get("last_run") or "never"
+                lines.append(
+                    f"!! ritual '{name}' due (anchored to {info['anchor']}):"
+                    f" last run {last}; anchor {anchor_date}."
+                    f" Runs + commits at the next `close`.")
             continue
         cadence = info.get("cadence_days")
         if not cadence:
@@ -79,18 +153,11 @@ def print_ritual_warnings():
 
 
 def cmd_ritual(name):
-    import yaml
     data = load_rituals()
     if name not in data:
         known = ", ".join(data) or "(none — seed data/rituals.yml first)"
         sys.exit(f"Unknown ritual '{name}'. Known: {known}")
-    data[name]["last_run"] = date.today().isoformat()
-    header = ("# Last-run stamps for non-daily rituals (machine-managed).\n"
-              "# daily_log.py open/status warn when cadence_days has"
-              " elapsed;\n# stamp with: daily_log.py ritual <name>."
-              " cadence_days null = on demand.\n")
-    RITUALS.write_text(header + yaml.safe_dump(data, sort_keys=False),
-                       encoding="utf-8")
+    stamp_ritual(name)
     print(f"Stamped '{name}': {date.today().isoformat()}")
 
 
@@ -129,15 +196,56 @@ def refresh_context_map():
         pass
 
 
+def run_weekly_review():
+    """Friday-anchored weekly review, run as part of `close` but committed on
+    its own. Refreshes the funnel report into data/funnel_report.md, stamps
+    weekly_review, and commits just those two artifacts as
+    "weekly-review: YYYY-MM-DD" — separate from the daily "log:" commit.
+
+    The judgment steps of the review (staleness sweeps, open-thread date scan;
+    see framework/skills/search-apply-ritual.md) are done in-session before
+    close; this formalizes the measurable, stampable part."""
+    funnel = ROOT.parent / "framework" / "scripts" / "funnel_report.py"
+    output = ""
+    if funnel.exists():
+        try:
+            result = subprocess.run([sys.executable, str(funnel)], check=False,
+                                    capture_output=True, text=True)
+            output = (result.stdout or "").strip()
+        except Exception:
+            output = ""
+    header = (f"# Weekly Funnel Report\n\n"
+              f"_Generated {date.today().isoformat()} at the Friday weekly"
+              f" close. Regenerated view — do not hand-edit; it is rewritten"
+              f" each time `close` runs on/after a due Friday._\n\n")
+    FUNNEL_MD.parent.mkdir(parents=True, exist_ok=True)
+    FUNNEL_MD.write_text(header + "```\n" + output + "\n```\n", encoding="utf-8")
+    stamp_ritual("weekly_review")
+
+    git("add", str(FUNNEL_MD), str(RITUALS))
+    if git("diff", "--cached", "--quiet", check=False).returncode != 0:
+        git("commit", "-m", f"weekly-review: {date.today().isoformat()}")
+        print(f"Weekly review: funnel refreshed + stamped; committed"
+              f" (weekly-review: {date.today().isoformat()}).")
+    else:
+        print("Weekly review ran; no artifact changes to commit.")
+    if output:
+        print("\n" + output)
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
     refresh_context_map()  # always refresh, even on re-open
     if TODAY_FILE.exists():
         print(f"{TODAY_FILE.relative_to(ROOT)} already exists; append to it.")
-        return
-    TODAY_FILE.write_text(
-        f"## Session Notes ({today_header_date()})\n\n", encoding="utf-8")
-    print(f"Created {TODAY_FILE.relative_to(ROOT)}")
+    else:
+        TODAY_FILE.write_text(
+            f"## Session Notes ({today_header_date()})\n\n", encoding="utf-8")
+        print(f"Created {TODAY_FILE.relative_to(ROOT)}")
+    if weekly_review_due():
+        print("NOTE: weekly review is due (Friday-anchored). Do the staleness"
+              " sweeps in-session, then run `close` — it will run the funnel,"
+              " stamp the ritual, and make its own weekly-review commit.")
 
 
 def fold_today():
@@ -210,6 +318,9 @@ def head_is_pushed():
 
 
 def cmd_close():
+    if weekly_review_due():
+        run_weekly_review()  # its own commit, before the daily commit
+
     folded = fold_today()
     archived = archive_old()
     subprocess.run(

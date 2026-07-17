@@ -6,6 +6,21 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-07-17 — The weekly review, anchored to Friday's close
+
+The weekly pipeline review used to ride a rolling seven-day timer, so it drifted
+to whatever weekday it last happened to run. It's now weekday-anchored: a ritual
+in the stamps file can carry `anchor: <weekday>`, and the weekly review uses
+`anchor: friday`. It comes due every Friday and stays due if a Friday is missed,
+so a skipped week surfaces at the next `open` instead of resetting the clock.
+
+Running `close` on a due Friday now performs the measurable half of the review:
+it runs the funnel report, writes it to `data/funnel_report.md`, stamps the
+ritual, and makes its own `weekly-review: <date>` commit — kept separate from
+the daily `log:` commit so the week's measurement is its own event in history.
+The judgment steps (staleness sweeps, the passed-date scan) stay in-session,
+done before the close.
+
 ## 2026-07-16 — Public-to-private handoff prompt, and a template close ritual
 
 Two follow-ons to the first-session parity work. The template's end-of-session
