@@ -106,6 +106,17 @@ from recurring:
   header — not in a skill. Methodology files are loaded on the assumption that
   they're timelessly true; a snapshot embedded in one goes stale silently,
   with no header to warn the reader.
+- **A mutating write isn't verified until it's checked, and a git-tracked
+  instance should checkpoint locally as work happens, not only at session
+  close.** A write that's supposed to append or surgically edit can instead
+  silently overwrite the whole file — the failure looks identical to success
+  until the next read, so verify (a line count, a tail, a diff) before
+  starting the next edit on that file. If the instance's state layer is
+  git-tracked, take a local commit after each meaningful batch of edits,
+  amending it as the day continues rather than stacking new commits, and
+  push only once at actual close. That turns every checkpoint into a
+  recovery point: a caught mistake costs only the mistake, not everything
+  done earlier that session.
 
 ## Loading only what's relevant
 
