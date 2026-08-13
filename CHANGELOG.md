@@ -6,6 +6,35 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-13 — Two kinds of resume mirror, and each check where it fires
+
+The platform-copies idea started from a file problem: an ATS auto-attached a
+cached stale PDF to live applications. So the rule became "a release walks the
+inventory of every platform storing a copy." Two things were wrong with that.
+
+It missed the copies most people actually read. A professional-network
+profile's own experience section and a personal site listed on applications are
+retyped prose, not uploaded files, so they drift differently: not merely stale,
+but contradictory on facts. A release that re-dates an employment range, and
+then walks only the stored files, ships a profile that disagrees with the
+resume about where the candidate works and when. Nothing will prompt that fix,
+because there's no submit event to hang a check on.
+
+And for the stored files it was the wrong moment. A stale stored file can only
+do damage when something is submitted through that system, so the release now
+just marks those stale in the inventory and the refresh lands in the apply
+ritual, at submit time, for the one system in play. Walking every ATS on
+release day spends effort on systems the search may never touch again, and the
+effort expires the next time the resume changes.
+
+So the release section of the search-apply ritual splits the inventory in two
+and sends each half to the moment where its check actually fires, apply-ritual
+step 2 refreshes the stored copy rather than only verifying it, and the ripple
+map records the distinction. One addition from practice: check the field's
+character limit before drafting a content mirror. A capped field makes a
+release a selection problem rather than an append, and finding that out after
+the copy is written wastes the draft.
+
 ## 2026-08-13 — The tracker's column-shift bug fails loudly now
 
 A single unquoted comma inside a tracker field shifts every column after it,

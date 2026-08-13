@@ -79,11 +79,21 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   context is that it rarely changes; when it DOES change, the loaded copy
   is stale until someone re-uploads it — a drift that produced eight stale
   states in one day of heavy maintenance before this entry existed.
-- **A new resume version** → the instance's platform-copies inventory
-  (every ATS/board that stores its own copy of the resume — those are
-  mirrors, and one auto-attached a stale file in practice) · the
-  `resume_version` tag on subsequent applications · a dated log note that
-  starts the funnel's before/after clock.
+- **A new resume version** → the `resume_version` tag on subsequent
+  applications · a dated log note that starts the funnel's before/after clock
+  · the instance's platform-copies inventory, which holds two kinds of mirror
+  that are NOT walked the same way (see the release section of
+  `search-apply-ritual.md`): **submission-system copies** get marked stale and
+  refreshed at submit time for that one system, since that's the only moment a
+  stale stored file can reach an employer; **content mirrors** — a
+  professional-network profile's experience section, a personal site listed on
+  applications — get refreshed at release, because nothing else will ever
+  prompt it and they fail differently. A stored file is merely old. A content
+  mirror is retyped prose, so it contradicts the resume on facts (titles,
+  employment date ranges, present-vs-past tense) while looking current, and
+  strangers read it unprompted. Check the field's character limit before
+  drafting one: a capped field makes a release a selection problem, not an
+  append.
 - **The `resume_content.yml` schema** (the skills-ledger shape, or any new
   content key the renderer reads) → `build_resume.py` (edit the canonical
   framework copy, re-copy the private one, and fidelity-gate the render

@@ -44,10 +44,15 @@ end-of-day — live in the private session_init, which always loads.)
 
 1. **Re-check the tracker and the posting** — still open, not already
    applied, no contradiction with answers given elsewhere.
-2. **Lane → resume** (resume-lane-strategy), and **verify what the ATS
-   actually attached**. Platforms cache stale resumes and auto-attach
-   them; the stored file on the platform is a second copy of the resume
-   and it drifts. Check it every time.
+2. **Lane → resume** (resume-lane-strategy), **verify what the ATS actually
+   attached, and refresh the stored copy if it's behind.** Platforms cache
+   stale resumes and auto-attach them; the stored file on the platform is a
+   second copy of the resume and it drifts. This step is where that gets
+   fixed — not in a release-day sweep of every platform at once. The
+   instance's platform-copies inventory records WHICH systems are behind the
+   current build; the refresh lands the next time you submit through one,
+   because that's the only moment a stale stored file can do damage. Check it
+   every time, and update the inventory's confirmed date when you do.
 3. **Cover letter triage** (its own skill); if writing, the private
    styles file chooses the approach and the human-writing gate runs before
    anything is final.
@@ -104,10 +109,29 @@ someone must read.
 ## Releasing a new resume version
 
 Not a weekly event, but it belongs in this file's jurisdiction because its
-ripple crosses the pipeline: platforms store their own copies of the
-resume, and stored copies are mirrors that drift — one auto-attached a
-stale cached file to live applications before this rule existed. The
-private instance keeps an inventory of every platform-stored copy in its
-data layer; a release walks that inventory, sets the new `resume_version`
-tag for all subsequent applications, and notes the date so the funnel's
-before/after read has a clean starting line.
+ripple crosses the pipeline: other places store their own copy of the resume,
+and every stored copy is a mirror that drifts. One auto-attached a stale
+cached file to live applications before this rule existed.
+
+Two things always happen at release: set the new `resume_version` tag for all
+subsequent applications, and note the date so the funnel's before/after read
+has a clean starting line. What happens to the mirrors depends on which kind
+they are, and the instance's inventory should separate them:
+
+- **Submission-system copies** — each ATS or board that stores a file and
+  attaches it to applications. A release marks these stale in the inventory
+  and stops there. The refresh happens at submit time for that one system
+  (apply ritual, step 2), because that's the only moment a stale stored file
+  can actually reach an employer. Walking all of them on release day spends
+  real effort on systems the search may never touch again, and the effort
+  expires the next time the resume changes.
+- **Content mirrors** — a professional-network profile's own experience
+  section, a personal site listed on applications. These get refreshed at
+  release, because nothing will ever prompt it: they're read continuously by
+  people the candidate never talks to, and there's no submit event to hang a
+  check on. They also fail differently. A submission-system copy is merely
+  old; a content mirror is retyped prose, so it contradicts the resume on
+  facts — titles, employment date ranges, present-vs-past tense — while
+  looking perfectly current. Before drafting one, check the field's character
+  limit: a capped field turns a release into a selection problem rather than
+  an append, and discovering that after writing the copy wastes the draft.
