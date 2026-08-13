@@ -38,9 +38,55 @@ def truncate(text, limit=160):
     return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
 
 
+def load_entries(path=None):
+    """Read the tracker, refusing to proceed on a malformed row.
+
+    A single unquoted comma inside a field value shifts every column after
+    it, so the row still parses but its later fields (source, lane,
+    resume_version, notes, found_via) silently read the wrong values. The
+    views and the funnel report both tolerate that shape, which is how the
+    bug survived two rounds of cleanup. This is the guard: field count must
+    match the header exactly, or nothing is generated.
+
+    Shared: `funnel_report.py` imports this so both readers of the tracker
+    fail the same way instead of one of them quietly tolerating bad shape.
+    """
+    path = Path(path) if path else TRACKER
+    with open(path, newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        try:
+            header = next(reader)
+        except StopIteration:
+            raise SystemExit(f"{path}: file is empty (no header row).")
+        bad = []
+        rows = []
+        for row in reader:
+            if not row:
+                continue
+            if len(row) != len(header):
+                bad.append((reader.line_num, len(row), row))
+            rows.append(row)
+
+    if bad:
+        lines = [
+            f"{path.name}: {len(bad)} malformed row(s) — expected"
+            f" {len(header)} fields per row. Nothing was generated.",
+            "",
+            "Almost always an unquoted comma inside a field value. Quote the"
+            " offending field (or remove the comma) and rerun.",
+            "",
+        ]
+        for line_num, count, row in bad:
+            company = row[2] if len(row) > 2 else "?"
+            role = row[3] if len(row) > 3 else "?"
+            lines.append(f"  line {line_num}: {count} fields — {company} / {role}")
+        raise SystemExit("\n".join(lines))
+
+    return [dict(zip(header, row)) for row in rows]
+
+
 def main():
-    with open(TRACKER, newline="", encoding="utf-8") as f:
-        entries = list(csv.DictReader(f))
+    entries = load_entries()
 
     def g(entry, key):
         return (entry.get(key) or "").strip()

@@ -6,6 +6,26 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-13 — The tracker's column-shift bug fails loudly now
+
+A single unquoted comma inside a tracker field shifts every column after it,
+and the last columns are the analysis ones — `source`, `lane`,
+`resume_version`, `notes`, `found_via`. The row still parses, the views still
+render, and the funnel report still prints a resume-version split built from
+fields reading their neighbors' values. This was found, repaired by hand, and
+then found again weeks later on eight fresh rows, because the repair shipped
+without a guard: the history generator reported "0 unrecognized" the whole
+time, since it tolerated the shape rather than validating it.
+
+`build_history.py` now counts fields against the header on every row and
+exits without generating anything if any row disagrees, naming the line
+number, the field count, and the organization and role so the row is findable
+without a diff. `funnel_report.py` imports the same loader instead of doing
+its own `DictReader` pass — a guard that only one of two readers honors is a
+guard that gets routed around. The application-tracking skill gained the
+reasoning, so the failure is legible at the moment it fires rather than only
+in the script.
+
 ## 2026-07-17 — A skills ledger under the resume, so match/gap stops guessing
 
 Match/gap reads kept getting a candidate's own stack wrong — a language flagged

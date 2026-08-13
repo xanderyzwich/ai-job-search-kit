@@ -43,6 +43,32 @@ applications will eventually disagree. After tracker edits, regenerate the
 view (or let the daily-log tool's `close` do it); never edit the generated
 file directly.
 
+## One unquoted comma is a silent corruption
+
+The tracker's most valuable fields are also its last ones. `source`, `lane`,
+`resume_version`, `notes`, and `found_via` sit at the end of the row, so a
+single unquoted comma anywhere earlier — inside a note, a location, a
+recruiter's title — shifts every column after it by one. The row still
+parses. The generated views still render. The funnel report still prints a
+number for the resume-version split, drawn from fields that are now reading
+their neighbors' values. Nothing announces the problem, which is why this
+particular bug has a habit of being fixed and then recurring: the repair
+lands, but nothing stops the next hand-edit from reintroducing it.
+
+So the guard belongs in the reader, not in the discipline of whoever types
+the row. `build_history.py` counts fields against the header on every row and
+refuses to generate anything if a single row disagrees, naming the line
+number, the field count, and the organization and role so the offending row
+is findable without a diff. `funnel_report.py` imports the same loader, so
+both readers of the tracker fail the same way — a guard only one reader
+honors is a guard that gets routed around.
+
+When it fires, fix the tracker, not the guard: quote the field that contains
+the comma (or remove the comma) and rerun. And repair a shifted row by
+reading its values back into the right columns rather than by re-deriving it
+from memory — the surrounding session notes are the reference for what each
+field was supposed to say.
+
 ## Reading the tracker before acting
 
 Before applying to an organization, check the tracker for prior activity

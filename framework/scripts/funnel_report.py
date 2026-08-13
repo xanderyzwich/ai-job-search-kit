@@ -17,11 +17,13 @@ Definitions:
 Usage: python3 framework/scripts/funnel_report.py [path/to/job_tracker.csv]
        (default: private/job_tracker.csv relative to the repo root)
 """
-import csv
 import sys
 from collections import defaultdict
 from pathlib import Path
 from urllib.parse import urlparse
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_history import load_entries  # noqa: E402 — same-dir sibling script
 
 SUBMITTED = {"applied", "dm_sent", "phone_screen", "interview", "offer",
              "declined_by_us", "declined_by_them"}
@@ -68,9 +70,8 @@ def split_report(rows, key, label, normalize=None):
 def main():
     default = Path(__file__).resolve().parent.parent.parent / "private" / "job_tracker.csv"
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else default
-    with open(path, newline="", encoding="utf-8") as f:
-        rows = [r for r in csv.DictReader(f)
-                if r["application_status"] in SUBMITTED]
+    rows = [r for r in load_entries(path)
+            if r["application_status"] in SUBMITTED]
 
     resp = sum(1 for r in rows if responded(r))
     adv = sum(1 for r in rows if r["application_status"] in ADVANCE)
