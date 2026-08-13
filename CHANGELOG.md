@@ -6,6 +6,30 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-13 — One log heading per day, because checkpoint closes fragment it
+
+The close step is deliberately not just an end-of-day ritual: running it at
+every meaningful batch of edits is what makes each checkpoint a recovery point,
+and because it amends, doing so costs nothing in commit noise. The fold didn't
+match that design. It inserted a fresh `## Session Notes (date)` heading above
+the newest entry every time it ran, so a day with four checkpoints produced
+four headings carrying the same date.
+
+That isn't only untidy. Session start is contracted to read the top entry of
+the log for recent context, and with the day split across several headings the
+top one holds whatever happened in the last twenty minutes rather than the
+day's arc. Worse, the fragments read as separate days to anyone scanning, which
+is exactly the confusion the newest-first ordering exists to prevent.
+
+The fold now checks whether the newest entry already carries today's date and,
+if so, appends into it rather than repeating the heading. Within a day that
+leaves entries in the order they were recorded; across days the log stays
+newest-first. Existing runs of repeated same-date headings collapse cleanly,
+since the old behaviour always prepended and therefore always left them
+contiguous — the redundant heading is removable without moving any content, so
+no note that refers to something "earlier today" can be invalidated by the
+cleanup.
+
 ## 2026-08-13 — Name the working file's full path, because a decoy swallows days
 
 Every tool here resolves its paths from its own location, so they all read and

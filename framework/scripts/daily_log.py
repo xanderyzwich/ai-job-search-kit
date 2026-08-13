@@ -266,18 +266,42 @@ def cmd_open():
 
 
 def fold_today():
-    """Insert private/temp/today.md above the newest log entry. True if folded."""
+    """Fold private/temp/today.md into the log. True if folded.
+
+    One heading per day. `close` is meant to be run at every checkpoint, not
+    only at end of day, so a heading per fold would give an active day three
+    or four headings for the same date — which reads as three separate days
+    and breaks the "top entry is the most recent context" assumption every
+    session start relies on. If the newest entry is already today's, the
+    notes are appended to the END of it: within a day that keeps entries in
+    the order they were recorded, and across days the log stays newest-first.
+    """
     if not TODAY_FILE.exists():
         return False
     body = TODAY_FILE.read_text(encoding="utf-8").strip()
-    if not body or body == f"## Session Notes ({today_header_date()})":
+    header = f"## Session Notes ({today_header_date()})"
+    if not body or body == header:
         TODAY_FILE.unlink()
         return False
+
     log_text = LOG.read_text(encoding="utf-8")
     match = re.search(r"^## Session Notes", log_text, re.M)
-    idx = match.start() if match else len(log_text)
-    LOG.write_text(log_text[:idx] + body + "\n\n" + log_text[idx:],
-                   encoding="utf-8")
+
+    if match and log_text[match.start():].startswith(header):
+        # Today already has a heading — append into it rather than repeat it.
+        following = re.search(r"^## Session Notes", log_text[match.end():], re.M)
+        insert_at = (match.end() + following.start() if following
+                     else len(log_text))
+        addition = body[len(header):] if body.startswith(header) else body
+        addition = addition.strip()
+        LOG.write_text(
+            log_text[:insert_at].rstrip("\n") + "\n\n" + addition + "\n\n"
+            + log_text[insert_at:], encoding="utf-8")
+    else:
+        idx = match.start() if match else len(log_text)
+        LOG.write_text(log_text[:idx] + body + "\n\n" + log_text[idx:],
+                       encoding="utf-8")
+
     TODAY_FILE.unlink()
     return True
 
