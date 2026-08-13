@@ -75,10 +75,28 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   always-loaded private map discovers new templates without being edited,
   so a template missing from it is undiscoverable at task time.
 - **The private session_init** → refresh any persistent-context copy of it
-  (a Claude Project or similar). The whole point of loading it into static
-  context is that it rarely changes; when it DOES change, the loaded copy
-  is stale until someone re-uploads it — a drift that produced eight stale
-  states in one day of heavy maintenance before this entry existed.
+  (a Claude Project or similar) **in the same session, before the session
+  ends**. The whole point of loading it into static context is that it rarely
+  changes; when it DOES change, the loaded copy is stale until it's replaced —
+  a drift that produced eight stale states in one day of heavy maintenance
+  before this entry existed.
+
+  **If the persistent store is writable through a tool available in the
+  session, the assistant does this itself rather than handing it back as a
+  human step.** Read the current stored copy, write the updated file to the
+  same path, and confirm the round-trip. Only when no such tool exists does
+  this become a request to the human, and then it gets named explicitly as an
+  outstanding step rather than assumed.
+
+  Two traps, both seen in practice. First, the upload is not done until it's
+  verified — treat it like any other write and read it back. Second, and less
+  obvious: **a later change in the same session re-stales the copy you just
+  uploaded.** Editing session_init, uploading it, and then making one more
+  edit (even to an unrelated file, if it invalidates a line in the map) leaves
+  the store wrong again. So this ripple fires at the END of the batch, after
+  the last edit that could touch it, not the moment session_init is first
+  saved. Anything that stamps a "copy refreshed" ritual stamps it only after
+  that final upload.
 - **A new resume version** → the `resume_version` tag on subsequent
   applications · a dated log note that starts the funnel's before/after clock
   · the instance's platform-copies inventory, which holds two kinds of mirror

@@ -6,6 +6,29 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-13 — Refreshing the persistent copy is the assistant's job, and it goes last
+
+The session-init file is designed to be loaded once into a persistent context
+store rather than re-read every session, which is what makes it cheap. The cost
+is a second copy that goes stale the moment the file changes, so the ripple map
+has long said to refresh it. What it didn't say is who does it, and the default
+assumption — that a human re-uploads it — turned out to be wrong in at least one
+setup, where the store was writable through a tool that had been available the
+whole time. Months of handing back a manual step that never needed to be manual.
+
+So the entry now says the assistant does it whenever the store is writable, and
+only falls back to asking when it genuinely isn't — in which case it has to be
+named as an outstanding step rather than quietly assumed.
+
+The more interesting half is ordering. Refreshing the copy as soon as the file
+is saved feels right and is wrong: any later edit in the same batch can
+invalidate a line in it, including an edit to a completely different file. That
+happened here — a `.gitignore` change falsified a sentence in the map minutes
+after a correct copy had been uploaded. The ripple therefore fires at the end of
+the batch, after the last change that could touch the file, and any
+"copy refreshed" stamp waits for that final verified upload. Verified meaning
+read back, like any other write.
+
 ## 2026-08-13 — One log heading per day, because checkpoint closes fragment it
 
 The close step is deliberately not just an end-of-day ritual: running it at
