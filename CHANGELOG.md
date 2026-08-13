@@ -6,6 +6,50 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-13 — Name the working file's full path, because a decoy swallows days
+
+Every tool here resolves its paths from its own location, so they all read and
+write under `private/` regardless of the directory you invoke them from. The
+docs, though, wrote the day's working file as `temp/today.md`. Read from the
+repo root that names a different directory — and if one exists there, notes
+written to it are accepted in silence. Both are gitignored, so there is no
+error, no dirty status, nothing missing. The close step folds nothing and the
+day is simply absent from the log, discoverable only when someone later
+notices a gap.
+
+That happened twice before it was traced. The second time it also produced a
+confident wrong diagnosis: the close step does skip folding a working file
+that holds nothing but its header, so that looked like the cause, and the
+conclusion drawn was that the notes had gone into other files. They hadn't.
+They were sitting intact at a path no tool reads. The header-only file was the
+downstream symptom.
+
+Four fixes, in increasing order of how much they actually help. Every path
+reference in the docs and templates now reads `private/temp/...`, with a
+warning that a root-level `temp/` is a trap and an instruction to check the
+working file has content beyond its header before closing. The daily-log tool's
+own output stopped printing the ambiguous form: it was rendering the path
+relative to `private/`, so every open, status, and close taught the wrong path
+to whoever read it — documentation that contradicts tool output loses, because
+the tool is what people copy.
+
+Those two only help someone who reads. The other two fail loudly instead. The
+daily-log tool now checks for a root-level `temp/today.md` at open, status, and
+close, and says plainly that nothing reads it and the work will be missing from
+the log — the close check runs before the fold, which is the last moment the
+notes can be rescued. And `/temp/` came out of the root `.gitignore`. It was
+ignored for symmetry with `/private/` and `/output/`, but bootstrap creates
+`temp/` under `private/`, so a root-level one is never legitimate. Ignoring it
+was the reason a stray directory full of a day's work never appeared in `git
+status`.
+
+The general shape is worth stating. When a wrong path silently succeeds, the
+failure is invisible by construction, and writing the correct path in prose
+does not fix it — that was tried, and the second occurrence followed the first
+by a month. Delete the decoy if it isn't sanctioned, make the tool print the
+unambiguous path every time it runs, and add a check that names the mistake out
+loud. Prose is the weakest of the four.
+
 ## 2026-08-13 — Two kinds of resume mirror, and each check where it fires
 
 The platform-copies idea started from a file problem: an ATS auto-attached a

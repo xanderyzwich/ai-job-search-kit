@@ -1,7 +1,11 @@
 # --- Personal data: never tracked ---
 /private/
 /output/
-/temp/
+# NOTE: /temp/ is deliberately NOT ignored. The working temp/ lives at
+# private/temp/ (created by bootstrap, already covered by /private/ above).
+# A repo-root temp/ is not a sanctioned directory, so anything appearing
+# there is a mistake — most likely a day's notes written to the wrong path.
+# Leaving it un-ignored means git status surfaces it instead of hiding it.
 
 # --- Windows/WSL artifacts ---
 *:Zone.Identifier

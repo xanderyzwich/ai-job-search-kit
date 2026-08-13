@@ -28,7 +28,7 @@ version: where things live, and how the environment works.
 
 That entry point also materializes a session context map: if the instance
 uses the daily-log tool, its `open` step regenerates a gitignored
-`temp/context_map.md` holding skill routing (every Load-when header) and the
+`private/temp/context_map.md` holding skill routing (every Load-when header) and the
 framework's ripple map, so "what to touch when" is in context from the start
 rather than depending on a mid-session decision to go scan for it.
 

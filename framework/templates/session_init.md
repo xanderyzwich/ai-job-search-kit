@@ -37,8 +37,13 @@ Adapt this to your actual file names, but the shape holds:
 2. Read your open-threads / current-state file and the top (most recent)
    entry of your session log — what's open and due, plus recent positioning.
 3. If your instance has the daily-log tool, run its `open` step: it creates
-   the day's working-notes file and regenerates a gitignored
-   `temp/context_map.md` — skill routing plus the ripple map. Read that map;
+   the day's working-notes file (`private/temp/today.md`) and regenerates a
+   gitignored `private/temp/context_map.md` — skill routing plus the ripple
+   map. **Write the day's notes to that exact path.** Every script resolves
+   its paths from its own location, so they all read and write under
+   `private/` regardless of where you invoke them; if your repo also has a
+   root-level `temp/`, notes written there are silently never folded, and
+   both directories are gitignored so nothing warns you. Read that map;
    before editing any `framework/` or root-doc file, consult its ripple
    section and touch every mirror it names in the same batch. (No daily-log
    tool yet? Run `framework/scripts/build_context_map.py` directly.)

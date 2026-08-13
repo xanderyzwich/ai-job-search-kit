@@ -2,11 +2,11 @@
 """Daily session-log tool: split/assemble plus one commit per day.
 
 Workflow:
-  open    create temp/today.md, a cheap working file for the day's entries —
+  open    create private/temp/today.md, a cheap working file for the day's entries —
           append session notes there during the day instead of editing the
-          full log. Also refreshes temp/context_map.md (skill routing + the
+          full log. Also refreshes private/temp/context_map.md (skill routing + the
           ripple map) so "what to touch when" is in context from the start.
-  close   fold temp/today.md into the top of data/session_log.md, archive
+  close   fold private/temp/today.md into the top of data/session_log.md, archive
           entries older than ARCHIVE_DAYS into data/archive/YYYY-MM.md,
           regenerate data/application_history.md, then stage everything and
           commit as the single daily commit "log: YYYY-MM-DD" — amending
@@ -52,6 +52,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 LOG = ROOT / "data" / "session_log.md"
 TODAY_FILE = ROOT / "temp" / "today.md"
+# A repo-root temp/today.md is NOT read by anything here — every path in this
+# file resolves under ROOT (private/). It has silently swallowed a day's notes
+# twice, because both directories are gitignored and writing to the wrong one
+# raises nothing. Detected and reported rather than left to fail quietly.
+DECOY_FILE = ROOT.parent / "temp" / "today.md"
 ARCHIVE_DIR = ROOT / "data" / "archive"
 RITUALS = ROOT / "data" / "rituals.yml"
 FUNNEL_MD = ROOT / "data" / "funnel_report.md"
@@ -180,7 +185,7 @@ def parse_header_date(text):
 
 
 def refresh_context_map():
-    """Best-effort: rebuild temp/context_map.md (skill routing + ripple map)
+    """Best-effort: rebuild private/temp/context_map.md (skill routing + ripple map)
     via the framework script, so the 'when to do what' reference is current in
     context from the first moment of the session. Never blocks session start."""
     script = ROOT.parent / "framework" / "scripts" / "build_context_map.py"
@@ -233,15 +238,27 @@ def run_weekly_review():
         print("\n" + output)
 
 
+def warn_decoy():
+    """Report a repo-root temp/today.md. Nothing reads it, so a day's notes
+    written there are lost at close with no error anywhere."""
+    if not DECOY_FILE.exists():
+        return
+    print(f"WARNING: {DECOY_FILE} exists and is NOT the working file — no"
+          f" tool reads it.\n         Move its contents into"
+          f" {TODAY_FILE.relative_to(ROOT.parent)} before close, or that"
+          f" work will be missing from the log.")
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
     refresh_context_map()  # always refresh, even on re-open
+    warn_decoy()
     if TODAY_FILE.exists():
-        print(f"{TODAY_FILE.relative_to(ROOT)} already exists; append to it.")
+        print(f"{TODAY_FILE.relative_to(ROOT.parent)} already exists; append to it.")
     else:
         TODAY_FILE.write_text(
             f"## Session Notes ({today_header_date()})\n\n", encoding="utf-8")
-        print(f"Created {TODAY_FILE.relative_to(ROOT)}")
+        print(f"Created {TODAY_FILE.relative_to(ROOT.parent)}")
     if weekly_review_due():
         print("NOTE: weekly review is due (Friday-anchored). Do the staleness"
               " sweeps in-session, then run `close` — it will run the funnel,"
@@ -249,7 +266,7 @@ def cmd_open():
 
 
 def fold_today():
-    """Insert temp/today.md above the newest log entry. True if folded."""
+    """Insert private/temp/today.md above the newest log entry. True if folded."""
     if not TODAY_FILE.exists():
         return False
     body = TODAY_FILE.read_text(encoding="utf-8").strip()
@@ -318,6 +335,7 @@ def head_is_pushed():
 
 
 def cmd_close():
+    warn_decoy()  # before folding — this is the last moment to rescue it
     if weekly_review_due():
         run_weekly_review()  # its own commit, before the daily commit
 
@@ -342,7 +360,7 @@ def cmd_close():
         git("commit", "-m", commit_message())
         print(f"Created commit ({commit_message()}).")
     if folded:
-        print("Folded temp/today.md into the log.")
+        print("Folded private/temp/today.md into the log.")
     if archived:
         print(f"Archived {archived} old log entries to data/archive/.")
 
@@ -350,9 +368,10 @@ def cmd_close():
 def cmd_status():
     if TODAY_FILE.exists():
         lines = TODAY_FILE.read_text(encoding="utf-8").count("\n")
-        print(f"Working file: {TODAY_FILE.relative_to(ROOT)} ({lines} lines)")
+        print(f"Working file: {TODAY_FILE.relative_to(ROOT.parent)} ({lines} lines)")
     else:
         print("No working file (run 'open' to create one).")
+    warn_decoy()
     if head_is_todays_log_commit():
         pushed = "pushed" if head_is_pushed() else "not pushed (will amend)"
         print(f"Today's commit exists: {commit_message()} — {pushed}")
