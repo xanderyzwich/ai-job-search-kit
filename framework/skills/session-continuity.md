@@ -82,6 +82,25 @@ archives old entries, regenerates the tracker views, and makes (or amends) a
 single dated commit — so a session's end-of-day obligation is one command
 plus rewriting the open-threads file, not a bookkeeping ritual.
 
+### Where init stops
+
+The entry point ends by reporting, not by asking. Once the reads are done, state
+what was found — script output, overdue cadences, the top of the open-threads
+file, anything that changed since the last log entry — and then wait for the
+person to say what they want, in their own words. A multiple-choice menu of
+threads at the end of init reads as helpful and isn't: it makes the assistant's
+guess at the shape of the day the frame the person has to answer inside, and the
+one they actually wanted is usually the option nobody listed.
+
+The same boundary applies to the work itself. Init is read-only orientation, so
+the substantive work of the process — the sweeps, the submissions, the outreach,
+any standing watch — waits to be asked for, even when a file calls the check
+"daily" or "at session start." Read that cadence as "due the next time the
+process runs," not as authorization to run it before the person has said a word.
+Surfacing that something is due IS the deliverable; doing it unasked spends the
+person's context on work they didn't choose, and buries the state report they
+did.
+
 ## Drift-prevention rules
 
 Three rules, each earned by a real failure this pattern is meant to prevent

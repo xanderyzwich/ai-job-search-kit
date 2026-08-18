@@ -107,8 +107,24 @@ it supersedes this section.
    relevant to the task at hand. One call scans every skill's routing:
    `grep -rA2 --include='*.md' '^\*\*Load when' framework/skills private/skills`.
 6. **Read `private/job_tracker.csv`** if the task touches applications.
-7. **Confirm browser** (if doing browser work): run `list_connected_browsers`.
-8. **Ask which thread** — resumes, warm outreach, new role search, or applications.
+7. **Read the persistent context store**, if the setup has one (a Claude
+   Project's knowledge base or similar) and the assistant has read access to it.
+   It's a live store, not merely the mechanism that delivered the map file as
+   static context, so read what it carries at startup like any other state file.
+8. **Then stop, and hand off in prose.** Report what init found: what the scripts
+   said, any overdue rituals, what's at the top of the open-threads file, and
+   anything that changed since the last log entry. Close by naming a few options
+   worth doing, written as sentences. Don't put a multiple-choice question in
+   front of the user to pick a thread — they'll say what they want in their own
+   words. Init's job is to arrive oriented, then wait.
+
+**Init is read-only orientation.** Doing the actual work of the search — board
+sweeps, scoring, submissions, outreach sends, standing board watches — waits for
+the user to ask, even for a check some file describes as "daily" or
+"session-start"; that cadence means "due when the search next runs," not "run
+before the user has said a word." Surface what's due; don't do it unasked. Same
+for the browser: confirm a connection when the session's real task needs one, not
+on arrival.
 
 ---
 

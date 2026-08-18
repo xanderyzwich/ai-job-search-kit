@@ -6,6 +6,31 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-18 — Init ends by reporting, and does not start the work
+
+The session entry point had a final step that read "ask which thread," and in
+practice that turned into a multiple-choice prompt at the end of every startup:
+here are four things I think you might want, pick one. It reads as helpful and
+isn't. It makes the assistant's guess at the shape of the day the frame the
+person has to answer inside, and the thread they actually wanted is usually the
+one that wasn't listed. So step 8 is now "report what init found, then wait" —
+options offered as sentences, and the person answers in their own words.
+
+The same session surfaced the sharper version of the problem. A `data/` file
+described a board watch as a "daily, session-start" check, so init ran it: a
+browser connect check, a full board render, and a page of findings, all before
+the person had said what the day was for. The finding happened to be real, which
+is exactly what makes the habit hard to see as a cost. Init is read-only
+orientation now, explicitly: sweeps, scoring, submissions, outreach, and standing
+watches wait to be asked for, and a "daily" cadence in a data file means "due the
+next time the process runs," not "run on arrival." Surfacing that something is due
+is the deliverable.
+
+Also added to the checklist: read the persistent context store at startup when
+the assistant has access to it. It had been treated as a delivery mechanism that
+hands over the map file and nothing more, which is the same underestimation the
+8/13 entry below corrected for writes.
+
 ## 2026-08-13 — Refreshing the persistent copy is the assistant's job, and it goes last
 
 The session-init file is designed to be loaded once into a persistent context
