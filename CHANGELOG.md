@@ -6,6 +6,38 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-19 — Evaluating a board is a go/no-go, not a sweep
+
+A new board got a first-pass evaluation that ran 55 minutes across 122 tool
+calls: ~238 result cards read, ~35 individual job-detail pages opened. The
+verdict it produced was correct and the work was competent. It was also mostly
+waste — the decision had been determined by four facts visible in the first few
+minutes, and not one of those 35 detail pages contributed to it.
+
+The cause was not a missing checklist. It was one task asked to answer two
+different questions: "is this channel worth returning to" and "what is in it
+right now." The first is answered by a handful of aggregate, card-level
+measurements — how big the relevant pool actually is, how much of it is one
+poster, how far back the tail runs, how often comp is posted, and whether the
+listings are original or mirrored from somewhere already in the rotation. The
+second is answered per-listing and costs an order of magnitude more. With no
+gate between them, the expensive one runs unconditionally.
+
+So the ritual file now opens with a board-evaluation runbook: the five
+measurements, an explicit NO-GO / CONDITIONAL / GO gate that must be passed
+before any per-listing work, and a rough quarter-hour budget for reaching it.
+CONDITIONAL is there because an unqualified "keep" silently becomes a weekly
+obligation, and a documented no is a real deliverable — it stops the same board
+being re-evaluated from scratch two months later.
+
+Two smaller notes came out of the same session. The sweep step already said
+"sweep and vet are different modes, and mixing them makes both worse"; this is
+that rule one level up, which is a fair sign that a principle stated at one
+scale is worth checking at the next. And when the work is delegated, the gate
+has to be written into the brief — a competent worker handed a three-part brief
+completes all three parts well, so the judgment about whether to spend an hour
+belongs to whoever writes the brief, not to whoever executes it.
+
 ## 2026-08-18 — Init ends by reporting, and does not start the work
 
 The session entry point had a final step that read "ask which thread," and in

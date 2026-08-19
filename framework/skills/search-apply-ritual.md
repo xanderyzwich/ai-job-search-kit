@@ -1,14 +1,97 @@
 # Skill: The Search & Apply Ritual
 
-**Load when:** running a board sweep, vetting candidate roles, submitting
-an application, or doing the weekly pipeline review — the ordered runbook
-that sequences the other skills.
+**Load when:** evaluating a new job board, running a board sweep, vetting
+candidate roles, submitting an application, or doing the weekly pipeline
+review — the ordered runbook that sequences the other skills.
 
 ---
 
 This file owns the ORDER of the pipeline; each step's substance lives in
 the skill that owns it. (The session-boundary rituals — init and
 end-of-day — live in the private session_init, which always loads.)
+
+## Evaluating a new board (before it earns a place in the rotation)
+
+A new board is a **go/no-go decision, not a sweep**, and the two get conflated
+because both start by typing a query. The search ritual below already says sweep
+and vet are different modes; this is that same rule one level up. Evaluating a
+board asks "is this channel worth returning to," which is answered by five
+cheap aggregate measurements. Sweeping it asks "what is in it right now," which
+is answered per-listing and costs an order of magnitude more. **Do the first
+one, decide, and only then consider the second.**
+
+The failure this prevents, measured: one first-pass evaluation ran 55 minutes
+across 122 tool calls, reading ~238 result cards and opening ~35 individual
+job-detail pages — and **not one detail page contributed to the verdict.** The
+verdict was already determined by four facts visible in the first few minutes.
+The cost came from a brief that asked for board mechanics, multiple query
+sweeps, AND per-listing extraction in one pass, with no gate between them.
+
+### The five measurements (all card-level — open NO detail pages)
+
+Run the smallest number of queries that produce these, using the board's own
+best filters:
+
+1. **Inventory size.** The total relevant pool with the right filters applied.
+   This is the single most decisive number and it is usually available from one
+   query. If the whole relevant pool is small enough to read end to end, the
+   board is not a volume channel, and that conclusion is already reached.
+2. **Poster concentration.** How much of that pool comes from one or two
+   posters. A pool that looks adequate but is a third one staffing firm's
+   evergreen reposts is not the size it appears to be.
+3. **Freshness spread.** Sort by date, then read the top date AND the tail date.
+   A board can be fresh at the top and carry postings over a year old below,
+   which makes an unsorted or relevance-sorted read actively misleading.
+4. **Comp visibility.** What fraction of cards show a wage at all, and roughly
+   where the visible ones sit against the floor. A board where most listings
+   post nothing cannot be screened on comp without opening everything — which
+   is itself a finding about the board's cost.
+5. **Provenance.** Is this original inventory, or a mirror of listings that
+   already appear on channels in the rotation? A mirror can still be worth
+   using — for metadata the original lacks — but it must not be counted as new
+   reach, and applications generally belong on the source instead.
+
+Also capture, only because it is nearly free and expensive to rediscover: does
+searching require an account (never create one to find out), do the filters
+persist in the URL or only in session state, and does an individual posting
+render without JavaScript. That last one determines whether future passes can
+skip the browser, which is the largest available speedup on any board.
+
+### The gate
+
+Stop here and decide, explicitly, before any per-listing work:
+
+- **NO-GO** — record the verdict and the numbers behind it, and stop. A
+  documented no is a real deliverable; it stops the board from being
+  re-evaluated from scratch in three months.
+- **CONDITIONAL** — the board is worth a narrow, named use (one geography, one
+  kind of metadata, one cadence) and nothing broader. Write the condition down,
+  because an unqualified "keep" quietly becomes a weekly obligation.
+- **GO** — only now sweep it, as a separate task with its own scope.
+
+**Budget steps 1 through the gate at roughly a quarter hour of tool work.** If
+it is running long, the usual cause is enumerating the board exhaustively —
+every option of every dropdown, every unexplained UI marker — rather than
+enumerating what a good query needs. An unexplained badge or an unreachable
+advanced-search page is a footnote, not a blocker; note it and move on.
+
+### If the work is delegated
+
+The gate has to live in the brief, because a competent worker handed a
+three-part brief will complete all three parts thoroughly and correctly. Ask
+for the five measurements and the recommendation, and say explicitly that no
+detail pages should be opened. Then decide, and issue the sweep as a second
+instruction if it earned one. The judgment about whether to spend an hour is
+the delegator's to make, not the worker's to infer.
+
+### What the deliverable is
+
+A verdict, the five numbers supporting it, and the mechanics needed to re-run
+the board later — filter defaults that must be changed, traps that make counts
+lie, the fastest access path. Not a candidate list; that is the sweep's output.
+Board mechanics belong in the instance's own filled search-criteria file,
+stated generically enough that another board on the same platform benefits.
+Dated inventory findings do not belong in a skill file at all.
 
 ## The search ritual
 
