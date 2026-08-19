@@ -131,11 +131,32 @@ from recurring:
   silently overwrite the whole file — the failure looks identical to success
   until the next read, so verify (a line count, a tail, a diff) before
   starting the next edit on that file. If the instance's state layer is
-  git-tracked, take a local commit after each meaningful batch of edits,
+  git-tracked, take a local commit at the end of every unit of work,
   amending it as the day continues rather than stacking new commits, and
   push only once at actual close. That turns every checkpoint into a
   recovery point: a caught mistake costs only the mistake, not everything
   done earlier that session.
+
+  **Define the trigger, or it won't fire.** "After each meaningful batch of
+  edits" was the earlier wording here, and an undefined threshold reliably
+  resolves to "not yet" — one session ran four discrete units of work and
+  checkpointed once, at the very end, because each unit was individually easy
+  to argue wasn't big enough. The usable trigger is **reporting**: when you are
+  about to tell the person what you found or did, the edits behind that
+  statement are a finished unit, so checkpoint first and then report. That
+  boundary needs no interpretation and can't be quietly deferred, because
+  reporting is unavoidable. Two secondary triggers: something expensive to
+  reproduce has landed (re-deriving it is the cost being insured against), or
+  the next thing is a different concern entirely.
+
+  **One exception, and only one: never checkpoint a knowingly inconsistent
+  state.** A half-mirrored change — content moved out of one file but not yet
+  into its counterpart, a component added but its ripple not yet walked, a data
+  edit whose generated view hasn't been regenerated — commits a contradiction,
+  and that recovery point is worse than none, because reverting to it restores
+  something broken. Finish the pair first. Since amending keeps N checkpoints
+  as one commit, the marginal cost of checkpointing is seconds and the bias
+  belongs firmly toward more often.
 
 ## Loading only what's relevant
 

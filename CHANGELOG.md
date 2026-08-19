@@ -6,6 +6,36 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-08-19 — Define the checkpoint trigger, or it never fires
+
+The continuity rule said to take a local commit "after each meaningful batch of
+edits." The mechanism was right — amend one commit through the day, push once at
+close, so every checkpoint is a recovery point — but the trigger was a judgment
+call, and this one resolves the same way every time. A session ran four discrete
+units of work (a record logged, a new channel evaluated, a decomposition of an
+oversized methodology file, a change to this framework) and took exactly one
+checkpoint, at the very end. None of the four was individually easy to call
+"meaningful," so hours of edits sat unrecoverable while a defined rule sat in the
+file saying otherwise.
+
+The replacement trigger is reporting. When you are about to tell the person what
+you found or did, the edits behind that statement are a finished unit — so
+checkpoint first, then report. That boundary needs no interpretation, and it
+cannot be quietly deferred the way "meaningful" can, because reporting is
+unavoidable. Two secondary triggers cover the rest: something expensive to
+reproduce has landed, or the next thing is a different concern entirely.
+
+One exception, stated as the only one, because a vague rule invites new ones:
+never checkpoint a knowingly inconsistent state. A half-mirrored change — content
+moved out of one file but not yet into its counterpart, a component added before
+its ripple is walked, a data edit whose generated view is stale — commits a
+contradiction, and that recovery point is worse than none, since reverting to it
+restores something broken. Finish the pair first.
+
+The general shape is worth naming beyond this rule: a process step whose trigger
+is an adjective will be skipped by anyone who has a reason to keep working, and
+they will always have one. Triggers should be events, not thresholds.
+
 ## 2026-08-19 — Evaluating a board is a go/no-go, not a sweep
 
 A new board got a first-pass evaluation that ran 55 minutes across 122 tool
