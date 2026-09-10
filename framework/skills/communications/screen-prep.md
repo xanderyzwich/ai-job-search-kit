@@ -21,7 +21,18 @@ live company, built to be read mid-call on a phone.
 
 One file per company with a live thread, in the private data layer. It is
 created from `framework/templates/company_brief.md` and keeps that
-template's sections through every later edit. It must answer, at a glance:
+template's sections through every later edit. Three rules from the template
+govern every edit, because the file's failure mode is always the same — dated
+sections appended to the bottom until it becomes a log: **fold new information
+into the section it belongs to, never append a dated section**; **provenance
+goes inline as a dated parenthetical on the line, not as a heading**; and
+**when a role's tracker status turns terminal, its block moves to Archived
+Roles in the same edit**. Only roles that have actually been applied to enter
+the file (a role arrives in the same edit that sets its tracker status to
+applied; researching and skipped reqs stay tracker rows), and the brief
+carries no next-actions section of its own — the open-threads file owns that.
+Each role's Match and Gap lists are split Required/Preferred to mirror the two
+halves of its tech-fit score. The brief must answer, at a glance:
 
 1. **Contacts and history** — every prior touch, who introduced whom, what
    each person has already offered or promised.
