@@ -69,6 +69,26 @@ reading its values back into the right columns rather than by re-deriving it
 from memory — the surrounding session notes are the reference for what each
 field was supposed to say.
 
+### Verify after writing, but close the file first
+
+The verify-after-write habit above has one trap, and it points the wrong way —
+it reports damage that did not happen, which invites a "repair" that causes the
+damage for real.
+
+A script that writes the tracker through a bare file handle and then
+immediately reads it back in the same process can read a **partially flushed**
+file. The rows still sitting in the write buffer are missing, so the check
+prints a row count short by one or two. Nothing is actually wrong: the buffer
+flushes when the handle is closed or the interpreter exits, and the file on
+disk ends up complete. But a session that believes the count and "restores" the
+file by writing back what it just read will destroy those rows for real.
+
+So: write inside a `with` block (or close explicitly) and only then reopen to
+verify. And when a count looks wrong, **confirm against a second, independent
+source before touching anything** — the version-controlled copy, a byte-level
+line count, or the generated view's own totals. A row count that disagrees with
+`git diff --stat` is far more likely to be a broken check than a broken file.
+
 ## Reading the tracker before acting
 
 Before applying to an organization, check the tracker for prior activity
