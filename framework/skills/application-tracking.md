@@ -89,6 +89,23 @@ source before touching anything** — the version-controlled copy, a byte-level
 line count, or the generated view's own totals. A row count that disagrees with
 `git diff --stat` is far more likely to be a broken check than a broken file.
 
+### Verify BEFORE the commit, not after
+
+Sequence matters more than the check itself. The integrity check belongs
+**between the edit and the checkpoint commit**, never after it.
+
+While the edit is still uncommitted, any damage is one `git checkout --` away
+from being undone, and the last commit is a known-good state. Once a checkpoint
+has amended the commit, a corrupt tracker is *inside* the recovery point that
+was supposed to protect it, and restoring means reaching past it to an earlier
+commit and replaying everything since. The tool that exists to make mistakes
+cheap becomes the thing that preserved one.
+
+So the order for any tracker edit is: write, close the file, re-read and verify
+(row count, column width, line endings, and the generated view regenerating with
+zero unrecognized rows), and only then run the checkpoint. If verification fails,
+revert the working file rather than committing and repairing forward.
+
 ## Reading the tracker before acting
 
 Before applying to an organization, check the tracker for prior activity
