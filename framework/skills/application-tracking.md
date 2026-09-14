@@ -84,6 +84,42 @@ A tracker that only ever shows "applied" for every row loses its value as a
 progress signal; the useful information is in the transitions (applied →
 screening → rejected, or applied → no response after N weeks).
 
+### The status vocabulary, written down so it stops being re-derived
+
+This list is the whole enum. It is recorded here because sessions kept
+reconstructing it from memory and getting it short, and a too-short list does
+real damage: on one occasion a live interview sat at `applied` for weeks
+because `interview` was not believed to be a recognized value, and the weekly
+funnel reported zero advances while a candidate was mid-process.
+
+- `researching` — identified, not yet applied.
+- `skipped` — vetted and decided against. **Never applied.** Also the right
+  home for a role discovered closed before any application, with a dated
+  reason.
+- `applied` — submitted, still pending, nothing heard back.
+- `dm_sent` — outreach sent to a hiring manager or recruiter.
+- `phone_screen` · `interview` · `offer` — the advancing states. All three
+  count as BOTH a response and an advance. Move the row the day it happens.
+- `declined_by_them` — they rejected. Requires an actual rejection to exist.
+- `declined_by_us` — withdrew after applying.
+- `closed_no_response` — applied, the posting later came down, and no reply
+  ever arrived.
+
+That last one exists because the other values all lied about this case, which
+is plausibly the most common real outcome of a cold application. Leaving such a
+row at `applied` overstates how much is genuinely pending; moving it to
+`skipped` erases a real submission from the funnel's denominator and flatters
+every rate; calling it `declined_by_them` invents a rejection that never
+happened. It counts as a submission, does not count as a response, and does not
+count as an advance.
+
+**Only set it on positive evidence** that the posting is gone — a 404, an
+explicit "no longer accepting applications", an ATS error redirect, an HTTP 410
+— and record that evidence and the date checked in the note. A page that merely
+failed to load, was robots-blocked, or rendered as a JavaScript shell is NOT
+evidence of closure, and guessing here quietly destroys the distinction the
+status exists to draw.
+
 ## Volume is not the lever
 
 If a tracker shows a high application volume with a very low conversion rate

@@ -8,7 +8,10 @@ difference between "volume isn't working" as a feeling and as a measurement.
 
 Definitions:
   submitted  status in {applied, dm_sent, phone_screen, interview, offer,
-             declined_by_us, declined_by_them}
+             declined_by_us, declined_by_them, closed_no_response}
+             closed_no_response counts here because it WAS a real submission;
+             leaving it out would shrink every denominator and silently
+             inflate the rates. It is not a response and not an advance.
   response   a response_date is set, or status implies one
              (phone_screen/interview/offer/declined_*)
   advance    status is phone_screen, interview, or offer — a response that
@@ -26,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_history import load_entries  # noqa: E402 — same-dir sibling script
 
 SUBMITTED = {"applied", "dm_sent", "phone_screen", "interview", "offer",
-             "declined_by_us", "declined_by_them"}
+             "declined_by_us", "declined_by_them", "closed_no_response"}
 RESPONDED_STATUSES = {"phone_screen", "interview", "offer",
                       "declined_by_us", "declined_by_them"}
 ADVANCE = {"phone_screen", "interview", "offer"}

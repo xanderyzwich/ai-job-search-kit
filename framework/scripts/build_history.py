@@ -16,7 +16,11 @@ TRACKER = ROOT / "job_tracker.csv"
 OUT = ROOT / "data" / "application_history.md"
 
 ACTIVE = ("applied", "dm_sent", "phone_screen", "interview", "offer")
-CLOSED = ("declined_by_them", "declined_by_us")
+# closed_no_response: applied, the posting later came down, and no reply ever
+# arrived. It belongs in CLOSED rather than ACTIVE because nothing is pending,
+# and it is deliberately NOT in RESPONDED below — the whole point of the status
+# is that the employer never answered. It still counts as a submission.
+CLOSED = ("declined_by_them", "declined_by_us", "closed_no_response")
 VETTED = ("researching", "skipped")
 RESPONDED = ("phone_screen", "interview", "offer",
              "declined_by_them", "declined_by_us")

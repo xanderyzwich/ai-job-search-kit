@@ -6,6 +6,32 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-09-14 — A status for the most common outcome, which had none
+
+Sweeping every submitted-but-silent application for whether its posting was
+still up turned a pile of silence into information: a meaningful share of the
+reqs were simply gone, some within a week of the application going in. None of
+the existing statuses could say that. Leaving those rows at `applied`
+overstated how much was genuinely pending, which is the number a search is
+steered by; moving them to `skipped` would have erased real submissions from
+the funnel's denominator and flattered every rate in the report; and
+`declined_by_them` would have invented rejections that never happened.
+
+Added `closed_no_response` — applied, posting later came down, no reply ever
+arrived. It counts as a submission, not as a response, not as an advance, and
+it moves the row out of the active list where it was misrepresenting the
+pipeline. The readers were updated together so neither silently mis-bucketed
+it, and the full status vocabulary was written into the application-tracking
+skill, because it had been re-derived from memory more than once and come back
+short — once badly enough that a live interview sat at `applied` while the
+weekly funnel reported zero advances.
+
+One guard rail came with it: set the status only on positive evidence that a
+posting is gone (a 404, an explicit closure message, an ATS error redirect, an
+HTTP 410). A page that was merely unreachable, robots-blocked, or rendered as a
+JavaScript shell proves nothing, and treating those as closures would erase the
+very distinction the status was added to draw.
+
 ## 2026-08-19 — Define the checkpoint trigger, or it never fires
 
 The continuity rule said to take a local commit "after each meaningful batch of

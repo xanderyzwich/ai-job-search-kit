@@ -170,7 +170,11 @@ including which specific places keep turning up roles worth applying to.
 `skipped` (vetted, decided not to apply — keeps the judgment on record so the
 same role isn't re-evaluated from scratch) · `applied` · `dm_sent` (outreach
 sent to a hiring manager or recruiter) · `phone_screen` · `interview` ·
-`offer` · `declined_by_us` (withdrew after applying) · `declined_by_them`.
+`offer` · `declined_by_us` (withdrew after applying) · `declined_by_them` ·
+`closed_no_response` (applied, the posting later came down, and no reply ever
+arrived — a real submission that is no longer pending, and distinct from both
+`declined_by_them`, which requires an actual rejection, and `skipped`, which
+means never applied at all).
 
 ---
 
