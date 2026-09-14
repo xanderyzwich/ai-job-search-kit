@@ -157,6 +157,21 @@ failed to load, was robots-blocked, or rendered as a JavaScript shell is NOT
 evidence of closure, and guessing here quietly destroys the distinction the
 status exists to draw.
 
+**A redirect to the board index is closure, not liveness.** Several ATS
+platforms answer a dead requisition URL with an HTTP 200 and the company's
+full job board rather than a 404, often carrying an error flag in the query
+string. A fetcher reports that as a live page with real job content on it, and
+the check passes when the posting is in fact gone. **Read the landing URL, not
+the status code:** if the requisition ID is no longer in the URL, or the URL
+now points at a board index or a search results page, or the response carries
+an error parameter, the requisition is CLOSED. Only a page that still resolves
+to that specific requisition counts as live.
+
+The same trap in reverse is worth naming: a requisition can be live under a
+*different* ID after a repost, so a dead stored URL does not always mean the
+role is gone. When the check matters, search the board for the role title
+before recording closure.
+
 ## Volume is not the lever
 
 If a tracker shows a high application volume with a very low conversion rate

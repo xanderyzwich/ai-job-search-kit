@@ -32,6 +32,17 @@ HTTP 410). A page that was merely unreachable, robots-blocked, or rendered as a
 JavaScript shell proves nothing, and treating those as closures would erase the
 very distinction the status was added to draw.
 
+The same sweep exposed the opposite failure and the guard rail grew a second
+half. A stored requisition URL was fetched, returned HTTP 200 with a page full
+of real job listings, and was recorded live — but the ATS had silently
+redirected a dead requisition to the company's board index with an error flag
+in the query string, and the role was gone. Status codes and page content both
+said live; only the landing URL said otherwise. So the rule is now to read the
+URL you ended up on: if the requisition ID has fallen out of it, or it resolves
+to a board index or search page, the requisition is closed. Its mirror image is
+recorded alongside it, because a repost gives a live role a new ID and a dead
+stored URL, which fails in the other direction.
+
 ## 2026-08-19 — Define the checkpoint trigger, or it never fires
 
 The continuity rule said to take a local commit "after each meaningful batch of
