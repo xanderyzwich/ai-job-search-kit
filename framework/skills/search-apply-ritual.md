@@ -154,6 +154,35 @@ Dated inventory findings do not belong in a skill file at all.
    loop with anyone who helped.
 8. **Views regenerate at close**; don't hand-edit the history file.
 
+## When an application advances (the continuation ritual)
+
+Every stage change after submission runs this, before any prep work: a reply,
+a screen scheduled, a round passed, an interview invitation, a rejection. An
+advance is the moment a company brief gets read by a human under time
+pressure, so it is also the moment its shape has to be right.
+
+1. **Bring the company brief onto the current template FIRST**, before a word
+   is added to it. If the file predates the current shape, migrate the WHOLE
+   file, not just the section being touched, because a half-migrated brief is
+   harder to read than either shape intact. If the company has no brief, create
+   one from the template. This step does not wait for a quiet session and it is
+   not a cleanup task: the brief is the prep, and an advance is what makes it
+   load-bearing.
+2. **Fold the new information into the section that owns it** — never as a
+   dated block at the bottom. Loop shape and timeline into Interview Process,
+   a debrief into that role's Interview Notes, a promise or a newly surfaced
+   person into References/Contacts, an ATS or form quirk into Applying.
+3. **Update the tracker row** in the same pass: the status token, the response
+   date, and a note carrying whatever would be unrecoverable later.
+4. **Record what is now owed, and by when,** in the open-threads file. That
+   file owns next actions; the brief never carries them.
+5. **Reconcile the new message against what is already recorded, and do not
+   let a template overwrite a specific account.** Recruiting email is
+   frequently boilerplate, so a stage description in one can contradict a
+   detailed account given earlier by a person. When they disagree, record both,
+   mark the shape unconfirmed, and ask the sender to state it plainly. The
+   specific source outranks the generic one until the sender says otherwise.
+
 ## The weekly review ritual
 
 Several of this system's rules are "re-verify if stale" rules, and stale

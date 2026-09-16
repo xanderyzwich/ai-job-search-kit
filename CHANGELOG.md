@@ -6,6 +6,25 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-09-16 — A ritual for the stage after submission
+
+The runbook covered finding roles, applying to them, and the weekly pass over
+everything at once. It had nothing for the moment an application actually
+moves, which is the moment the per-company brief stops being a record and
+starts being the document someone reads minutes before a call. Two costs came
+out of that gap. Briefs written before a template revision stayed on the old
+shape indefinitely, because "migrate it on touch" was advice sitting inside the
+call-prep skill rather than a step in an ordered list, and the touch that would
+have triggered it was always the touch that was in a hurry. And a templated
+recruiting email describing a loop one way was liable to quietly overwrite a
+more specific account a person had given earlier.
+
+Added a continuation ritual: migrate the brief to the current template first
+and in full, fold new facts into the sections that own them, update the tracker
+row, record what is owed in the open-threads file, and reconcile rather than
+overwrite when a generic message contradicts a specific one. The call-prep
+skills now point at it instead of carrying the migration rule as a footnote.
+
 ## 2026-09-14 — A status for the most common outcome, which had none
 
 Sweeping every submitted-but-silent application for whether its posting was

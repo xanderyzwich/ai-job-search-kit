@@ -21,7 +21,10 @@ live company, built to be read mid-call on a phone.
 
 One file per company with a live thread, in the private data layer. It is
 created from `framework/templates/company_brief.md` and keeps that
-template's sections through every later edit. Three rules from the template
+template's sections through every later edit. **When a thread advances and the
+file predates the current template shape, migrating it is step one of the
+continuation ritual in `search-apply-ritual.md`, not a cleanup task for
+later** — the whole file, before anything is added to it. Three rules from the template
 govern every edit, because the file's failure mode is always the same — dated
 sections appended to the bottom until it becomes a log: **fold new information
 into the section it belongs to, never append a dated section**; **provenance
