@@ -11,6 +11,11 @@ Workflow:
           regenerate data/application_history.md, then stage everything and
           commit as the single daily commit "log: YYYY-MM-DD" — amending
           today's commit if it exists and hasn't been pushed yet
+  close --mid-day
+          the same fold/regenerate/amend, but NEVER runs the weekly review.
+          This is the mid-session checkpoint: run it as often as you like to
+          keep an amended recovery point current. Bare `close` is end-of-day
+          and is the only form that can run and stamp the weekly review.
   status  show whether a working file and/or today's commit exist
   ritual NAME
           stamp a non-daily ritual as run today in data/rituals.yml —
@@ -25,12 +30,20 @@ Weekly review — anchored to Friday's close (not a rolling 7-day timer):
   A ritual carrying `anchor: <weekday>` in rituals.yml (weekly_review =
   friday) is "due" whenever its last_run predates the most recent occurrence
   of that weekday. So the weekly review comes due every Friday and STAYS due
-  until it runs — a skipped Friday simply carries forward. When `close` runs
-  and the weekly review is due, close first runs the funnel report, writes
+  until it runs — a skipped Friday simply carries forward. When a bare `close`
+  runs and the weekly review is due, close first runs the funnel report, writes
   data/funnel_report.md, stamps weekly_review, and makes its OWN commit
   ("weekly-review: YYYY-MM-DD") — separate from the daily "log:" commit that
   follows. `open` flags the weekly review when it's due so the next session
   picks up a missed Friday and closes it out.
+
+  `close --mid-day` never runs it, and says so when it skips. The reason is
+  that the review is only half script: the funnel report is automated, but the
+  staleness sweeps and the passed-date scan are in-session judgment work. Since
+  the checkpoint discipline asks for frequent mid-session closes, without this
+  flag the FIRST checkpoint of any due Friday would stamp a weekly review whose
+  judgment half never ran. A skip carries forward harmlessly; a false stamp does
+  not, because the ritual stops announcing itself.
 
 Notes:
   - close stages the whole working tree (git add -A), on purpose: the daily
@@ -41,7 +54,7 @@ Notes:
     local commits. Amending stops automatically once today's commit has
     been pushed (a pushed commit gets an addendum commit instead).
 
-Usage: python3 scripts/daily_log.py {open|close|status}
+Usage: python3 scripts/daily_log.py {open|close [--mid-day]|status}
 """
 import re
 import subprocess
@@ -358,10 +371,19 @@ def head_is_pushed():
     return contained.returncode == 0
 
 
-def cmd_close():
+def cmd_close(mid_day=False):
     warn_decoy()  # before folding — this is the last moment to rescue it
     if weekly_review_due():
-        run_weekly_review()  # its own commit, before the daily commit
+        if mid_day:
+            # --mid-day is the checkpoint, not the end of the day. The weekly
+            # review's judgment half (staleness sweeps, the passed-date scan)
+            # is in-session work, so stamping it from a mid-session checkpoint
+            # would record a review that only ran its automated half.
+            print("NOTE: weekly review is due but SKIPPED (--mid-day)."
+                  " Do the staleness sweeps in-session, then run a bare"
+                  " `close` at end of day to run + stamp it.")
+        else:
+            run_weekly_review()  # its own commit, before the daily commit
 
     folded = fold_today()
     archived = archive_old()
@@ -411,11 +433,23 @@ def main():
             sys.exit("usage: daily_log.py ritual <name>")
         cmd_ritual(args[1])
         return
+    mid_day = False
+    if args and args[0] == "close":
+        flags = [a for a in args[1:] if a.startswith("-")]
+        unknown = [f for f in flags if f != "--mid-day"]
+        if unknown:
+            sys.exit(f"unknown flag(s) for close: {' '.join(unknown)}"
+                     " (only --mid-day is supported)")
+        mid_day = "--mid-day" in flags
+        args = [args[0]]
     commands = {"open": cmd_open, "close": cmd_close, "status": cmd_status}
     if len(args) != 1 or args[0] not in commands:
         print(__doc__)
         sys.exit(1)
-    commands[args[0]]()
+    if args[0] == "close":
+        cmd_close(mid_day=mid_day)
+    else:
+        commands[args[0]]()
     if args[0] == "open":
         print_ritual_warnings()
 

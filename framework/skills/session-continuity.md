@@ -137,6 +137,17 @@ from recurring:
   recovery point: a caught mistake costs only the mistake, not everything
   done earlier that session.
 
+  **Give the checkpoint its own command, distinct from end-of-day.** If one
+  verb means both "save a recovery point" and "the day is over," then any
+  end-of-day-only step riding on that verb fires on the first checkpoint
+  instead. This instance hit it with the Friday weekly review: `close` ran it
+  whenever it was due, so the first mid-session checkpoint of any Friday would
+  stamp a review whose judgment half hadn't run — and a stamped ritual stops
+  announcing itself, making the miss silent. The fix is a `--mid-day` flag that
+  does the fold/regenerate/amend and nothing dated. Name the flag for its
+  intent, not for what it suppresses: it's typed far more often than the bare
+  command.
+
   **Define the trigger, or it won't fire.** "After each meaningful batch of
   edits" was the earlier wording here, and an undefined threshold reliably
   resolves to "not yet" — one session ran four discrete units of work and

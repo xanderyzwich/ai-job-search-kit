@@ -6,6 +6,29 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-09-18 — Separate the checkpoint from the end of the day
+
+The daily-log tool's `close` carried two meanings at once: "save a recovery
+point" and "the day is over." That was fine until the checkpoint discipline
+started asking for frequent mid-session closes, and the weekly review became
+anchored to a weekday's close. Then the two meanings collided. On any due
+Friday the FIRST mid-session checkpoint would run the funnel report and stamp
+the weekly review — but the review is only half script. Its sweeps (outreach
+age, snapshot as-of dates, passed open-thread dates) are in-session judgment
+work, and those hadn't happened. Worse than a merely premature stamp: a stamped
+ritual stops announcing itself at `open`, so the skipped half goes silent
+instead of resurfacing.
+
+Added `close --mid-day`, which does the same fold, archive, regenerate and
+amend but never runs a dated ritual, and prints what it skipped and why. Bare
+`close` is unchanged and remains the only form that can run and stamp the
+weekly review. The flag is named for its intent rather than for the feature it
+suppresses, because it is typed far more often than the bare command.
+
+The general rule, now in `session-continuity.md`: if one verb means both
+"checkpoint" and "end of day," every end-of-day-only step riding on that verb
+fires on the first checkpoint instead. Give the checkpoint its own command.
+
 ## 2026-09-16 — A ritual for the stage after submission
 
 The runbook covered finding roles, applying to them, and the weekly pass over

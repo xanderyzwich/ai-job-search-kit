@@ -83,7 +83,9 @@ session start, so they must be true at close):
    hold across sessions, not a one-off (those stay in the log).
 3. If you use the daily-log tool, run its `close` (folds the day's notes,
    regenerates any generated views, makes the single daily commit); otherwise
-   update your session log by hand.
+   update your session log by hand. Mid-session, checkpoint with
+   `close --mid-day` instead — same fold and amended commit, but it never runs
+   a dated ritual, so a checkpoint can't claim one that hasn't happened.
 
 Leave THIS file alone unless the directory structure or your tool environment
 itself changed — it's a stable map, not a log. The full end-of-session

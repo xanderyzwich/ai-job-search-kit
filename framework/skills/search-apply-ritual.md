@@ -209,12 +209,22 @@ all the clocks:
 This review is ANCHORED to Friday's daily close. The daily-log tool tracks it
 with an `anchor: friday` stamp: it comes due every Friday and STAYS due if a
 Friday is missed, surfacing at the next `open` rather than resetting a rolling
-clock. Running `close` on a due Friday performs the measurable part for you — it
-runs the funnel report, writes `data/funnel_report.md`, stamps the ritual, and
-makes its OWN `weekly-review: <date>` commit, separate from the daily `log:`
-commit so the week's measurement reads as its own event in history. The judgment
-steps above (staleness sweeps, the passed-date scan) are done in-session before
-that close. A weekly ritual with no record of running is indistinguishable from
+clock. Running a bare `close` on a due Friday performs the measurable part for
+you — it runs the funnel report, writes `data/funnel_report.md`, stamps the
+ritual, and makes its OWN `weekly-review: <date>` commit, separate from the daily
+`log:` commit so the week's measurement reads as its own event in history. The
+judgment steps above (staleness sweeps, the passed-date scan) are done in-session
+before that close.
+
+**Mid-session checkpoints must not run it, and the tooling has to enforce that
+rather than trusting anyone to remember.** The review is only half script: the
+funnel report is automated, but the sweeps and the passed-date scan are
+judgment. Since the checkpoint discipline asks for frequent mid-session closes,
+a checkpoint that stamps the ritual would record a review whose judgment half
+never ran — and the stamp then stops the ritual announcing itself, so the miss
+is silent. Hence `close --mid-day`: same fold, archive, regenerate and amend,
+but it never runs the review and says so when it skips. A skipped Friday carries
+forward harmlessly; a false stamp does not. A weekly ritual with no record of running is indistinguishable from
 one that doesn't exist, and a stamp the tooling checks is better than a record
 someone must read.
 

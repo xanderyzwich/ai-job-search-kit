@@ -146,7 +146,9 @@ similar), the private session-init is the one file to load there directly.
 From there a session loads individual `framework/skills/` files only when
 the task at hand actually needs them, and ends by running
 `python3 private/scripts/daily_log.py close` — one commit per day, no
-bookkeeping debt.
+bookkeeping debt. During the session, checkpoint as often as you like with
+`close --mid-day`: it amends the same daily commit but never runs the weekly
+review, which only a bare end-of-day `close` should do.
 
 ## 7. Build your first resume
 
