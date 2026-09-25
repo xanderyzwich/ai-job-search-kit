@@ -189,8 +189,55 @@ def today_header_date():
         + date.today().strftime(" %Y")
 
 
-def commit_message():
-    return f"log: {date.today().isoformat()}"
+def day_headings():
+    """The ### / #### headings from today's section of the session log.
+
+    They are written as the work happens, one per unit of work, so they
+    already read as the day's table of contents — which is exactly what a
+    commit body should say. Read AFTER fold_today(), so a day whose single
+    commit is amended across several checkpoints accumulates rather than
+    losing earlier entries.
+    """
+    if not LOG.exists():
+        return []
+    text = LOG.read_text(encoding="utf-8")
+    header = f"## Session Notes ({today_header_date()})"
+    start = text.find(header)
+    if start == -1:
+        return []
+    rest = text[start + len(header):]
+    # stop at the PREVIOUS day, not at any h2 — an END OF DAY block is still today
+    nxt = re.search(r"^## Session Notes", rest, re.M)
+    section = rest[:nxt.start()] if nxt else rest
+    seen, out = set(), []
+    for h in re.findall(r"^#{3,4} (.+?)\s*$", section, re.M):
+        h = re.sub(r"\*\*|`|__", "", h).strip()
+        if h and h not in seen:
+            seen.add(h)
+            out.append(h)
+    return out
+
+
+def commit_subject(suffix=""):
+    """The subject line ALONE. head_is_todays_log_commit() compares against
+    this, not against commit_message() — which carries a body, would never
+    equal `git log -1 --pretty=%s`, and would therefore make every close
+    create a fresh commit instead of amending the day's."""
+    return f"log: {date.today().isoformat()}{suffix}"
+
+
+def commit_message(suffix=""):
+    """Subject stays `log: YYYY-MM-DD` so the one-commit-per-day index is
+    unchanged; the body lists what was actually done."""
+    subject = commit_subject(suffix)
+    heads = day_headings()
+    if not heads:
+        return subject
+    shown, extra = heads[:20], len(heads) - 20
+    body = "\n".join(f"- {h}" for h in shown)
+    if extra > 0:
+        body += f"\n- (+{extra} more — see data/session_log.md)"
+    return f"{subject}\n\n{body}"
 
 
 def parse_header_date(text):
@@ -359,7 +406,7 @@ def archive_old():
 
 def head_is_todays_log_commit():
     result = git("log", "-1", "--pretty=%s", check=False)
-    return result.stdout.strip() == commit_message()
+    return result.stdout.strip() == commit_subject()
 
 
 def head_is_pushed():
@@ -399,8 +446,8 @@ def cmd_close(mid_day=False):
         git("commit", "--amend", "-m", commit_message())
         print(f"Amended today's commit ({commit_message()}).")
     elif head_is_todays_log_commit():
-        git("commit", "-m", f"{commit_message()} (addendum — earlier commit"
-            " already pushed)")
+        git("commit", "-m",
+            commit_message(" (addendum — earlier commit already pushed)"))
         print("Today's commit was already pushed; created an addendum.")
     else:
         git("commit", "-m", commit_message())
