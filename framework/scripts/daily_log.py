@@ -309,10 +309,43 @@ def warn_decoy():
           f" work will be missing from the log.")
 
 
+HANDOFF = ROOT / "data" / "handoff.md"
+
+
+def show_handoff():
+    """Print an unconsumed cross-harness handoff at session start.
+
+    The two harnesses have complementary gaps (Code has no browser, Cowork has
+    no compaction), so work splits mid-task. A handoff nobody reads is the same
+    as no handoff, so `open` surfaces it rather than trusting either session to
+    go looking."""
+    if not HANDOFF.exists():
+        return
+    text = HANDOFF.read_text(encoding="utf-8")
+    for line in text.splitlines():
+        if line.strip().upper().startswith("STATUS:"):
+            if "OPEN" not in line.upper():
+                return
+            break
+    else:
+        return
+    print("\n" + "=" * 68)
+    print("OPEN HANDOFF in data/handoff.md — read it before doing anything else.")
+    print("Act on it, then set STATUS: CLEAR.")
+    print("=" * 68)
+    marker = "**FROM:**"
+    if marker in text:
+        print(text[text.index(marker):].rstrip())
+    else:
+        print("(no FROM: block found — read data/handoff.md directly)")
+    print("=" * 68 + "\n")
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
     refresh_context_map()  # always refresh, even on re-open
     warn_decoy()
+    show_handoff()
     if TODAY_FILE.exists():
         print(f"{TODAY_FILE.relative_to(ROOT.parent)} already exists; append to it.")
     else:
