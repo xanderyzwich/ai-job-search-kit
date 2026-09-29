@@ -257,6 +257,13 @@ def refresh_context_map():
         first = (result.stdout or "").strip().splitlines()
         if first:
             print(first[0])
+        # Generating the map is not the same as reading it. Cowork builds its
+        # skill list INTO the session; a Code session only gets a file on disk,
+        # and an index nobody opens is an index nobody has. Say so plainly.
+        print("  -> READ IT. It is the index of every skill in framework/skills/"
+              " and private/skills/\n     with the trigger for each, plus the"
+              " ripple map. Check it BEFORE searching for\n     a skill or"
+              " editing anything under framework/.")
     except Exception:
         pass
 
