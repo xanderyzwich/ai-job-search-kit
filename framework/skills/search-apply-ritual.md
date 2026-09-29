@@ -123,6 +123,40 @@ Dated inventory findings do not belong in a skill file at all.
    boards that badge early applicants; a role worth applying to is worth
    applying to today or deliberately queuing with a reason.
 
+## Stack ranking postings
+
+When a sweep or vetting pass produces more than a couple of candidates, rank
+them by `tech_fit = hard_match_pct + (0.5 x nice_match_pct)`, treating a JD
+with no preferred-qualifications list as `nice_match_pct = 0` — that is a
+neutral floor, not a penalty: the role simply had no bonus opportunity to
+offer, and its score is exactly its requirement match, nothing more or less.
+
+**Rank is a straight descending sort on that number. Never bucket postings
+into qualitative tiers (Strong / Good / Worth a look) for the sort itself.**
+A fixed numeric threshold turns a small, near-meaningless score difference at
+the boundary into an apparent verdict flip, which is worse for repeatability
+than the continuous number it replaces. Categorical language is fine in prose
+commentary about a specific role; it must never be the sort key.
+
+**Every stack-rank table shows the decomposition, not just the total:**
+requirement ratio and preference ratio (matched/total count, e.g. `6/6`),
+alongside remote/hybrid status and salary. This replaces writing a manual
+override note when a score looks surprising (the old "artifact-suppressed,
+read as rank 1" pattern) — showing the ratios lets anyone reading the table
+see why a score landed where it did without a narrator having to remember to
+flag it.
+
+**Do not discount a thin list.** A one-item preferred list that matches, or a
+two-item requirements list fully met, produces an extreme percentage
+honestly — that reflects how the JD was authored, not a flaw in the
+arithmetic. Correcting for it would require judging the relative importance
+of individual requirement/preference lines, which this system deliberately
+does not do: every requirement counts the same as every other requirement,
+and likewise for preferences, so that unfamiliarity with one specific tool is
+never scored as disqualifying on its own. A line worth calling out (a
+required item that is the candidate's clear differentiator, say) belongs in
+the table's "why this rank" prose, not in an adjustment to the number.
+
 ## The apply ritual
 
 1. **Re-check the tracker and the posting** — still open, not already
