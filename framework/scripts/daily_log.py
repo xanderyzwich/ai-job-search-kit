@@ -6,6 +6,8 @@ Workflow:
           append session notes there during the day instead of editing the
           full log. Also refreshes private/temp/context_map.md (skill routing + the
           ripple map) so "what to touch when" is in context from the start.
+  handoff print an open cross-harness handoff (--clear marks it consumed).
+          Protocol: framework/skills/cross-harness-handoff.md
   close   fold private/temp/today.md into the top of data/session_log.md, archive
           entries older than ARCHIVE_DAYS into data/archive/YYYY-MM.md,
           regenerate data/application_history.md, then stage everything and
@@ -387,6 +389,41 @@ def warn_project_copy_stale():
               f" daily_log.py ritual project_copy_refresh")
 
 
+def cmd_handoff(clear=False):
+    """Read or clear the cross-harness baton.
+
+    Deliberately a COMMAND rather than something bolted to session start: both
+    harnesses may run as single long-lived sessions that cross the boundary many
+    times a day, so a trigger tied to init fires once and misses every switch
+    after it. The reliable trigger is the person performing the switch, and this
+    is the one thing they tell the receiving session to run.
+    Protocol: framework/skills/cross-harness-handoff.md"""
+    if not HANDOFF.exists():
+        print("No handoff file at data/handoff.md.")
+        return
+    text = HANDOFF.read_text(encoding="utf-8")
+    is_open = any(l.strip().upper().startswith("STATUS:") and "OPEN" in l.upper()
+                  for l in text.splitlines())
+    if clear:
+        if not is_open:
+            print("Handoff is already CLEAR — nothing to consume.")
+            return
+        HANDOFF.write_text(text.replace("STATUS: OPEN", "STATUS: CLEAR", 1),
+                           encoding="utf-8")
+        print("Handoff consumed; STATUS: CLEAR. Commit it with `close --mid-day`.")
+        return
+    if not is_open:
+        print("No open handoff (STATUS: CLEAR).")
+        return
+    marker = "**FROM:**"
+    print("=" * 68)
+    print("OPEN HANDOFF — act on it, then: daily_log.py handoff --clear")
+    print("=" * 68)
+    print(text[text.index(marker):].rstrip() if marker in text
+          else "(no FROM: block — read data/handoff.md directly)")
+    print("=" * 68)
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
     refresh_context_map()  # always refresh, even on re-open
@@ -573,6 +610,14 @@ def main():
                      " (only --mid-day is supported)")
         mid_day = "--mid-day" in flags
         args = [args[0]]
+    if args and args[0] == "handoff":
+        flags = [a for a in args[1:] if a.startswith("-")]
+        unknown = [f for f in flags if f != "--clear"]
+        if unknown:
+            sys.exit(f"unknown flag(s) for handoff: {' '.join(unknown)}"
+                     " (only --clear is supported)")
+        cmd_handoff(clear="--clear" in flags)
+        return
     commands = {"open": cmd_open, "close": cmd_close, "status": cmd_status}
     if len(args) != 1 or args[0] not in commands:
         print(__doc__)
