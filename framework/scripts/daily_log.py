@@ -348,10 +348,20 @@ def show_handoff():
     print("=" * 68 + "\n")
 
 
+RECOVERY_LINE = (
+    "IF YOU CLOBBER A FILE: recover from git, never reconstruct from memory.\n"
+    "  git show <last-commit>:<path>   |   git checkout -- <path>\n"
+    "  Only work since the last `close --mid-day` is unrecoverable.")
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
     refresh_context_map()  # always refresh, even on re-open
     warn_decoy()
+    # Printed rather than left to session_init.md because Cowork takes its init
+    # from a PROJECT-LOADED copy of that file, which drifts from the repo. The
+    # tool output reaches both harnesses; the skill file does not.
+    print(RECOVERY_LINE)
     show_handoff()
     if TODAY_FILE.exists():
         print(f"{TODAY_FILE.relative_to(ROOT.parent)} already exists; append to it.")
