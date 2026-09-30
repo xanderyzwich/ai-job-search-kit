@@ -354,6 +354,39 @@ RECOVERY_LINE = (
     "  Only work since the last `close --mid-day` is unrecoverable.")
 
 
+def warn_project_copy_stale():
+    """Cowork runs its INIT from a copy of skills/session_init.md loaded into the
+    Cowork project, not from the repo — so that copy drifts silently while the
+    repo moves. Skills are discovered from disk and do not have this problem;
+    init does. Compare the file's last commit date against the
+    project_copy_refresh stamp and say so, because nobody notices otherwise: on
+    2026-09-30 the copy was found three commits stale, and one of the three was
+    the write_file recovery rule added the same day the footgun fired."""
+    init = ROOT / "skills" / "session_init.md"
+    if not init.exists() or not RITUALS.exists():
+        return
+    try:
+        stamp = load_rituals().get("project_copy_refresh", {}).get("last_run")
+        edited = git("log", "-1", "--format=%ad", "--date=short", "--",
+                     str(init), check=False).stdout.strip()
+    except Exception:
+        return
+    if not stamp or not edited:
+        return
+    if str(edited) > str(stamp):
+        # --since is inclusive, and the stamp day's commit is the one that WAS
+        # synced — count only commits strictly after it.
+        dates = git("log", "--format=%ad", "--date=short", "--", str(init),
+                    check=False).stdout.split()
+        n = [d for d in dates if d > str(stamp)]
+        print(f"\n!! skills/session_init.md edited {edited}; Cowork project copy"
+              f" last refreshed {stamp}"
+              f"\n   {len(n)} commit(s) behind. Cowork runs INIT from that copy,"
+              f" so those edits have NOT reached it."
+              f"\n   A COWORK session can fix it (project_write), then:"
+              f" daily_log.py ritual project_copy_refresh")
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
     refresh_context_map()  # always refresh, even on re-open
@@ -362,6 +395,7 @@ def cmd_open():
     # from a PROJECT-LOADED copy of that file, which drifts from the repo. The
     # tool output reaches both harnesses; the skill file does not.
     print(RECOVERY_LINE)
+    warn_project_copy_stale()
     show_handoff()
     if TODAY_FILE.exists():
         print(f"{TODAY_FILE.relative_to(ROOT.parent)} already exists; append to it.")
