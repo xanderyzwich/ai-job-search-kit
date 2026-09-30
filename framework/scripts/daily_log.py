@@ -415,6 +415,11 @@ def cmd_handoff(clear=False):
     if not is_open:
         print("No open handoff (STATUS: CLEAR).")
         return
+    # Picking up a handoff means the OTHER harness has been working, possibly
+    # adding or editing skills. A long-lived session's map is from whenever it
+    # opened, which may be hours and many commits ago — so re-index here, at the
+    # one moment we know the repo has moved underneath us.
+    refresh_context_map()
     marker = "**FROM:**"
     print("=" * 68)
     print("OPEN HANDOFF — act on it, then: daily_log.py handoff --clear")

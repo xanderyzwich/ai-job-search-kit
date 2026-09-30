@@ -70,6 +70,12 @@ happening, because they are the one performing it. So:
 
 Run `daily_log.py handoff`. It prints an open handoff and does not consume it.
 
+**It also re-indexes the skill map first, and that is the point of doing it
+here.** A handoff means the other harness has been working — possibly adding or
+editing skills — and a session that has run all day holds an index from whenever
+it opened. Pickup is the one moment both sides know the repo has moved
+underneath the reader, so it is the right place to rebuild.
+
 **Consume by acting, then `daily_log.py handoff --clear`.** A stale OPEN handoff
 is worse than none, because the next session acts on it twice.
 
