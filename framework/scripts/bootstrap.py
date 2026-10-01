@@ -40,6 +40,8 @@ COPIES = [  # (source relative to framework/, destination relative to private/)
     ("scripts/build_resume.py", "resume/build_resume.py"),
     ("scripts/build_history.py", "scripts/build_history.py"),
     ("scripts/daily_log.py", "scripts/daily_log.py"),
+    ("scripts/sweep.py", "scripts/sweep.py"),
+    ("scripts/backlog.py", "scripts/backlog.py"),
 ]
 
 SEEDS = {

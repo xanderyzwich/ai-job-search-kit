@@ -95,6 +95,13 @@ Dated inventory findings do not belong in a skill file at all.
 
 ## The search ritual
 
+0. **Open the sweep before you open the board:**
+   `scripts/sweep.py start <board> --query "<what you typed>" --lane ic`.
+   This is step zero and not step seven because two of the three numbers it
+   collects **cannot be recovered after the fact.** The tracker keeps only
+   the listings that survived vetting, so how many you actually LOOKED at,
+   and how many of those were already tracked, exist nowhere else the moment
+   the tab closes. Start counting as you scroll; estimates beat blanks.
 1. **Load the criteria.** This repo's `search-criteria.md` for the
    constraint logic; the private instance's filled version for the actual
    board filters, tier rules, and skip rules; `profile.yml` for the hard
@@ -122,6 +129,24 @@ Dated inventory findings do not belong in a skill file at all.
 6. **Decide timing now, not later.** Same-day application matters on
    boards that badge early applicants; a role worth applying to is worth
    applying to today or deliberately queuing with a reason.
+7. **Close the sweep in the same sitting:**
+   `scripts/sweep.py end --screened N --known N --minutes N --signal weak|mixed|strong`.
+   `--known` is the count of listings you hit that were ALREADY in the
+   tracker. It is free — you hit those collisions anyway — and it is the only
+   measure of whether a board is showing you anything the others don't.
+   **Without it, whichever board gets swept first banks all the overlap and
+   looks strongest for reasons that have nothing to do with its quality.**
+
+### Why this is a command and not a table you remember to fill in
+
+A hand-maintained sweep log was tried and died twice. By 2026-09-30 it showed
+two boards last swept in July that had both been swept that week, so the one
+question it existed to answer — *when did I last sweep X* — could not be
+answered from it. Reconstructing the history afterward recovered rows-per-sweep
+but **lost `screened` and `minutes` permanently**, which are exactly the
+numbers that turn a row count into a rate. The lesson generalizes past sweeps:
+when a record depends on someone remembering to append to it, it ends up
+describing what they remembered rather than what happened.
 
 ## Stack ranking postings
 
@@ -145,6 +170,30 @@ override note when a score looks surprising (the old "artifact-suppressed,
 read as rank 1" pattern) — showing the ratios lets anyone reading the table
 see why a score landed where it did without a narrator having to remember to
 flag it.
+
+**Write the score into the tracker, not only into the note.** `tech_fit`,
+`hard_reqs` and `tech_named_reqs` are columns. A score that lives only in
+prose cannot be queried, which means the one question that matters after a
+stack rank — *what cleared the bar and never got applied to?* — can only be
+answered by a human re-reading the file, and so it mostly does not get asked.
+
+### The bottom of a stack rank is where good roles die
+
+Not from rejection. A rank gets worked top-down, the day ends, and whatever
+sat below the waterline stays `researching` forever. Nothing in the system
+ever raised its hand about those rows; they surfaced only when someone chose
+to comb back through the tracker by hand.
+
+`scripts/backlog.py` is that check, and `daily_log.py open` prints its count
+so it is seen without being asked for. It lists `researching` rows whose
+`tech_fit` clears the bar, newest first, with the requirement count beside
+each score and a STALE flag on anything old enough to need a liveness
+re-check before it is worth touching.
+
+**Read the requirement count, not just the score** — see the warning below
+about vague postings. The backlog list marks a row `VAGUE?` when a posting
+names several hard requirements and almost none of them name a technology,
+because those are exactly the rows a raw `tech_fit` sort floats to the top.
 
 **Do not discount a thin list.** A one-item preferred list that matches, or a
 two-item requirements list fully met, produces an extreme percentage

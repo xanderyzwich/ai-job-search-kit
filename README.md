@@ -64,7 +64,9 @@ ai-job-search-kit/
 │   │                          layout-only resume renderer driven by a content
 │   │                          file, a tracker-to-history generator, a
 │   │                          one-commit-per-day log tool, a funnel report,
-│   │                          and a session-start context-map builder
+│   │                          a session-start context-map builder, a
+│   │                          board-sweep recorder, and a check for scored
+│   │                          roles that were never applied to
 │   └── templates/              starter versions of the files that have a
 │                              canonical shape (profile, experience summary,
 │                              tracker schema, resume content, session init,

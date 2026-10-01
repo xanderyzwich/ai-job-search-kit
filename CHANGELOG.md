@@ -6,6 +6,58 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-01 — Measure the cost of a search, not just its output
+
+The tracker recorded what every sweep produced and never what it cost, so a
+board could only be judged on raw volume. "167 listings from LinkedIn" could
+be three sweeps or thirty, and nothing distinguished them.
+
+Two things forced the issue. First, the hand-maintained sweep log had died
+twice — by the end of September it showed two boards last swept in July that
+had both been swept that week, so the one question it existed to answer could
+not be answered from it. Second, an audit found that the downstream metrics
+being used to rank boards could not carry the weight: per-board submission
+counts sit around twenty, where a single reply moves a response rate five
+points, and the strongest-looking channel in one real tracker turned out to be
+thirteen applications to one employer whose ATS answers everything. Strip that
+company out and the channel fell from 86% to 62% on a sample of eight.
+
+So the metrics got reassigned to the questions they can actually answer.
+**Boards are judged on yield and precision per sweep. Response and advance
+rates measure the resume and the positioning, and only hold up globally.**
+
+`scripts/sweep.py` makes a sweep a first-class record — `start` before the
+board opens, `end` in the same sitting — and writes `data/sweeps.csv`. It
+captures three numbers that do not survive closing the browser tab: how many
+listings were screened (the tracker keeps only survivors), how many of those
+were already tracked, and roughly how long it took. The second one matters
+more than it looks: without it, whichever board gets swept first banks all the
+overlap between boards and looks strongest for reasons unrelated to its
+quality.
+
+Four tracker columns were added. `sweep_id` ties a row to the effort that
+found it. `tech_fit` holds the match score, and `hard_reqs` /
+`tech_named_reqs` hold the requirement count that makes the score readable — a
+vague posting scores high precisely because it asks for little that can be
+missed, so the score and its denominator travel together or a raw sort floats
+artifacts to the top.
+
+`scripts/backlog.py` answers the question those columns exist for: what
+cleared the scoring bar and never got applied to. These are not rejections.
+A stack rank gets worked top-down, the day ends, and whatever sat below the
+waterline stays `researching` indefinitely. The daily-log tool prints the
+count at `open`, alongside a warning for a sweep left open overnight — a
+forgotten sweep is a permanent data loss, not an untidiness.
+
+**One defect is documented rather than fixed.** The funnel report computes
+`advance` from a row's current status, so an advance that ends in a rejection
+erases itself and the metric decays toward zero as a search progresses. On one
+real tracker, git history recovered six advances where the report showed two —
+and inverted the conclusion, since four of the six came from warm channels
+that were 5% of submissions. Fixing it needs a monotonic high-water-mark
+column; until then the skill says not to read per-source advance rates off the
+report.
+
 ## 2026-09-18 — Separate the checkpoint from the end of the day
 
 The daily-log tool's `close` carried two meanings at once: "save a recovery

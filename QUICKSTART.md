@@ -47,6 +47,8 @@ cp framework/templates/resume_content.yml    private/resume/resume_content.yml
 cp framework/scripts/build_resume.py         private/resume/build_resume.py
 cp framework/scripts/build_history.py        private/scripts/build_history.py
 cp framework/scripts/daily_log.py            private/scripts/daily_log.py
+cp framework/scripts/sweep.py                private/scripts/sweep.py
+cp framework/scripts/backlog.py              private/scripts/backlog.py
 ```
 
 The three scripts compute their paths relative to where they sit, which is

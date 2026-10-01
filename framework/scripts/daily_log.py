@@ -429,6 +429,72 @@ def cmd_handoff(clear=False):
     print("=" * 68)
 
 
+def show_backlog_summary():
+    """One line: how many SCORED roles are sitting at `researching`, unapplied.
+
+    These are not rejections. They are roles that cleared the scoring bar and
+    then ran out of daylight at the bottom of a stack rank. Nothing has ever
+    surfaced them except someone deciding to comb the tracker by hand, which
+    is the same failure as the sweep log, the LinkedIn character cap, the
+    context map and the git-recovery rule: the artifact existed and nothing
+    pointed at it. So it prints at open, where it cannot be missed."""
+    tracker = ROOT / "job_tracker.csv"
+    if not tracker.exists():
+        return
+    try:
+        import csv as _csv
+        rows = list(_csv.DictReader(tracker.open()))
+        if rows and "tech_fit" not in (rows[0].keys()):
+            return
+        hits = []
+        for r in rows:
+            if r.get("application_status", "").strip() != "researching":
+                continue
+            try:
+                tf = float(r.get("tech_fit") or "")
+            except ValueError:
+                continue
+            if tf >= 100:
+                hits.append(r)
+        if not hits:
+            return
+        dates = [m.group(1) for r in hits
+                 if (m := re.search(r"(\d{4}-\d{2}-\d{2})", r.get("sweep_id", "") or ""))]
+        oldest = f", oldest found {min(dates)}" if dates else ""
+        print(f"BACKLOG: {len(hits)} scored roles (tech_fit >= 100) still at"
+              f" `researching`{oldest}.")
+        print("  python3 scripts/backlog.py   -- read the requirement count,"
+              " not just the score")
+    except Exception:
+        return
+
+
+def warn_sweep_left_open():
+    """A sweep left open overnight silently mis-attributes the next day's rows.
+
+    `sweep.py end` is what captures `screened`, `already_known` and `minutes`
+    — the three numbers that do not survive closing the browser tab. A sweep
+    that is never ended loses all three permanently, so a forgotten one is a
+    data loss, not an untidiness."""
+    open_file = ROOT / "data" / "sweep_open.json"
+    if not open_file.exists():
+        return
+    try:
+        import json as _json
+        cur = _json.loads(open_file.read_text())
+        started = (cur.get("started") or "")[:10]
+        stale = started and started != date.today().isoformat()
+        print(f"SWEEP STILL OPEN: {cur.get('sweep_id')} (started {started})"
+              + ("  <- from a PREVIOUS DAY" if stale else ""))
+        print("  Close it: python3 scripts/sweep.py end --screened N --known N"
+              " --minutes N")
+        if stale:
+            print("  Its screened/known/minutes counts are already unrecoverable;"
+                  " close it with what you know and say so in --note.")
+    except Exception:
+        return
+
+
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
     refresh_context_map()  # always refresh, even on re-open
@@ -438,6 +504,8 @@ def cmd_open():
     # tool output reaches both harnesses; the skill file does not.
     print(RECOVERY_LINE)
     warn_project_copy_stale()
+    show_backlog_summary()
+    warn_sweep_left_open()
     show_handoff()
     if TODAY_FILE.exists():
         print(f"{TODAY_FILE.relative_to(ROOT.parent)} already exists; append to it.")

@@ -32,7 +32,24 @@ fill the four analysis columns at log time, while they're still known:
 specific discovery point — the listing URL where the role was first seen, a
 search query, or a person's name; blank if it would only repeat `source`),
 `lane` (which resume lane ran), and `resume_version` (which build went out).
-They cost seconds to record and are unrecoverable weeks later.
+They cost seconds to record and are unrecoverable weeks later. Four more columns
+carry the same property:
+
+`sweep_id` ties the row to the search effort that produced it (written by
+`sweep.py`); `tech_fit` is the combined match score; `hard_reqs` and
+`tech_named_reqs` are the requirement count that makes the score readable.
+
+**The score belongs in a column, not only in a note.** Scores written into
+prose cannot be queried, so the question *what cleared the bar and never got
+applied to* has no mechanical answer and stops being asked. That is how good
+roles are actually lost — not to rejection, but to a stack rank that got
+worked top-down until the day ended. `backlog.py` answers it; the daily-log
+tool prints its count at `open` so the answer arrives unprompted.
+
+**Never show `tech_fit` without its requirement count.** A vague posting
+scores HIGH precisely because it asks for little that can be missed. Sorting
+on the raw number floats those artifacts to the top of every list, and a
+reader who cannot see the denominator cannot see the artifact.
 
 ## The tracker is the only hand-edited record
 
@@ -191,3 +208,26 @@ rebuild, where the `resume_version` split gives a clean before/after read
 once the new version has had a few weeks to draw responses. Interpret with
 the latency in mind: recent applications showing no response yet is age, not
 signal.
+
+**KNOWN DEFECT — `advance` undercounts, and the error grows over time.** It
+is computed from a row's CURRENT status, so the moment an advance ends in a
+rejection the row becomes `declined_by_them` and the advance vanishes from
+the count. Every screen and interview that did not turn into an offer is
+silently erased, which means the metric decays toward zero precisely as a
+search progresses. Walking the status column through git history on one
+real tracker recovered **six advances where the report showed two**, and
+inverted the headline: four of the six came from referral and recruiter
+channels that were only 5% of submissions, so the boards were producing
+responses while warm channels produced every advance that mattered. Until a
+monotonic high-water-mark column exists, **do not read per-source advance
+rates off this report** — recover them from history, or from the notes.
+
+**And do not rank boards on response or advance rate at all** unless the
+per-board submission counts are large. They will not be: a search that
+produces 150 submissions across eight boards has ~20 per board, where a
+single reply moves a rate by five points. On one real tracker the strongest
+apparent channel (86% response) turned out to be 13 submissions to a single
+employer whose ATS answers everything; strip that one company and the
+channel fell to 62% on a sample of 8. **Boards are judged on yield and
+precision per sweep** (see the sweep ledger); response and advance measure
+the resume and the positioning, and only hold up globally.
