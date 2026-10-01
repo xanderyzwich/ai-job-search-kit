@@ -92,11 +92,18 @@ grep -rA2 --include='*.md' '^\*\*Load when' framework/skills private/skills
 
 ## Standing rules
 
+These are the rules here. If a `CLAUDE.md` in any parent directory is also
+loaded, it belongs to different work and **does not govern this repo** — where
+the two disagree about this kit, this file and `private/CLAUDE.md` win. Do not
+assume such a file exists; usually none does.
+
 - **Never push.** No `git push`, no remote writes, no `gh` write commands. The
   owner pushes both repos themselves.
 - **Commit freely.** In this kit the commit IS the safety mechanism — the
   daily-log tool makes or amends one commit per day and every checkpoint is a
-  `git checkout --` recovery point.
+  `git checkout --` recovery point. A rule from elsewhere that forbids
+  committing would disable recovery entirely; it does not apply here.
+- **Both repos stay on `main`.** No branching, no checkouts.
 - **If you clobber a file, recover it from git. Never reconstruct it from
   memory.** `git show <commit>:<path>` or `git checkout -- <path>`. Only work
   since the last checkpoint is unrecoverable.
