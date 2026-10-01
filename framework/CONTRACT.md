@@ -145,7 +145,7 @@ number, add a key to this schema instead.
 date_applied, response_date, company, role, salary_range, location, remote,
 job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
 hiring_manager, source, lane, resume_version, notes, found_via,
-sweep_id, tech_fit, hard_reqs, tech_named_reqs, nice_reqs
+sweep_id, tech_fit, hard_reqs, tech_named_reqs, nice_reqs, peak_stage
 ```
 
 **`response_date`** is when the company responded (rejection, screen invite,
@@ -178,6 +178,33 @@ sent to a hiring manager or recruiter) · `phone_screen` · `interview` ·
 arrived — a real submission that is no longer pending, and distinct from both
 `declined_by_them`, which requires an actual rejection, and `skipped`, which
 means never applied at all).
+
+**`peak_stage`** is the FURTHEST stage an application ever reached —
+`phone_screen`, `interview`, `offer`, or blank for never advanced. It exists
+because `application_status` is current state and the two cannot share one
+field: a terminal value overwrites an advancing one, so **every screen and
+interview that ends in a rejection erases itself**, and an advance count built
+on live status decays toward zero exactly as a search progresses. The deepest
+results vanish first, because they are the ones most likely to have concluded.
+
+It also makes rejections readable. A rejection at the résumé screen and a
+rejection after a full interview loop are the same `application_status` and
+diagnose opposite problems — one says the resume is not getting you into the
+room, the other says the room is not converting. Outcome and depth are
+orthogonal, which is why this is a separate column rather than a new status
+value: adding `declined_after_interview` to the enum would conflate them and
+force a migration of every existing rejection.
+
+**It only ever ratchets upward**, raised automatically from
+`application_status` by the daily-log tool. Nothing is hand-maintained: edit
+the status exactly as before. Lowering it requires a deliberate hand edit,
+because silently losing a high-water mark is the bug the column exists to
+prevent. **Do not try to derive this on read instead of storing it** — both
+obvious derivations fail. Notes prose says "interview" about automated video
+screeners, scheduling mail, interview prep and negations like "never
+interviewed"; a walk of version-control history keys on company plus title,
+which changes when a row is retitled mid-process and then counts one
+application as two.
 
 **`sweep_id`** links the row to the search effort that produced it, keyed to
 `private/data/sweeps.csv` (`<board>-<YYYY-MM-DD>`). Without it the tracker

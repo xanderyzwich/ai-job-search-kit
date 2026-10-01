@@ -482,6 +482,58 @@ def show_backlog_summary():
         return
 
 
+ADVANCING = ("phone_screen", "interview", "offer")
+STAGE_RANK = {"": 0, "phone_screen": 1, "interview": 2, "offer": 3}
+
+
+def ratchet_peak_stage():
+    """Raise `peak_stage` to match `application_status`, never lower it.
+
+    `application_status` is CURRENT state. The funnel also needs FURTHEST
+    state, and one field cannot hold both: the terminal values overwrite the
+    advancing ones, so every screen and interview that ends in a rejection
+    erases itself and the advance count decays toward zero exactly as a search
+    progresses. On one real tracker six advances were reported as one, and the
+    deepest of them -- a completed five-round final -- vanished on the day it
+    was declined.
+
+    Deriving it on read was tried and does not hold: notes prose says
+    'interview' about automated video screeners, scheduling mail, prep and
+    negations ('never interviewed'), and a git walk keys on company+role,
+    which changes when a row is retitled mid-process. So it is stored, and
+    the ratchet keeps it correct without anyone maintaining a second field:
+    edit `application_status` exactly as before and this follows.
+
+    It only ever goes up. A status set to `interview` by mistake sticks until
+    someone edits the column by hand -- deliberate, because silently lowering
+    a high-water mark is the bug this exists to prevent."""
+    tracker = ROOT / "job_tracker.csv"
+    if not tracker.exists():
+        return
+    try:
+        import csv as _csv
+        rdr = _csv.DictReader(tracker.open())
+        rows, hdr = list(rdr), list(rdr.fieldnames or [])
+        if "peak_stage" not in hdr:
+            return
+        raised = []
+        for r in rows:
+            cur = (r.get("application_status") or "").strip()
+            if cur not in ADVANCING:
+                continue
+            if STAGE_RANK[cur] > STAGE_RANK.get((r.get("peak_stage") or "").strip(), 0):
+                r["peak_stage"] = cur
+                raised.append(f"{r.get('company','')[:28]} -> {cur}")
+        if raised:
+            with tracker.open("w", newline="") as f:
+                w = _csv.DictWriter(f, fieldnames=hdr)
+                w.writeheader()
+                w.writerows(rows)
+            print(f"peak_stage raised on {len(raised)} row(s): " + "; ".join(raised))
+    except Exception:
+        return
+
+
 def warn_unswept_rows():
     """Catch a sweep that was never STARTED.
 
@@ -678,6 +730,9 @@ def cmd_close(mid_day=False):
     # forgotten, so both sweep checks run here as well as at open.
     warn_sweep_left_open()
     warn_unswept_rows()
+    # Before the history view regenerates, so the generated tables and the
+    # funnel both read a tracker whose high-water marks are already current.
+    ratchet_peak_stage()
     if weekly_review_due():
         if mid_day:
             # --mid-day is the checkpoint, not the end of the day. The weekly

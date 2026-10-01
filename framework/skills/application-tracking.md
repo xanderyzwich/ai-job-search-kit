@@ -209,18 +209,23 @@ once the new version has had a few weeks to draw responses. Interpret with
 the latency in mind: recent applications showing no response yet is age, not
 signal.
 
-**KNOWN DEFECT — `advance` undercounts, and the error grows over time.** It
-is computed from a row's CURRENT status, so the moment an advance ends in a
-rejection the row becomes `declined_by_them` and the advance vanishes from
-the count. Every screen and interview that did not turn into an offer is
-silently erased, which means the metric decays toward zero precisely as a
-search progresses. Walking the status column through git history on one
-real tracker recovered **six advances where the report showed two**, and
-inverted the headline: four of the six came from referral and recruiter
-channels that were only 5% of submissions, so the boards were producing
-responses while warm channels produced every advance that mattered. Until a
-monotonic high-water-mark column exists, **do not read per-source advance
-rates off this report** — recover them from history, or from the notes.
+**`advance` reads `peak_stage`, not live status — and that is load-bearing.**
+Before the column existed it was computed from a row's CURRENT status, so the
+moment an advance ended in a rejection the row became `declined_by_them` and
+the advance vanished. Every screen and interview that did not become an offer
+was silently erased, which made the metric decay toward zero exactly as a
+search progressed, deepest results first. On one real tracker it reported two
+advances where six had happened, and the day a completed five-round final was
+declined the count dropped by one — the single deepest result in the search,
+gone from the measurement on the day it concluded.
+
+**So read the rejection split, not just the rejection count.** A rejection at
+the résumé screen and a rejection after a full interview loop are the same
+`application_status` and diagnose opposite problems: one says the resume is
+not getting you into the room, the other says the room is not converting.
+Those are different projects. The report prints both, plus the share of
+submissions that ever produced a conversation at all — a number a response
+rate hides completely, since a rejection counts as a response.
 
 **And do not rank boards on response or advance rate at all** unless the
 per-board submission counts are large. They will not be: a search that

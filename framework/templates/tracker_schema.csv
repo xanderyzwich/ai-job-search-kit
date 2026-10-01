@@ -1,1 +1,1 @@
-date_applied,response_date,company,role,salary_range,location,remote,job_url,application_status,cover_letter_sent,linkedin_dm_sent,dm_recipient,hiring_manager,source,lane,resume_version,notes,found_via,sweep_id,tech_fit,hard_reqs,tech_named_reqs,nice_reqs
+date_applied,response_date,company,role,salary_range,location,remote,job_url,application_status,cover_letter_sent,linkedin_dm_sent,dm_recipient,hiring_manager,source,lane,resume_version,notes,found_via,sweep_id,tech_fit,hard_reqs,tech_named_reqs,nice_reqs,peak_stage

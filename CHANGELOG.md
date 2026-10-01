@@ -6,6 +6,46 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-01 — A rejection erased the interview that preceded it
+
+The funnel computed `advance` from a row's current status. So the moment an
+advance ended in a rejection the row became `declined_by_them` and the advance
+disappeared — every screen and interview that did not become an offer erased
+itself, and the metric decayed toward zero exactly as a search progressed,
+deepest results first. On one real tracker it reported two advances where six
+had happened. The defect was documented in the morning and fired the same
+afternoon: a completed five-round final was declined, and the only
+direct-to-employer advance on record vanished from the measurement on the day
+it concluded.
+
+The same gap made rejections unreadable. A rejection at the résumé screen and
+a rejection after a full interview loop carried the same status and diagnose
+opposite problems — one says the resume is not getting you into the room, the
+other says the room is not converting. 92% versus 8% of rejections, pooled
+into one number.
+
+`peak_stage` records the furthest stage an application ever reached. Outcome
+and depth are orthogonal, which is why it is a column rather than a new status
+value: a `declined_after_interview` enum entry would conflate them and force a
+migration of every existing rejection. It ratchets upward automatically from
+`application_status` at `close`, so nothing is hand-maintained — edit the
+status exactly as before. Lowering it takes a deliberate hand edit, because
+silently losing a high-water mark is the bug it exists to prevent.
+
+**Deriving it on read was tried first and does not work**, which is worth
+recording so it is not retried. Notes prose says "interview" about automated
+video screeners, scheduling mail, interview prep, and negations like "never
+interviewed" — on one tracker that heuristic produced two false positives out
+of three hits, both of them automated submission-time video screens. A walk of
+version-control history has better precision but keys on company plus title,
+which changes when a row is retitled mid-process, and then counts one
+application as two. Both sources were run and reconciled by hand for the
+backfill; neither is sound as a standing derivation.
+
+The report now also prints the share of submissions that ever produced a
+conversation at all — 4% against a 45% response rate, since a rejection counts
+as a response.
+
 ## 2026-10-01 — Measure the cost of a search, not just its output
 
 The tracker recorded what every sweep produced and never what it cost, so a

@@ -248,6 +248,16 @@ the table's "why this rank" prose, not in an adjustment to the number.
 
 ## When an application advances (the continuation ritual)
 
+**Move `application_status` the day it happens, and do not touch `peak_stage`
+— the daily-log tool raises it for you at `close` and never lowers it.** That
+is the whole discipline. The reason the second field exists is that status is
+current state: when the rejection lands and the row becomes
+`declined_by_them`, the fact that you interviewed would otherwise be erased
+along with it, and the funnel would report a search that never got anywhere.
+A row left at `applied` through a live interview loses the advance in both
+columns, which is the older and more expensive version of the same mistake.
+
+
 Every stage change after submission runs this, before any prep work: a reply,
 a screen scheduled, a round passed, an interview invitation, a rejection. An
 advance is the moment a company brief gets read by a human under time
