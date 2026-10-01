@@ -111,6 +111,31 @@ Dated inventory findings do not belong in a skill file at all.
    modes, and mixing them makes both worse.
 3. **Tracker check per candidate** (application-tracking skill): prior
    activity at the organization, duplicates, answers already given.
+3b. **Connection check per candidate, at VET time — not while sweeping.**
+   Before vetting a role, look at whether anyone you know is at that company.
+   On a network-based board this is free and already on the card; sweeping
+   anywhere else, it is one lookup against that network. **Record the result
+   on the row either way, as `CONNECTION AUDIT <date>: <finding>`** — the
+   string is a convention so the answers stay greppable, and recording "none"
+   matters as much as recording a hit, because otherwise there is no way to
+   tell a company you checked from one you never looked at.
+
+   **Degree of connection is not the signal. Who would actually vouch is.**
+   A second-degree link can be hollow — one real case had a mutual with no
+   idea who the person was, with their profile open in front of her. Rank
+   what you find:
+   - **Someone who has seen you work** — a former colleague or manager, a
+     community peer, a recruiter who has placed you. This is the only tier
+     with a track record.
+   - **A warm contact who would make an introduction** but cannot speak to
+     your work. Useful as a door, not as an endorsement.
+   - **A nominal connection.** Treat as none until a human confirms otherwise.
+
+   **A hit is a DECISION, not a message.** It may change the order you apply,
+   whether you apply cold at all, or whether you ask first and apply after.
+   Drafting outreach before that decision is made is its own failure mode —
+   see the outreach skill, and respect any standing do-not-over-contact ask
+   from the person involved.
 4. **Vet against hard constraints first** — location, travel, comp floor —
    then lane-route it (resume-lane-strategy) and make the honest gap read.
    For the tech match/gap, resolve EVERY stack term the JD names against the
