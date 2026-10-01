@@ -63,13 +63,10 @@ ai-job-search-kit/
 │   │                          a "Load when" header within its first 8 lines,
 │   │                          so one grep lists them all, current by
 │   │                          construction
-│   ├── scripts/                working tooling: a one-command bootstrap, a
-│   │                          layout-only resume renderer driven by a content
-│   │                          file, a tracker-to-history generator, a
-│   │                          one-commit-per-day log tool, a funnel report,
-│   │                          a session-start context-map builder, a
-│   │                          board-sweep recorder, and a check for scored
-│   │                          roles that were never applied to
+│   ├── scripts/                working tooling. Nothing enumerates them — a
+│   │                          script's first docstring line is its header, and
+│   │                          the session-start context map indexes every one
+│   │                          of them from the files themselves
 │   └── templates/              starter versions of the files that have a
 │                              canonical shape (profile, experience summary,
 │                              tracker schema, resume content, session init,

@@ -57,11 +57,20 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   deliberately duplicated in code, and the easiest to forget.
 - **A script added or changed** → the task-time skill that governs its
   moment (a script referenced only from setup docs is invisible when it
-  matters) · the private session_init's Scripts block · QUICKSTART's copy
-  step if it installs into `private/` · the scripts lines in README,
-  SESSION_INIT trees, and framework/README.md · CONTRACT if it's
-  contract-level. Framework copies
-  are canonical; re-copy installed private copies after upstream changes.
+  matters) · `bootstrap.py`'s COPIES if it installs into `private/` ·
+  CONTRACT if it's contract-level. Framework copies are canonical; re-copy
+  installed private copies after upstream changes.
+
+  **Nothing else enumerates scripts, by design — the same rule that already
+  held for skills.** A script's first docstring line is its routing header and
+  the context map indexes it from there, so there is no list to update. This
+  used to name five more mirrors: a Scripts block in the private session_init,
+  a transcribed `cp` list in QUICKSTART, and script lines in three trees. They
+  were removed 2026-10-01 after the session_init block went stale on the day
+  two scripts were added and the QUICKSTART list still said "the three
+  scripts" when there were five. **If you find yourself writing a list of
+  scripts into a document, you are recreating a mirror that was deliberately
+  deleted** — write the reference instead.
 - **Tracker schema** → CONTRACT schema text · the template CSV · migrate
   the live CSV (backup to `temp/` first) · confirm the readers still
   tolerate it. Standing compatibility rule: columns get **added, never

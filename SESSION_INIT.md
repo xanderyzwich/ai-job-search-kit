@@ -62,9 +62,9 @@ ai-job-search-kit/
 │   ├── README.md            the public half's index — routes to skills,
 │   │                        templates, and scripts; read at session start
 │   ├── skills/              small, focused methodology files, loaded on demand
-│   ├── scripts/              working tooling: bootstrap, resume renderer,
-│   │                         history generator, daily-log tool, funnel report,
-│   │                         context-map builder, sweep recorder, backlog check
+│   ├── scripts/              working tooling — not listed here; each script's
+│   │                         first docstring line is its header and the
+│   │                         generated context map indexes them all
 │   └── templates/            blank versions of profile.yml, session_init.md, etc.
 │
 ├── private/               — the user's actual data (GITIGNORED — its own git repo)
@@ -79,8 +79,7 @@ ai-job-search-kit/
 │   │                                  log), open_threads.md (read at startup),
 │   │                                  dated snapshots, per-company briefs, and
 │   │                                  generated views of the tracker
-│   ├── scripts/                       history generator, daily-log tool,
-│   │                                  sweep recorder, backlog check
+│   ├── scripts/                       installed tooling (see the context map)
 │   ├── feedback/                      external input received along the way
 │   └── resume/                        generated resumes and their build scripts
 │

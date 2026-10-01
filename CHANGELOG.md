@@ -6,6 +6,36 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-01 — Delete the mirror, keep the reference
+
+Scripts were enumerated by hand in seven places: a Scripts block in the private
+session-init, a transcribed `cp` list in the quickstart, prose lists inside four
+directory trees, and a row in the contract. Every one of them was a copy of
+something the files already said about themselves, and three were measurably
+stale — the session-init block went out of date the day two scripts were added,
+the quickstart list still said "the three scripts" when there were five, and the
+contract row named two of four.
+
+Skills never had this problem, because nothing enumerates them: a skill's
+`Load when:` header is its routing and the generated context map indexes every
+one from the files themselves. Scripts now work the same way, keyed on each
+script's first docstring line, so the lists had nothing left to justify them
+and were removed rather than corrected.
+
+What replaced them is not nothing. The quickstart points at `bootstrap.py`'s
+COPIES, which is the authoritative set of files an instance starts with and is
+executable rather than descriptive. The trees say that scripts are indexed
+rather than listed. The private session-init keeps only what a docstring cannot
+carry — the order things run in, and what is non-obvious locally — and dropped
+from 63 lines to 38.
+
+The ripple map shrank as a direct result: a script added or changed now names
+three obligations instead of six, and it carries the rule explicitly, so the
+deleted mirrors are not helpfully recreated later. The general form is worth
+stating, because this repo now has three failures of exactly this shape in one
+day: **a list inside a document is a mirror, and a mirror rots. Describe what a
+generated view contains, never how many things are in it or what they are.**
+
 ## 2026-10-01 — The always-loaded file was one directory too low
 
 The instance's `CLAUDE.md` lived inside `private/`. Harnesses that auto-load a

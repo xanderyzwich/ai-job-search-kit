@@ -21,9 +21,11 @@ No personal data lives anywhere in `framework/`.
   here — if a template exists, the file is created from it and keeps its
   sections.** Structural edits to an existing instance preserve the
   template's sections too.
-- **`scripts/`** — canonical tooling (bootstrap, resume renderer, history
-  generator, daily-log tool, funnel report, session-start context-map
-  builder, board-sweep recorder, scored-backlog check). Installed copies live in the
-  private instance's `scripts/`; after upstream changes, re-copy.
+- **`scripts/`** — canonical tooling. **Deliberately not listed here:** each
+  script's first docstring line is its routing header, and the generated
+  context map indexes them all from there, so a list in this file would be a
+  mirror that rots. Installed copies live in the private instance's
+  `scripts/`; `bootstrap.py`'s COPIES names which ones get installed, and
+  after upstream changes, re-copy.
 - **`CONTRACT.md`** — the exact file contract a private instance must
   satisfy for the framework to function.

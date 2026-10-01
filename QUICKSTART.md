@@ -39,24 +39,21 @@ methodology in `skills/` — see `framework/CONTRACT.md` for what goes where.
 ## 2. Copy the templates and tooling in
 
 ```bash
-cp framework/templates/profile.yml           private/profile.yml
-cp framework/templates/experience_summary.md private/experience_summary.md
-cp framework/templates/tracker_schema.csv    private/job_tracker.csv
-cp framework/templates/session_init.md       private/skills/session_init.md
-cp framework/templates/resume_content.yml    private/resume/resume_content.yml
-cp framework/scripts/build_resume.py         private/resume/build_resume.py
-cp framework/scripts/build_history.py        private/scripts/build_history.py
-cp framework/scripts/daily_log.py            private/scripts/daily_log.py
-cp framework/scripts/sweep.py                private/scripts/sweep.py
-cp framework/scripts/backlog.py              private/scripts/backlog.py
+python3 framework/scripts/bootstrap.py
 ```
 
-The three scripts compute their paths relative to where they sit, which is
-why they get copied into place rather than run from `framework/` (the
-framework copies are the canonical source; if you improve one, improve it
-there). `build_history.py` renders your human-readable application history
-from the tracker, `daily_log.py` runs the one-commit-per-day log workflow,
-and `build_resume.py` renders your resume lanes from the content file.
+**That script's `COPIES` list is the authoritative set of files an instance
+starts with** — which template lands where, and which scripts get installed.
+Read it if you want to do this by hand; do not transcribe it into a second
+list here, because a copy of it in this file stood out of date within a day of
+the last script being added (it still called them "the three scripts" when
+there were five).
+
+Why scripts are copied rather than run from `framework/`: each computes its
+paths relative to where it sits. The framework copies stay canonical — **if you
+improve one, improve it there and re-copy.** Two scripts are deliberately not
+installed and run from `framework/` directly; the installed set is whatever
+`COPIES` names.
 
 There's no template for your session log or open-threads file — they start
 empty and grow with use. Create `private/data/session_log.md` with a one-line
