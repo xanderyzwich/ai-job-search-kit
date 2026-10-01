@@ -136,6 +136,21 @@ Dated inventory findings do not belong in a skill file at all.
    Drafting outreach before that decision is made is its own failure mode —
    see the outreach skill, and respect any standing do-not-over-contact ask
    from the person involved.
+
+   **Act on tier one. Record tiers two and three and move on.** This is the
+   part that gets re-litigated, so it is written down with its evidence: on one
+   real search, thirteen applications went out with a message to someone at the
+   company attached. **One advanced, and that one was not a cold approach** —
+   it was a person the candidate already knew, who had sent him the posting
+   himself. The other twelve produced nothing, and nine of the twelve were
+   messages to recruiters or talent staff rather than to engineers on the team.
+   Messaging a stranger because you applied there is cheap, feels productive,
+   and has no result behind it; the hour is better spent on someone who has
+   seen you work. **What is genuinely untested is the narrower version** —
+   contacting an ENGINEER on the actual team rather than a recruiter, which
+   only three of those twelve did. Treat that as unproven rather than
+   disproven, and if it is tried, try it deliberately and record the outcome
+   instead of folding it back into the same bucket.
 4. **Vet against hard constraints first** — location, travel, comp floor —
    then lane-route it (resume-lane-strategy) and make the honest gap read.
    For the tech match/gap, resolve EVERY stack term the JD names against the
