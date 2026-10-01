@@ -38,6 +38,9 @@ handle them by default.
 
 ```
 ai-job-search-kit/
+├── CLAUDE.md              — auto-loaded by Claude Code: the public/private
+│                         boundary, the start command, and how skills and
+│                         scripts are discovered. A router, not a manual.
 ├── README.md              — this file
 ├── ARCHITECTURE.md        — the design decisions and why they were made
 ├── CHANGELOG.md           — how the framework evolved, tied to real failures

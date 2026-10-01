@@ -6,6 +6,36 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-01 — The always-loaded file was one directory too low
+
+The instance's `CLAUDE.md` lived inside `private/`. Harnesses that auto-load a
+`CLAUDE.md` scan the working directory and its PARENTS, so a session opened at
+the repo root never reached it — the file whose entire job is "read this first"
+was silently skipped for any session that did not start inside `private/`.
+Nothing announced it, and the gap was only visible by noticing that a documented
+rule had never been mentioned.
+
+There is now a `CLAUDE.md` at the repo root, and it is deliberately a ROUTER
+rather than a manual: the public/private boundary, the one command that starts a
+session, how skills and scripts are discovered, and a table of which file owns
+what. It carries no skill list, no script list, no counts and no methodology,
+because every one of those would be a mirror of something generated or owned
+elsewhere. Being public-safe, it ships with the framework, so a fresh clone gets
+an agent that can orient itself.
+
+Two related fixes. **Scripts are now discovered the way skills are** — the
+generated context map indexes them from each script's first docstring line,
+exactly as skills are indexed from their `Load when:` headers, replacing a
+hand-maintained list that went stale the day two scripts were added.
+
+**And always-loaded instance files were added to the ripple map**, which had
+covered READMEs, trees, the contract, the quickstart and the bootstrap script
+but not the one document guaranteed to be read every session. It had gone stale
+twice as a result: a hard-coded skill count, and a description of the generated
+map that predated the map indexing scripts. The entry says to prefer deleting
+the mirror over adding an obligation — describe what a generated view contains,
+never how many things are in it.
+
 ## 2026-10-01 — A rejection erased the interview that preceded it
 
 The funnel computed `advance` from a row's current status. So the moment an

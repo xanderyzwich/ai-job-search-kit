@@ -10,6 +10,12 @@ gitignored repo, never committed here). See `README.md`, `ARCHITECTURE.md`, and
 `framework/CONTRACT.md` for the full pitch, design rationale, and the exact file
 contract `private/` is expected to satisfy.
 
+**`CLAUDE.md` at this repo's root auto-loads and routes to this file.** It
+exists because nothing loaded this one automatically: a session opened at the
+kit root never reached `private/CLAUDE.md`, which sits one level DOWN and so is
+never picked up by a parent-directory scan. Keep `CLAUDE.md` thin — it is a
+router, and anything restated there becomes a mirror of this file.
+
 **This file, and its private counterpart, are meant to be stable.** If you're
 using this framework with a persistent context feature (Claude Projects or
 similar), these are the files to load there once, they should rarely need
@@ -42,6 +48,8 @@ Before anything else, check whether `private/skills/session_init.md` exists.
 
 ```
 ai-job-search-kit/
+├── CLAUDE.md              — auto-loaded router: the boundary, the start command,
+│                         and how to find any skill or script. Points here.
 ├── README.md              — portfolio pitch: what this is, why it exists
 ├── ARCHITECTURE.md        — how the pieces fit together, design decisions
 ├── CHANGELOG.md           — the framework's public history
