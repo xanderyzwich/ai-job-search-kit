@@ -23,7 +23,19 @@ requirements and almost none of them name a technology.
 
 AGE IS A LIVENESS QUESTION. A role scored seven weeks ago is probably no
 longer posted. Old rows are listed last and flagged, not hidden -- the
-check is "is this worth re-verifying", not "is this dead".
+check is "is this worth re-verifying", not "is this dead". Note the age is
+measured from when the role was FOUND, not when it was posted; a listing
+can already be months old on the day it is swept.
+
+THE BAR HAS TO BEND FOR POSTINGS WITH NO PREFERRED LIST. tech_fit is
+`hard_match_pct + 0.5 * nice_match_pct`, so a JD that names no
+preferred/nice-to-have section CANNOT SCORE ABOVE 100 -- a flawless match
+lands exactly on the threshold and a single missed requirement drops it
+under. Screening on a flat 100 therefore excludes the cleanest matches in
+the tracker for a reason that has nothing to do with fit. Rows recorded with
+`nice_reqs=0` are admitted down to `--min minus --margin` and flagged
+NO-PREF. `--margin` covers the other one-off shapes too; widen it rather
+than inventing a second threshold.
 """
 import argparse
 import csv
@@ -34,6 +46,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PRIV = ROOT if (ROOT / "job_tracker.csv").exists() else ROOT.parent / "private"
 TRACKER = PRIV / "job_tracker.csv"
+
+# The single definition of the bar. daily_log.py imports it rather than
+# repeating the number, because a threshold written in two places drifts in
+# one of them and nothing announces it.
+DEFAULT_MIN = 100.0
+DEFAULT_MARGIN = 15.0
 
 DISOWN = re.compile(r"\bWAS WRONG\b|NEEDS RESCORE|\bRESCORE\b|OVERSTATED"
                     r"|INFLATED|artifact-inflated", re.I)
@@ -59,8 +77,11 @@ def row_date(r):
 def main():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--min", type=float, default=100.0,
-                   help="tech_fit floor (default 100)")
+    p.add_argument("--min", type=float, default=DEFAULT_MIN,
+                   help=f"tech_fit floor (default {DEFAULT_MIN:.0f})")
+    p.add_argument("--margin", type=float, default=DEFAULT_MARGIN,
+                   help="how far below the floor a no-preferred-list posting"
+                        f" still counts (default {DEFAULT_MARGIN:.0f})")
     p.add_argument("--all", action="store_true", help="include rows below the floor")
     p.add_argument("--unscored", action="store_true",
                    help="also list researching rows that were never scored")
@@ -76,8 +97,11 @@ def main():
         tf = num(r.get("tech_fit"))
         if tf is None:
             (needs_rescore if SCORE_IN_NOTES.search(r.get("notes", "")) else unscored).append(r)
-        elif a.all or tf >= a.min:
-            hits.append((tf, r))
+        else:
+            no_pref = (r.get("nice_reqs", "").strip() == "0")
+            floor = a.min - a.margin if no_pref else a.min
+            if a.all or tf >= floor:
+                hits.append((tf, r, no_pref))
 
     hits.sort(key=lambda x: (row_date(x[1]), x[0]), reverse=True)
     today = date.today()
@@ -85,10 +109,12 @@ def main():
     print(f"SCORED >= {a.min:.0f}, STATUS researching, NEVER APPLIED: {len(hits)}")
     print(f"{'score':>6}  {'reqs':>12}  {'found':10}  {'age':>4}  company / role")
     print("-" * 100)
-    for tf, r in hits:
+    for tf, r, no_pref in hits:
         hr, tn = num(r.get("hard_reqs")), num(r.get("tech_named_reqs"))
         reqs = f"{int(hr)} hard/{int(tn)} tech" if hr is not None and tn is not None else "--"
         flags = []
+        if no_pref:
+            flags.append("NO-PREF")       # ceiling is 100; read tf as hard-match %
         if hr is not None and tn is not None and hr >= 4 and tn <= 1:
             flags.append("VAGUE?")
         d = row_date(r)
@@ -110,13 +136,26 @@ def main():
         for r in needs_rescore[:20]:
             print(f"    {r['company'][:36]} - {r['role'][:44]}")
 
+    # Never-scored rows split in two, because they are not one problem.
+    # A row with a live URL can still be scored retroactively; a row without
+    # one cannot be recovered without re-finding the posting. And many were
+    # never scored because the search process is supposed to gate on
+    # geography and pay BEFORE scoring -- so a missing score is often a
+    # decision, not an omission. Only the scoreable half is a backlog.
+    scoreable = [r for r in unscored if r.get("job_url", "").strip()]
+    no_url = [r for r in unscored if not r.get("job_url", "").strip()]
     if a.unscored:
-        print(f"\nRESEARCHING, NEVER SCORED: {len(unscored)}")
-        for r in unscored[:40]:
-            print(f"    {row_date(r) or '?':10}  {r['company'][:34]} - {r['role'][:40]}")
+        print(f"\nNEVER SCORED, HAS A URL -- scoreable retroactively if still"
+              f" live: {len(scoreable)}")
+        for r in sorted(scoreable, key=row_date, reverse=True)[:60]:
+            print(f"    {row_date(r) or '?':10}  {r['company'][:32]} - {r['role'][:38]}")
+        print(f"\nNEVER SCORED, NO URL -- needs re-finding first: {len(no_url)}")
+        for r in no_url[:20]:
+            print(f"    {row_date(r) or '?':10}  {r['company'][:32]} - {r['role'][:38]}")
     else:
         print(f"\n{len(unscored)} researching rows were never scored "
-              f"(--unscored to list them).")
+              f"({len(scoreable)} still have a URL and could be scored"
+              f" retroactively -- `--unscored` to list them).")
 
 
 if __name__ == "__main__":

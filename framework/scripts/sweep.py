@@ -99,11 +99,20 @@ def cmd_start(a):
     while sid in existing:
         sid = f"{board}-{today}-{n}"
         n += 1
+    # Snapshot which rows already exist. `end` claims the DIFFERENCE and
+    # nothing else. Without this the close matched on board name alone and
+    # would have retroactively claimed every previously-unattributed row for
+    # that board -- 44 of them on one real tracker, which would have inflated
+    # the next sweep's yield eightfold and permanently mis-dated the rest.
+    before, _ = tracker_rows()
+    keys = sorted({f"{r.get('company','')}␟{r.get('role','')}" for r in before})
+
     OPEN_FILE.parent.mkdir(parents=True, exist_ok=True)
     OPEN_FILE.write_text(json.dumps({
         "sweep_id": sid, "board": board, "date": today,
         "query": a.query or "", "lane": a.lane or "", "note": a.note or "",
         "started": datetime.now().isoformat(timespec="seconds"),
+        "rows_at_start": keys,
     }, indent=1))
     print(f"SWEEP OPEN: {sid}")
     print(f"  Tag every new tracker row with sweep_id={sid}")
@@ -121,13 +130,24 @@ def cmd_end(a):
     rows, hdr = tracker_rows()
     stamped = 0
     if rows and "sweep_id" in hdr:
+        # Only rows that did not exist when the sweep started. A row that was
+        # already in the tracker belongs to whatever found it the first time,
+        # even when this sweep surfaced it again -- that re-encounter is a
+        # COLLISION, and it belongs in --known, not in this sweep's yield.
+        before = set(cur.get("rows_at_start") or [])
+        unbounded = cur.get("rows_at_start") is None
         for r in rows:
             if r.get("sweep_id", "").strip():
+                continue
+            if not unbounded and f"{r.get('company','')}␟{r.get('role','')}" in before:
                 continue
             hay = f"{r.get('found_via','')} {r.get('source','')}".lower()
             if board.replace("-", " ") in hay or board in hay:
                 r["sweep_id"] = sid
                 stamped += 1
+        if unbounded:
+            print("WARNING: this sweep was opened before row-snapshotting existed;"
+                  " its stamping is unbounded. Check the rows it claimed.")
         if stamped:
             with TRACKER.open("w", newline="") as f:
                 w = csv.DictWriter(f, fieldnames=hdr)
@@ -182,9 +202,16 @@ def cmd_report(a):
     SUB = {"applied", "dm_sent", "phone_screen", "interview", "offer",
            "declined_by_us", "declined_by_them", "closed_no_response"}
     per_sweep = defaultdict(lambda: {"rows": 0, "apps": 0})
+    unknown = defaultdict(int)
     for r in rows:
         sid = r.get("sweep_id", "").strip()
         if not sid:
+            continue
+        # `<board>-unknown` means the board is known and the sweep is not.
+        # It is a LABEL, never a sweep, and must stay out of every per-sweep
+        # rate or it silently invents a sweep with no screened count.
+        if sid.endswith("-unknown"):
+            unknown[sid[: -len("-unknown")]] += 1
             continue
         p = per_sweep[sid]
         p["rows"] += 1
@@ -244,6 +271,15 @@ def cmd_report(a):
               f"{d['rows']/d['n']:8.1f} {d['apps']/d['n']:8.1f} "
               f"{(100*d['apps']/d['rows'] if d['rows'] else 0):8.0f}% "
               f"{prec:>10} {red:>7} {f'{d[chr(100)+chr(101)+chr(97)+chr(100)]}/{d[chr(110)]}':>6}")
+    if unknown:
+        tot = sum(unknown.values())
+        print(f"\n{tot} rows carry a `<board>-unknown` label: the board is known,"
+              " the sweep is not.")
+        print("  " + "  ".join(f"{b}:{n}" for b, n in sorted(unknown.items(),
+                                                             key=lambda x: -x[1])))
+        print("  They are EXCLUDED above -- counting them would attribute rows to"
+              " sweeps that have no screened count,")
+        print("  which is the same error as judging a board on volume alone.")
     print("\nprec is rows/screened over ONLY the sweeps carrying a screened count"
           " -- the (n/total) beside it says how many that was.")
     print("redund is blank until `already_known` is recorded; apps/sw rewards"

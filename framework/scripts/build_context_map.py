@@ -62,6 +62,37 @@ def extract_ripple_section():
     return text[start:nxt if nxt != -1 else len(text)].strip()
 
 
+def scan_scripts(*script_dirs):
+    """Index the tooling the same way skills are indexed: from the files.
+
+    Scripts were previously discoverable only through a hand-maintained
+    "Scripts" block in session_init.md -- which is loaded into some harnesses
+    as a STATIC PROJECT COPY and therefore goes stale the moment a script is
+    added. That is not a hypothetical: the session that added two scripts
+    staled the copy describing them, on the same day.
+
+    So a script's first docstring line is its routing header, exactly as a
+    skill's `Load when:` is. Keep it to one line that says when to run it.
+    """
+    found = {}
+    for d in script_dirs:
+        if not d.exists():
+            continue
+        for f in sorted(d.glob("*.py")):
+            if f.name.startswith("_"):
+                continue
+            doc = ""
+            try:
+                import ast
+                doc = (ast.get_docstring(ast.parse(f.read_text(encoding="utf-8")))
+                       or "").strip().splitlines()
+                doc = doc[0].strip() if doc else ""
+            except Exception:
+                doc = ""
+            found.setdefault(f.name, (str(f.relative_to(ROOT)), doc))
+    return [v for _, v in sorted(found.items())]
+
+
 def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     skills = scan_load_when(FRAMEWORK / "skills", PRIVATE / "skills")
@@ -79,9 +110,24 @@ def main():
         "",
     ]
     out += [f"- **{rel}** — {lw}" for rel, lw in skills]
+
+    scripts = scan_scripts(PRIVATE / "scripts", FRAMEWORK / "scripts")
+    out += [
+        "",
+        "## Tooling (run, don't reimplement)",
+        "",
+        "> Discovered from each script's first docstring line, so a new script"
+        " is visible here",
+        "> without anyone updating a list. **Check this before writing a script"
+        " or a one-off",
+        "> query — the answer is often already a command.**",
+        "",
+    ]
+    out += [f"- **{rel}** — {doc}" for rel, doc in scripts]
     out += ["", extract_ripple_section(), ""]
     OUT.write_text("\n".join(out), encoding="utf-8")
-    print(f"Wrote {OUT.relative_to(ROOT)}: {len(skills)} skills + ripple map.")
+    print(f"Wrote {OUT.relative_to(ROOT)}: {len(skills)} skills,"
+          f" {len(scripts)} scripts + ripple map.")
     missing = [r for r, lw in skills if lw.startswith("(!!")]
     if missing:
         print("  WARNING: skills missing a Load-when header: " + ", ".join(missing))

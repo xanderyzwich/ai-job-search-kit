@@ -446,6 +446,13 @@ def show_backlog_summary():
         rows = list(_csv.DictReader(tracker.open()))
         if rows and "tech_fit" not in (rows[0].keys()):
             return
+        # The bar is DEFINED in backlog.py. Repeating the number here is how
+        # two thresholds drift apart with nothing announcing it.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        try:
+            from backlog import DEFAULT_MIN, DEFAULT_MARGIN
+        except ImportError:
+            DEFAULT_MIN, DEFAULT_MARGIN = 100.0, 15.0
         hits = []
         for r in rows:
             if r.get("application_status", "").strip() != "researching":
@@ -454,17 +461,69 @@ def show_backlog_summary():
                 tf = float(r.get("tech_fit") or "")
             except ValueError:
                 continue
-            if tf >= 100:
+            # A posting with no preferred list cannot score above 100, so the
+            # same allowance backlog.py makes has to be made here or the
+            # count at `open` disagrees with the list it points at.
+            floor = (DEFAULT_MIN - DEFAULT_MARGIN
+                     if r.get("nice_reqs", "").strip() == "0" else DEFAULT_MIN)
+            if tf >= floor:
                 hits.append(r)
         if not hits:
             return
         dates = [m.group(1) for r in hits
                  if (m := re.search(r"(\d{4}-\d{2}-\d{2})", r.get("sweep_id", "") or ""))]
         oldest = f", oldest found {min(dates)}" if dates else ""
-        print(f"BACKLOG: {len(hits)} scored roles (tech_fit >= 100) still at"
-              f" `researching`{oldest}.")
+        print(f"BACKLOG: {len(hits)} scored roles (tech_fit >= {DEFAULT_MIN:.0f},"
+              f" or {DEFAULT_MIN-DEFAULT_MARGIN:.0f} with no preferred list)"
+              f" still at `researching`{oldest}.")
         print("  python3 scripts/backlog.py   -- read the requirement count,"
               " not just the score")
+    except Exception:
+        return
+
+
+def warn_unswept_rows():
+    """Catch a sweep that was never STARTED.
+
+    `open` warns about a sweep left open; nothing caught the opposite and more
+    likely mistake — opening a board, scrolling, logging rows, and never
+    running `sweep.py start`. Those rows get no sweep_id, no screened count
+    and no minutes, which is exactly the state the sweep ledger was built to
+    end. So `close` compares the tracker against its last committed version
+    and names any row added since that carries no sweep_id.
+
+    A blank sweep_id is legitimate for a referral or an inbound recruiter;
+    those never came from a sweep. This only complains about rows whose
+    source looks like a board."""
+    tracker = ROOT / "job_tracker.csv"
+    if not tracker.exists():
+        return
+    try:
+        import csv as _csv
+        import io
+        old = git("show", f"HEAD:{tracker.relative_to(ROOT)}", check=False).stdout
+        if not old:
+            return
+        before = {(r.get("company", ""), r.get("role", ""))
+                  for r in _csv.DictReader(io.StringIO(old))}
+        nonsweep = re.compile(r"^(referral|recruiter|spouse|network recruiter)")
+        bad = []
+        for r in _csv.DictReader(tracker.open()):
+            key = (r.get("company", ""), r.get("role", ""))
+            if key in before or r.get("sweep_id", "").strip():
+                continue
+            if nonsweep.match((r.get("source", "") or "").strip().lower()):
+                continue
+            bad.append(r)
+        if not bad:
+            return
+        print(f"\nUNSWEPT ROWS: {len(bad)} new row(s) have no sweep_id.")
+        print("  A sweep ran without `sweep.py start`, so its screened count,")
+        print("  already-known count and minutes are gone. Nothing can rebuild them.")
+        for r in bad[:6]:
+            print(f"    {r.get('source','?')[:18]:18s} {r.get('company','')[:34]}")
+        print("  Label them `<board>-unknown` if the sweep itself can't be"
+              " reconstructed.")
     except Exception:
         return
 
@@ -614,6 +673,11 @@ def head_is_pushed():
 
 def cmd_close(mid_day=False):
     warn_decoy()  # before folding — this is the last moment to rescue it
+    # Closing a sweep happens after applying, when moving to another board, or
+    # at the end of the day — and the end of the day is the one that gets
+    # forgotten, so both sweep checks run here as well as at open.
+    warn_sweep_left_open()
+    warn_unswept_rows()
     if weekly_review_due():
         if mid_day:
             # --mid-day is the checkpoint, not the end of the day. The weekly

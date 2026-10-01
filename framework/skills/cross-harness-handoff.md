@@ -86,3 +86,17 @@ is worse than none, because the next session acts on it twice.
 - **Urgent operational rules do not belong here.** A handoff is consumed once and
   cleared; a standing rule has to survive that. Put standing rules where the
   tooling states them unprompted, and leave the reasoning in a skill.
+
+## If a sweep is open when you hand off
+
+Sweeps usually run in whichever harness has a browser, and applications
+usually run there too — so the harness that OPENS a sweep is normally the one
+that closes it, and the baton does not need to carry sweep state.
+
+The exception is a handoff mid-sweep, or one where the receiving side will do
+the applying. An open sweep is live state in a file, and the counts needed to
+close it (listings screened, how many were already tracked, rough minutes)
+exist only in the head of whoever ran it. So: **if a sweep is open, say so in
+`State`, with those three numbers.** Receiving a handoff that names an open
+sweep means closing it with those numbers, not deleting the file — deleting
+it throws away the only copy of a count nothing can rebuild.

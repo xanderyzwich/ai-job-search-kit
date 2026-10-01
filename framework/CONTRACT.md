@@ -145,7 +145,7 @@ number, add a key to this schema instead.
 date_applied, response_date, company, role, salary_range, location, remote,
 job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
 hiring_manager, source, lane, resume_version, notes, found_via,
-sweep_id, tech_fit, hard_reqs, tech_named_reqs
+sweep_id, tech_fit, hard_reqs, tech_named_reqs, nice_reqs
 ```
 
 **`response_date`** is when the company responded (rejection, screen invite,
@@ -185,6 +185,10 @@ records what was found and never what it cost: "167 LinkedIn rows" could be
 three sweeps or thirty, and a board cannot be judged on yield per unit of
 effort. Written automatically by `sweep.py end`; blank is legitimate for a
 row that did not come from a sweep (a referral, an inbound recruiter).
+**`<board>-unknown` is a reserved form** meaning the board is known and the
+sweep is not — rows that predate the ledger, or a sweep nobody opened. It is
+a label, never a sweep: readers must exclude it from per-sweep rates, since
+counting it would attribute rows to a sweep that has no screened count.
 
 **`tech_fit`** is the combined match score defined in the instance's scoring
 skill — `hard_match_pct + 0.5 × nice_match_pct`, uncapped. It lives in a
@@ -199,6 +203,14 @@ is not readable.** A vague posting scores HIGH precisely because it asks for
 little that can be missed, so the two columns travel together or the score
 ranks artifacts to the top. Any reader that sorts on `tech_fit` must show
 these beside it.
+
+**`nice_reqs`** is how many preferred/nice-to-have items the posting named,
+and **0 is a meaningful value, not a blank.** Where the composite weights
+preferred matches at half, a posting that names none has a hard ceiling equal
+to its requirement match — so a perfect match sits exactly on a 100 threshold
+and one miss falls under, while a vague posting with a long preferred list
+clears it easily. Any screening threshold must bend for these rows or it
+systematically discards the cleanest matches in the file.
 
 ---
 

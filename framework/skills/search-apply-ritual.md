@@ -137,6 +137,15 @@ Dated inventory findings do not belong in a skill file at all.
    **Without it, whichever board gets swept first banks all the overlap and
    looks strongest for reasons that have nothing to do with its quality.**
 
+**A sweep closes at one of three moments — after applying out of it, when
+moving to another board, or at the end of the day.** Whichever comes first.
+The end of the day is the one that gets forgotten, so the daily-log tool
+checks at BOTH `open` and `close`: it names a sweep left open, and it names
+rows added with no `sweep_id` at all, which is the sweep that was never
+started. Those rows can still be labelled `<board>-unknown` — the board is
+known even when the sweep is not — but the screened count and the minutes
+are gone for good.
+
 ### Why this is a command and not a table you remember to fill in
 
 A hand-maintained sweep log was tried and died twice. By 2026-09-30 it showed
