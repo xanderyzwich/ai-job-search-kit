@@ -70,6 +70,14 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
 - **A new skill** → the header contract above · a CHANGELOG line if
   public. Nothing enumerates skills by design (discovery is the header
   scan), so there's no index to update — keep it that way.
+- **Anything an always-loaded instance file DESCRIBES** (the private
+  `CLAUDE.md`, or whatever the harness auto-loads) → that file. It was
+  missing from this map until 2026-10-01 and had gone stale twice over:
+  it carried a hard-coded skill COUNT, and it told readers the generated
+  map indexed skills when it had begun indexing scripts too. **Prefer
+  deleting the mirror to adding an obligation** — a count or a list in an
+  always-loaded file is drift waiting to happen, so describe what the
+  generated view contains, never how many things are in it.
 - **A template** → bootstrap.py's COPIES list · QUICKSTART · its line in
   framework/README.md's templates entry — the README is how an
   always-loaded private map discovers new templates without being edited,
