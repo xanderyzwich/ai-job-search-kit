@@ -57,6 +57,30 @@ persist in the URL or only in session state, and does an individual posting
 render without JavaScript. That last one determines whether future passes can
 skip the browser, which is the largest available speedup on any board.
 
+### Map the board's vocabulary before trusting any one keyword
+
+**A first look at a new board, or at an employer's own careers site, starts
+with no keyword at all, or with the full title family run side by side:
+engineer, developer, software, application, architect, systems, platform.**
+Record the hit count per term. Narrow only after you know which words this
+board actually uses.
+
+The reason: titles are an employer's vocabulary, not the candidate's, and one
+missing word makes a whole inventory invisible while the search looks like it
+worked. Two first looks on the same day, one at a single-keyword board and one
+at an employer site, show the failure. One employer titled nearly all of its
+software engineers "Systems Engineer", so a search for "software" returned one
+real engineering req out of roughly twenty. A board searched only for
+"architect" looked tiny, but nobody had checked whether "engineer" or
+"developer" held more. The keyword picks the result set, so it cannot also be
+the thing that tells you whether the result set is complete.
+
+What to record, alongside the five measurements: the per-term counts, which
+terms return mostly noise (facilities, mechanical, sales "engineers"), and
+which terms the board or employer uses for software roles. That list belongs
+in the instance's filled search-criteria file, so later sweeps start from
+known-good terms and don't rediscover them.
+
 ### The gate
 
 Stop here and decide, explicitly, before any per-listing work:
