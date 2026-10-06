@@ -19,17 +19,17 @@ TWO WAYS TO BE COVERED, AND THEY ARE NOT EQUAL:
                     <!-- covers: abc1234 def5678 · backfilled YYYY-MM-DD -->
                 Invisible in rendered Markdown, greppable here.
 
-Backfilling is deliberately NOT silent, though the risk is narrower than it
-first looks. Checked against real commits: where the message was written by the
-same author days earlier and carried the mechanism and the numbers, the
-backfilled entry inherited all of it. The entry that came out thin was
-backfilled from ANOTHER author's commit — the message was there, the
-surrounding context was not, and the gap got papered over with an abstraction
-that read well and said less. So the ratio is worth watching, and what it
-actually measures is how much is being written up second-hand.
+Backfilling is deliberately NOT silent, but what the ratio measures took two
+wrong guesses to pin down. It is not that reconstruction always loses the
+reasoning, and not that another author's commit is the problem. Measured: the
+entries that survived backfilling came from commit bodies of 200-425 words; the
+one that came out thin came from a body of 41. **An entry inherits its commit
+body's richness.**
 
-The real preservation mechanism is a commit message rich enough that an entry
-can be derived from it at all.
+So the real lever is the commit message, not the timing of the entry. And when
+a body is thin, the recovery is the session log rather than the diff — the one
+thin entry was missing the measurement that gave its change the whole point,
+and that measurement was in the day's log all along.
 
 **A cited hash is verified to resolve.** Two ways to be covered is also a second
 way to be wrong: a typo'd hash would otherwise read as covered forever.
@@ -112,10 +112,10 @@ def main():
           + (f", {predates} predate the rule" if predates else "")
           + (f", {len(bogus)} bad citation(s)" if bogus else ""))
     if late and not missing:
-        print("  note: backfilled entries are second-hand to a degree. Backfilling"
-              " your own recent work is near-free;")
-        print("        backfilling another author's is where the detail goes."
-              " Watch this count for the latter.")
+        print("  note: an entry inherits its commit body's richness. A terse body"
+              " yields a thin entry whoever writes it,")
+        print("        and the recovery for a terse body is the session log, not"
+              " the diff.")
     return 1 if (missing or bogus) else 0
 
 

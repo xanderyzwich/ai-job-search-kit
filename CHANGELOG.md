@@ -19,20 +19,23 @@ commit as covered if it touched the changelog OR if an entry cites its hash,
 and it verifies the hash resolves — two ways to be covered is also a second way
 to be wrong, and a typo would otherwise read as covered forever.
 
-**The two kinds are counted separately on purpose**, though the first version of
-this entry had the reason wrong. It claimed a backfilled entry necessarily
-loses the reasoning. Checking that against the actual commits showed something
-more precise: where the commit message was written by the same person, days
-earlier, and carried the mechanism and the numbers, the backfilled entry
-inherited all of it. **The one entry that came out thin was backfilled from
-SOMEONE ELSE'S commit** — the message was there, the surrounding context was
-not, and the gap got papered over with an abstraction that read well and said
-less.
+**The two kinds are counted separately on purpose, but the reason took two
+wrong guesses to pin down, and the correction is the useful part.**
 
-So the ratio is still worth watching, but it measures a narrower risk than
-claimed: backfilling your own recent work is close to free, and backfilling
-another author's is where the detail goes. The real preservation mechanism is a
-commit message rich enough that an entry can be derived from it at all.
+First guess: a backfilled entry necessarily loses the reasoning. Wrong — some
+of them lost nothing. Second guess: the lossy one came from another author's
+commit. Also wrong, or at least not the cause. Measuring the commit bodies
+settled it: the entries that survived backfilling came from bodies of 200–425
+words, and the one that came out thin came from a body of **41**.
+
+**An entry inherits its commit body's richness.** Authorship was a coincidence
+of which commit happened to be terse. So the lever is not when the entry gets
+written — it is whether the commit body carries the mechanism and the numbers,
+because that is what anyone writing the entry later will have.
+
+And when a body IS thin, the recovery is the session log rather than the diff.
+The thin entry here was missing the measurement that gave the change its whole
+point, and that measurement was sitting in the day's log the whole time.
 
 Running it also found four more uncovered commits, including one whose change
 was already described in a neighbouring entry but never cited — mentioned in
@@ -204,16 +207,18 @@ nothing.
 ## 2026-10-05 — Map a board's title vocabulary before narrowing a query
 <!-- covers: 1d81216 · backfilled 2026-10-06 -->
 
-**A single keyword can hide most of an employer's inventory.** Boards and
-careers sites do not share a title vocabulary, so a query narrowed against the
-wrong words returns a thin result set that reads as a thin market — measuring
-the query rather than the board.
+**A single keyword can hide almost all of an employer's inventory.** The case
+that prompted this: an employer who titles software engineers "Systems
+Engineer", where searching *software* returned roughly **one of twenty-one open
+requisitions**. The market was not thin; the query was wrong, and nothing about
+a short result list says which.
 
-The fix is procedural and goes first: a first look at a new board or employer
-careers site starts with **no keyword at all, or the full title family**, and
-**records the per-term counts**. Those counts are what reveal which words that
-surface actually uses, and they are cheap to collect only on the first pass —
-once the query is narrowed, the terms it excluded are invisible.
+So a first look at a new board or careers site starts with **no keyword at all,
+or the full title family — engineer, developer, software, application,
+architect, systems, platform — recording the per-term counts** before narrowing
+anything. Those counts are what reveal which words that surface actually uses,
+and they can only be collected on the first pass: once the query is narrowed,
+the terms it excluded are invisible by construction.
 
 ## 2026-10-01 — Delete the mirror, keep the reference
 
