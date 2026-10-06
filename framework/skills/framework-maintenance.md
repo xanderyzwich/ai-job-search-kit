@@ -280,7 +280,7 @@ produces a wall of thin entries that look like records.
    new/changed public files for personal data. The `.gitignore` is a
    backstop, not the check.
 
-## The two closing audits
+## The three closing audits
 
 End every maintenance batch by asking, and actually checking:
 
@@ -289,6 +289,50 @@ End every maintenance batch by asking, and actually checking:
 2. **Is every script wired to its moment?** Named in the task-time skill
    that governs when it runs, and in the always-loaded private map — not
    just in setup docs.
+3. **Can every role actually do its job with what it loads?** See below. Run
+   this one after any split, move, or rename — it is the only audit here that
+   asks about READERS rather than files.
 
-If either audit finds nothing, say so and stop; if it finds something, the
-fix belongs in the same batch, not a someday list.
+If an audit finds nothing, say so and stop; if it finds something, the fix
+belongs in the same batch, not a someday list.
+
+### Audit 3 — trace a role, not a file
+
+Audits 1 and 2 ask whether the files are right and whether they are reachable.
+Both can pass while a role is unable to work, because neither asks what any
+particular reader ends up holding. On 2026-10-06 every structural check passed
+— valid headers, resolving references, planned sizes — while **three roles were
+missing inputs they could not function without**, including one whose skill
+documents a real failure caused by exactly the input that had been left out.
+
+For each role in turn:
+
+1. **Write down what it must DO**, from the flow, in one line. Not what it
+   loads — what it produces.
+2. **List what it loads**, resolving every path. An input that does not exist
+   is the cheap failure and the structural checks already catch it.
+3. **Close the list transitively.** For every skill it loads, read that skill's
+   `Depends on:` and confirm each name is also in the role's list. This is
+   where the 2026-10-06 defect was: a role loaded the scoring skill and none of
+   the six things that skill declares it needs.
+4. **Ask the judgment question the script cannot:** given ONLY this, could the
+   reader produce what step 1 says it must? Read the files and answer honestly.
+   The failures look like a rule filed under the wrong reader — present in the
+   repo, absent from the one role that performs it.
+5. **Check for two documents disagreeing about who does what.** Closing a list
+   transitively tends to surface these: one file says the scorer deduplicates,
+   the flow says the coordinator does, and following both means an agent
+   repeating finished work with hundreds of lines of state it should never have
+   loaded.
+6. **Record the load size per role.** Not a pass/fail — a cost. A role that is
+   expensive for a good reason (honest matching needs the whole verified
+   record) is different from one that is expensive by accident.
+
+**Why this is not a script.** The mechanical half — resolve the paths, check
+the transitive closure — could be automated, and it would have caught the worst
+defect. It is not automated yet because the load lists are prose in a table,
+and making them machine-readable means either parsing that prose, which is
+fragile, or adding a structured copy, which is a second source of truth about
+the same thing. **If those lists ever become structured for another reason,
+build the check that day.** Until then the procedure above finds more than the
+script would, because step 4 is the half that matters and no parser can do it.

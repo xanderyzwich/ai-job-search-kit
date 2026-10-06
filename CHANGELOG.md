@@ -6,6 +6,33 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — A third closing audit, for readers rather than files
+
+Two audits closed every maintenance batch: do the docs match the filesystem,
+and is every script named at the moment it runs. Both passed on a day when
+three roles could not have done their jobs.
+
+They passed because both ask whether the FILES are right. Neither asks what any
+particular reader ends up holding, and that turns out to be a different
+question — the failures all looked the same, a rule present in the repo and
+absent from the one role that performs it.
+
+The third audit traces a role instead: write down what it must produce, list
+what it loads, close that list transitively against each skill's declared
+dependencies, and then answer the question no parser can — given only this,
+could this reader produce that? Two further checks ride along, because closing
+a list transitively surfaces them: documents that disagree about who does a
+step, and roles that are expensive by accident rather than for a reason.
+
+**It is deliberately not a script.** The mechanical half could be automated and
+would have caught the worst defect, but the load lists are prose in a table and
+making them machine-readable means either fragile parsing or a second source of
+truth about the same thing. The note says to build the check the day those
+lists become structured for some other reason, and not before — the half that
+matters is the judgment, and automating around it would produce a check that
+passes while a reader still cannot work.
+
+
 ## 2026-10-06 — A role inherits its skills' dependencies, or the declaration is decoration
 
 Tracing every role's load list, not just one, found that the contract table was
