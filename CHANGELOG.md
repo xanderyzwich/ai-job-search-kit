@@ -6,6 +6,30 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — The changelog rule was too narrow, and skipped the changes that mattered most
+
+An audit found nine of fourteen framework-touching commits carried no entry
+here. The ripple map was the cause: it said *a new skill owes a changelog line
+if public*, and most of those commits added no skill at all. It now says any
+public change owes one, in the same commit.
+
+The selection pattern underneath is worth recording, because it will recur. The
+entries that got written were for changes that felt architecturally large — a
+new measurement, a new column, a file reorganisation. The ones skipped were the
+fixes and follow-ups: a recorder that claimed rows it had not found, a tactic
+measured and found not to work, a tool that fails silently in a background tab.
+
+**Those are the entries with the most transferable content.** A reorganisation
+is visible in the tree; a silent failure mode is not, and it is exactly what
+someone rebuilds this from scratch to rediscover. The filter should be "would
+someone otherwise relearn this the hard way", not "is this a big change".
+
+Backfilling them was possible but strictly worse than writing at the time. An
+entry reconstructed from a diff carries what changed; an entry written at the
+decision carries why the alternative was rejected, and that half does not
+survive the week.
+
+
 ## 2026-10-06 — Split by reader, not by topic
 
 Two skills had grown past the point where a reader could load only what they
