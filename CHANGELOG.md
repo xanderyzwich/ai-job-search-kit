@@ -6,6 +6,32 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — Line accounting says content moved; it does not say anyone can read it
+
+A file split balanced perfectly. What left the source matched what arrived,
+section by section, and the check passed. Hours later, at end of day, three
+blocks of real methodology turned up in a scratch directory — extracted during
+the split and never routed anywhere a reader loads.
+
+**They had counted as accounted-for because they had moved somewhere.** That is
+the flaw: an arithmetic check confirms content is not lost, and says nothing
+about whether it is reachable. Somewhere is not somewhere a reader will ever
+load.
+
+The maintenance skill now carries a split procedure rather than a single
+arithmetic step: account for the lines, **then grep a distinctive phrase from
+each moved block and confirm it resolves to a file a role actually loads**, then
+read the seams, because a mechanical split cuts paragraphs in half and leaves
+orphaned sentences whose antecedent is now in another file — that happened twice
+in one day and no line count can see it. Re-point inbound references in the same
+batch, and re-run the leak scan per moved section rather than once at the end.
+
+The guidance had existed, which is the second half of the lesson. It was written
+in a dated planning document that will be archived, not in the skill that
+governs splits — so it was correct, current, and in the wrong place to ever be
+read again.
+
+
 ## 2026-10-06 — A field that reads back correctly and still fails to submit
 
 Verifying a background form fill by reading the value back is the rule, because

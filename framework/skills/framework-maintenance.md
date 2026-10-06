@@ -296,6 +296,28 @@ End every maintenance batch by asking, and actually checking:
 If an audit finds nothing, say so and stop; if it finds something, the fix
 belongs in the same batch, not a someday list.
 
+### Splitting a file safely
+
+A split is the operation where content disappears without anyone noticing,
+because nothing errors and the result looks finished.
+
+1. **Account for the lines**, section by section: what left the source should
+   equal what arrived, allowing for added headers.
+2. **Then check the destination is LIVE.** Line accounting alone is not enough
+   and has already failed once: a split's arithmetic balanced perfectly while
+   three blocks of real methodology sat in a scratch directory, counted as
+   accounted-for because they had moved *somewhere*. **Somewhere is not
+   somewhere a reader will ever load.** Grep a distinctive phrase from each
+   moved block and confirm it resolves to a file a role actually loads.
+3. **Read the seams.** A mechanical split cuts paragraphs in half. Twice in one
+   day a boundary rule left an orphaned sentence behind — a dangling "This
+   compounds the standing risk…" with its antecedent now in another file. Line
+   counts cannot see this; only reading the edges can.
+4. **Re-point inbound references in the same batch**, and run the reference
+   check. A moved file breaks links silently.
+5. **Re-run the leak scan per moved section**, not once at the end. N new files
+   is N new chances to put private content in a public one.
+
 ### Audit 3 — trace a role, not a file
 
 Audits 1 and 2 ask whether the files are right and whether they are reachable.
