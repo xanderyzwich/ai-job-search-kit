@@ -98,7 +98,18 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   is the public record of WHY the framework looks like this, tied to the
   failure that forced each change — a commit message is not a substitute,
   because nobody reads a log to learn a system's reasoning. A new skill also
-  owes the header contract above. A skill in a CONVENTIONED directory (one file per board, per
+  owes the header contract above.
+
+  **`framework/scripts/check_changelog.py` verifies this and runs at `close`.**
+  A commit counts as covered if it touched the CHANGELOG itself, or if a later
+  entry cites its hash:
+  `<!-- covers: abc1234 · backfilled YYYY-MM-DD -->` — invisible in rendered
+  Markdown, greppable in source, and the hash is verified to resolve so a typo
+  cannot read as covered forever. **The two are counted separately on purpose.**
+  An entry written at the decision records why the alternative was rejected; one
+  reconstructed from a diff records only what changed, and that difference does
+  not survive the week. A rising backfill count means the rule is slipping even
+  while every commit technically passes. A skill in a CONVENTIONED directory (one file per board, per
   ATS vendor, per any other named surface) still needs the header, but nothing
   routes to it — the parent derives the path from the surface name, and the
   directory listing is the inventory. `build_context_map.py`'s `COLLAPSED_DIRS`

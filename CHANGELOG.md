@@ -6,6 +6,32 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — A late entry should be visible as late
+
+Backfilling six missing changelog entries left the audit unable to tell the
+difference between a commit that shipped with its entry and one patched up
+afterwards — it asked only "did this commit touch the changelog", so every
+backfilled commit still read as a miss while the content was in fact present.
+
+A backfilled entry now cites the commits it covers, in an HTML comment:
+invisible in rendered Markdown, greppable in source. The checker treats a
+commit as covered if it touched the changelog OR if an entry cites its hash,
+and it verifies the hash resolves — two ways to be covered is also a second way
+to be wrong, and a typo would otherwise read as covered forever.
+
+**The two kinds are counted separately on purpose.** An entry written at the
+decision records why the alternative was rejected; one reconstructed from a
+diff records only what changed. Collapsing both into "covered" would hide
+exactly the signal worth watching, so the check prints the ratio: on the first
+clean run it was seven written at the time against twelve backfilled, which is
+not a flattering number and should not be smoothed away.
+
+Running it also found four more uncovered commits, including one whose change
+was already described in a neighbouring entry but never cited — mentioned in
+prose is not the same as claimed, and the citation is what makes the difference
+checkable.
+
+
 ## 2026-10-06 — The changelog rule was too narrow, and skipped the changes that mattered most
 
 An audit found nine of fourteen framework-touching commits carried no entry
@@ -58,6 +84,7 @@ so the next reviewer does not re-open the question.
 
 
 ## 2026-10-06 — A moved file breaks links silently
+<!-- covers: c94f708 00aee4e · backfilled 2026-10-06 -->
 
 Splitting an oversized skill left four relative links one level short. Nothing
 reported them: a dangling reference in prose produces no error, no failed
@@ -125,6 +152,7 @@ scan budget — and warns on the rest, including file size, which is how the nex
 oversized file announces itself early.
 
 ## 2026-10-06 — Screenshots are an architecture problem, not a discipline problem
+<!-- covers: fb9366b · backfilled 2026-10-06 -->
 
 Browser automation produces screenshots, screenshots accumulate in the
 conversation that drives them, and a long session dies of it. The instinct is
@@ -158,6 +186,7 @@ than on screenshots in a transcript, which is why delegating costs the review
 nothing.
 
 ## 2026-10-05 — Map a board's title vocabulary before narrowing a query
+<!-- covers: 1d81216 · backfilled 2026-10-06 -->
 
 A query narrowed against the wrong words returns a thin result set that looks
 like a thin market. Boards do not share a title vocabulary — the same role is
@@ -195,6 +224,7 @@ day: **a list inside a document is a mirror, and a mirror rots. Describe what a
 generated view contains, never how many things are in it or what they are.**
 
 ## 2026-10-01 — The always-loaded file was one directory too low
+<!-- covers: 570fd4c · cited 2026-10-06; its change is described in this entry -->
 
 The instance's `CLAUDE.md` lived inside `private/`. Harnesses that auto-load a
 `CLAUDE.md` scan the working directory and its PARENTS, so a session opened at
@@ -225,6 +255,7 @@ the mirror over adding an obligation — describe what a generated view contains
 never how many things are in it.
 
 ## 2026-10-01 — Rules that argue with an absent file
+<!-- covers: f6da664 · backfilled 2026-10-06 -->
 
 The instance's always-loaded file opened by arguing against a file in an
 ancestor directory: it named that file, described what it was for, and framed
@@ -241,6 +272,7 @@ can be actively harmful here, since a blanket "do not commit" would disable
 this framework's entire recovery path.
 
 ## 2026-10-01 — Check for a connection at vet time, and rank it by who would vouch
+<!-- covers: 935a6d2 383b7c8 · backfilled 2026-10-06 -->
 
 Whether anyone you know works at a company is cheap to check and changes what
 you do next, but it had been checked twice in several hundred logged roles,
@@ -267,6 +299,7 @@ remains untested rather than disproven. Negative results are the ones that get
 lost and re-tried, which is why this is recorded with its denominator.
 
 ## 2026-10-01 — A sweep that claims rows it did not find
+<!-- covers: 7ee963c · backfilled 2026-10-06 -->
 
 The sweep recorder matched rows on board name with no bound, so closing a sweep
 claimed every previously-unattributed row for that board rather than the ones
@@ -324,6 +357,31 @@ backfill; neither is sound as a standing derivation.
 The report now also prints the share of submissions that ever produced a
 conversation at all — 4% against a 45% response rate, since a rejection counts
 as a response.
+
+## 2026-09-30 — A handoff is a baton, and the person is the trigger
+<!-- covers: d692e5e 8392caf 5dbe94a · backfilled 2026-10-06 -->
+
+The first version surfaced a waiting handoff when a session opened, which
+assumed one session per task. That is not how two harnesses get used: one
+long-lived session on each side, alternating many times a day to pick up
+whichever capability the next piece of work needs. A trigger tied to startup
+fires once and misses every switch after it. The reliable trigger is the person
+doing the switching, so the handoff became a command.
+
+Picking one up now also re-indexes the skill map. Reading a handoff means the
+other side has been working, and what it worked on may well have been the shared
+repo — adding a skill, editing a trigger, moving a file. A session running all
+day holds an index built whenever it opened, which by then can be hours and many
+commits stale. Pickup is the one moment both sides know the repo moved
+underneath them.
+
+A third change came from the same week's failure. One harness discovers skills
+from the repo, so those stay current on their own; it takes its STARTUP
+instructions from a copy held outside the repo, which does not. The two look
+identical from inside a session and only one is drift-free. Nothing surfaced the
+difference, so the copy fell three commits behind — including the split between
+a mid-session checkpoint and an end-of-day close. The tool now compares the
+file's commit date against the refresh stamp and says so.
 
 ## 2026-10-01 — Measure the cost of a search, not just its output
 

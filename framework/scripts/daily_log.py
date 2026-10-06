@@ -580,6 +580,27 @@ def warn_unswept_rows():
         return
 
 
+def run_changelog_check():
+    """Advisory: did a public change ship without its CHANGELOG entry?
+
+    The rule is that any change to the public framework owes an entry in the
+    same commit, because the changelog is the record of WHY the framework looks
+    this way and a commit message is not a substitute. An audit on 2026-10-06
+    found nine of fourteen framework commits had none. The misses were not
+    random: entries got written for changes that felt large and skipped for
+    fixes, which are the ones carrying the most transferable content."""
+    chk = ROOT.parent / "framework" / "scripts" / "check_changelog.py"
+    if not chk.exists():
+        return
+    try:
+        r = subprocess.run([sys.executable, str(chk), "10"], capture_output=True,
+                           text=True, check=False)
+        if r.returncode != 0:
+            print("\n" + (r.stdout or "").strip())
+    except Exception:
+        return
+
+
 def run_skill_lint():
     """Advisory skill-header check at close, not on request.
 
@@ -753,6 +774,7 @@ def cmd_close(mid_day=False):
     warn_sweep_left_open()
     warn_unswept_rows()
     run_skill_lint()
+    run_changelog_check()
     # Before the history view regenerates, so the generated tables and the
     # funnel both read a tracker whose high-water marks are already current.
     ratchet_peak_stage()
