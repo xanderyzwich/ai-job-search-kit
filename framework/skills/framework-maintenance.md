@@ -34,8 +34,10 @@ concerns — split it before padding it.
 
 **`framework/scripts/lint_skills.py` checks this mechanically, and the daily-log tool
 runs it at `close`** so the check happens at a ritual rather than on request.
-It ERRORS only on what breaks the scan — a missing routing header, or one
-below the line budget — and WARNS on the rest, including file size. The size
+It ERRORS on what breaks the scan — a missing routing header, or one below the
+line budget — **and on a backticked file reference that resolves to nothing**,
+which is how a move or rename announces itself. It WARNS on the rest, including
+file size. The size
 warning is how the next oversized file announces itself: the one that prompted
 all this had reached 2,207 lines before anyone measured it.
 

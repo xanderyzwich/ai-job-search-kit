@@ -13,6 +13,13 @@ Checks, in order of how much damage they prevent:
   ERROR   the Load-when does not start within the first 8 lines
   WARN    the Load-when itself runs longer than 3 lines
   WARN    the file is longer than SIZE_WARN lines
+  ERROR   a backticked file reference that resolves to nothing
+
+The reference check exists because a file MOVE breaks links silently and in a
+way no reader notices until they follow one. Splitting an oversized skill into
+a per-surface directory on 2026-10-06 left four `../data/...` links one level
+short, and turned up a wrong tracker path that had been wrong for an unknown
+time. Nothing reported any of it.
 
 ERROR is reserved for what actually BREAKS the mechanism: a Load-when below the
 budget is invisible to the head-scan, and a missing one cannot be routed at all.
@@ -46,6 +53,55 @@ HEADER_BUDGET = 8      # Load-when must START within this many lines
 LOADWHEN_MAX = 3       # ...and SHOULD run no longer than this (warning)
 SIZE_WARN = 450        # advisory only
 
+REF = re.compile(r"`([A-Za-z0-9_\-./]+\.(?:md|py|csv|yml|json))`")
+# Paths that legitimately do not exist at rest. `today.md` is created by the
+# daily-log tool at `open` and folded away at `close`, so it is absent far more
+# often than present; a template's relative links resolve from the directory it
+# is copied INTO, not from the template itself.
+TRANSIENT = ("temp/today.md", "temp/context_map.md")
+
+
+def _index(root):
+    """(relative paths, basenames) of every real file in the repo."""
+    paths, names = set(), set()
+    for p in root.rglob("*"):
+        if p.is_file() and ".git" not in p.parts:
+            paths.add(p.relative_to(root).as_posix())
+            names.add(p.name)
+    return paths, names
+
+
+def check_refs(path, root, index):
+    """-> [error] for every backticked file reference that resolves to nothing.
+
+    **A bare basename is prose, not a path.** Skills say "run `backlog.py`" and
+    "the `open_threads.md` file" constantly, and resolving those against a
+    directory would be wrong. So a reference WITHOUT a slash is accepted as long
+    as a file of that name exists somewhere in the repo; only a reference that
+    SPELLS OUT a path, or names a file that exists nowhere, can be broken. The
+    first version of this check ignored that and produced 51 errors, none of
+    them real -- the same over-strictness that nearly forced fifteen files of
+    churn when the header rules were first written."""
+    bad = []
+    text = path.read_text(encoding="utf-8", errors="replace")
+    for m in REF.finditer(text):
+        ref = m.group(1)
+        if any(k in ref for k in ("<", "*", "example", "your", "YYYY")):
+            continue
+        if any(ref.endswith(t) for t in TRANSIENT):
+            continue
+        if (path.parent / ref).exists() or (root / ref).exists():
+            continue
+        paths, names = index
+        if ref.lstrip("./") in paths or (root / "private" / ref).exists():
+            continue
+        if "/" not in ref and ref in names:
+            continue        # bare basename, and such a file exists: prose
+        line = text[:m.start()].count("\n") + 1
+        bad.append(f"line {line}: `{ref}` resolves to nothing"
+                   " — a move or rename probably left it behind")
+    return bad
+
 
 def check(path: Path):
     """-> (errors, warnings) for one skill file."""
@@ -78,12 +134,14 @@ def check(path: Path):
 def main():
     n = fails = 0
     out = []
+    index = _index(ROOT)
     for d in SKILL_DIRS:
         if not d.is_dir():
             continue
         for path in sorted(d.rglob("*.md")):
             n += 1
             errors, warns = check(path)
+            errors += check_refs(path, ROOT, index)
             rel = path.relative_to(ROOT).as_posix()
             for e in errors:
                 out.append(f"  ERROR  {rel}: {e}")
