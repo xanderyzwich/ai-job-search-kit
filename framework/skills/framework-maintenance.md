@@ -178,6 +178,92 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
 - **Anything public-visible** → a CHANGELOG entry, tied to the failure or
   need that motivated it.
 
+## The changelog entry — what it owes, and how to rebuild one
+
+**Any change to the mechanisms of this framework owes an entry, in the same
+commit.** Not "a new skill" — that phrasing was the rule for a while and it is
+why nine of fourteen framework-touching commits went unrecorded: most of them
+added no skill at all.
+
+**Trivial changes are exempt, but the exemption must be CLAIMED, not assumed.**
+A reference rename, a typo, a path correction, a reflow — put
+`[no-changelog: <reason>]` in the commit message. `check_changelog.py` counts
+claimed exemptions separately and prints the total, so "trivial" cannot quietly
+become the default. If the mechanism changed, it is not trivial, however small
+the diff.
+
+### Write the body, not just the entry
+
+**An entry inherits its commit body's richness.** Measured on this repo: the
+entries that survived being written up later came from commit bodies of 200–425
+words; the one that came out thin came from a body of 41. Authorship and timing
+were coincidences — body length was the variable.
+
+So the preservation mechanism is the commit body. It should carry **what
+changed, what forced it, and the numbers** — the measurement, the failure, the
+count. Anyone writing the entry later, including you next week, has only what
+the body says.
+
+### Who the entry is written for
+
+**Someone who was not there, does not have the repo checked out, and is reading
+this file on its own.** That is the actual audience: the changelog is the public
+record of why this framework looks the way it does, and for a portfolio-visible
+repo it is often the only part anyone reads in depth. A commit message is not a
+substitute — nobody reads a git log to learn a system's reasoning — and neither
+is a diff, which the reader does not have open.
+
+Three consequences:
+
+- **Name the problem, not just the fix.** What was going wrong, what it cost,
+  and how it was noticed. A reader learns more from "nine of fourteen commits
+  had no entry, and the misses skewed toward fixes" than from "improved
+  changelog coverage."
+- **Keep the numbers.** They are what make an entry credible rather than
+  decorative, and they survive anonymisation: *one of twenty-one requisitions*,
+  *2.2K tokens against 149K*, *0 for 12*. Strip the employer, keep the
+  measurement.
+- **Do not polish the failures out.** The portfolio value is in the failures
+  being visible and honestly described — a record that only contains successes
+  reads as marketing and teaches nobody anything. An entry that says a first
+  attempt was wrong, and why, is worth more than one that implies the design
+  arrived finished.
+
+**The filter for what deserves one is not diff size.** It is *would someone
+otherwise relearn this the hard way*. A reorganisation is visible in the tree; a
+silent failure mode is not, and the silent ones are exactly what gets
+rediscovered expensively. The historical misses skewed toward fixes and
+follow-ups for precisely this reason — they felt small and carried the most
+transferable content.
+
+### Rebuilding an entry after the fact
+
+In this order, and stop when you have the mechanism and the numbers:
+
+1. **The commit body.** Read the FULL message — subject and body. A rich body
+   usually contains the entry already.
+2. **The session log for that date.** This is the recovery when the body is
+   terse, and it is where people look last. One thin entry here was missing the
+   measurement that gave its change the whole point — a single keyword returning
+   one of twenty-one open requisitions — and that number had been in the day's
+   log all along.
+3. **The diff.** Last resort. It tells you what changed and never why, which
+   produces text that reads like a record and carries nothing.
+
+**If none of those yield a reason, write a short honest entry or none at all.**
+A thin entry is worse than an absence, because it stops the next person looking
+further.
+
+**Cite what you backfill.** A late entry names the commits it covers:
+`<!-- covers: abc1234 · backfilled YYYY-MM-DD -->` — invisible in rendered
+Markdown, greppable in source, and the hash is verified to resolve so a typo
+cannot read as covered forever. Written-at-the-time and backfilled are counted
+separately on purpose; collapsing them hides the only signal worth watching.
+
+**Do not chase history.** The rule has a start date and commits before it are
+reported as predating it. Backfilling months of history from diffs alone
+produces a wall of thin entries that look like records.
+
 ## Change workflow
 
 1. **Order the work:** rules/structure first, data corrections second,

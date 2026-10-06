@@ -6,6 +6,42 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — Codify the changelog rule, and name who it is written for
+
+The rule had been enforced by intention, which is how nine of fourteen
+framework-touching commits came to carry no entry. It is now written down in
+the maintenance skill and checked by a script that runs at close.
+
+**Trivial changes are exempt, but the exemption has to be claimed.** A rename, a
+typo, a path fix: `[no-changelog: <reason>]` in the commit message. Claimed
+exemptions are counted and printed rather than hidden, because an exemption
+nobody has to state becomes the default excuse. If the mechanism changed it is
+not trivial, however small the diff.
+
+**The audience is now stated, because it changes what an entry should contain.**
+This repo is a portfolio piece as much as a working system, and the reader of
+this file is someone who was not there, does not have it checked out, and is
+reading this page on its own. A commit message is not a substitute and neither
+is a diff they do not have.
+
+Which gives three rules the entries here now follow. Name the problem and what
+it cost, not only the fix — "nine of fourteen commits had no entry, and the
+misses skewed toward fixes" teaches more than "improved changelog coverage."
+Keep the numbers, because they are what make an entry credible rather than
+decorative, and they survive anonymisation: one of twenty-one requisitions, 2.2K
+tokens against 149K, 0 for 12. And do not polish the failures out — **a record
+containing only successes reads as marketing and teaches nobody anything.** The
+entries above that say a first attempt was wrong, and why, are the ones worth
+having.
+
+The same section records how to rebuild an entry when one is missing: the full
+commit body first, the session log second — that is the recovery people reach
+for last and it is where the missing measurement usually is — and the diff last,
+because it says what changed and never why. If none of them yield a reason,
+write a short honest entry or none at all, since a thin entry stops the next
+person looking further.
+
+
 ## 2026-10-06 — A late entry should be visible as late
 
 Backfilling six missing changelog entries left the audit unable to tell the
