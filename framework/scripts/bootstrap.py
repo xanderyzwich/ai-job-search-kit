@@ -23,7 +23,11 @@ FRAMEWORK = REPO / "framework"
 PRIVATE = REPO / "private"
 
 DIRS = [
-    "skills/communications", "data/companies", "data/archive",
+    # skills/boards and skills/ats start EMPTY on purpose: their files are
+    # created on demand, one per surface, from templates/skill_surface.md. The
+    # directories exist so the shape is visible before the first one is written.
+    "skills/communications", "skills/boards", "skills/ats",
+    "data/companies", "data/archive",
     "scripts", "feedback", "resume", "temp",
 ]
 

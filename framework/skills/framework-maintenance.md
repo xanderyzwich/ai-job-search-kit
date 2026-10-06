@@ -29,8 +29,21 @@ grep -rA2 --include='*.md' '^\*\*Load when' framework/skills private/skills
 ```
 
 (or `head -n 8` per file, guaranteed sufficient by the same budget). A
-Load-when that outgrows 3 lines is a skill trying to cover two concerns —
-split it before padding it.
+Load-when that outgrows 3 lines is usually a skill trying to cover two
+concerns — split it before padding it.
+
+**`framework/scripts/lint_skills.py` checks this mechanically, and the daily-log tool
+runs it at `close`** so the check happens at a ritual rather than on request.
+It ERRORS only on what breaks the scan — a missing routing header, or one
+below the line budget — and WARNS on the rest, including file size. The size
+warning is how the next oversized file announces itself: the one that prompted
+all this had reached 2,207 lines before anyone measured it.
+
+**Keep the error set narrow.** The first version of that script also errored on
+a literal title prefix and on any Load-when over three lines, and would have
+forced churn across fifteen files for two things that were not problems — an
+instance may title its skills in its own house style, and a fourth line is
+usually a disambiguation clause worth keeping.
 
 ## The context map (generated at session start — read it first)
 

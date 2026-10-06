@@ -72,7 +72,9 @@ ai-job-search-kit/
 │   ├── experience_summary.md   verified source of truth
 │   ├── job_tracker.csv               application log — the only hand-edited
 │   │                                  application record; other views are generated
-│   ├── skills/                        filled methodology, one file per concern.
+│   ├── skills/                        filled methodology, one file per concern,
+│   │                                  plus conventioned subdirectories addressed
+│   │                                  by name (one file per board, per vendor).
 │   │                                  Includes session_init.md (the stable map,
 │   │                                  loaded first). Methodology only — no state.
 │   ├── data/                          working state: session_log.md (the dynamic
