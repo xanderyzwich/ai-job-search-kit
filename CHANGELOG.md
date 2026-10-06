@@ -6,6 +6,33 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — Split by reader, not by topic
+
+Two skills had grown past the point where a reader could load only what they
+needed, and the cut that works is not the obvious one.
+
+The sweep runbook carried the browser-delegation mechanics: how to read a page
+without screenshotting it, how to fill a form in a background tab, what to
+batch. Splitting that out by TOPIC would have taken the whole section with it
+and left the runbook without its trigger — a coordinator would read the steps
+and never learn to delegate at all, which is precisely how an earlier
+delegation rule sat unread in a long file for two months. Splitting by READER
+keeps the decision where it is made and moves only the mechanics to the agent
+that executes them.
+
+The same file also carried the question of whether a board earns a place in the
+rotation at all. That is a different moment with a different reader — asked
+rarely, where the runbook is read constantly — so it is now its own skill, and
+its deliverable is that board's own file rather than a section appended to a
+growing one.
+
+A size warning is a prompt to look, not an order to split. One file reviewed
+this way is staying as it is: its content half moved out, what remains is a
+single coherent method, and the warning's reasoning is agent-centric while that
+file is read by a human before a phone call. The reason is recorded in the file
+so the next reviewer does not re-open the question.
+
+
 ## 2026-10-06 — A moved file breaks links silently
 
 Splitting an oversized skill left four relative links one level short. Nothing

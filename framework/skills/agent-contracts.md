@@ -51,7 +51,7 @@ an index to choose.
 | apply | contracts · browser rules · cross-vendor form rules · the profile | the ATS file for the named vendor |
 
 **No file for that surface yet?** That is not an error state — it is the
-new-surface evaluation in `search-apply-ritual.md`, whose deliverable IS that
+new-surface evaluation in `board-evaluation.md`, whose deliverable IS that
 file.
 
 ## The contracts
