@@ -46,9 +46,18 @@ an index to choose.
 | harvest | contracts · browser rules · constraints · **search-execution** | the board file for the named board |
 | fetch | contracts | the board file for the named board |
 | browser-JD | contracts · browser rules | the board file |
-| score | contracts · the scoring skill | — |
-| rank | contracts · the scoring skill's sort and flag rules | — |
-| apply | contracts · browser rules · cross-vendor form rules · the profile | the ATS file for the named vendor |
+| score | contracts · the scoring skill **and its `Depends on:` set, minus anything the coordinator already did** (it dedups upstream, so the tracker is not loaded here) | — |
+| rank | contracts · the scoring skill (its sort rule and flag vocabulary) | — |
+| apply | contracts · browser rules · cross-vendor form rules (which carry the JD-divergence check) · the profile · the resume-lane skill | the ATS file for the named vendor |
+
+**A ROLE INHERITS ITS SKILLS' DEPENDENCIES.** If a skill declares
+`Depends on: X`, a role that loads that skill loads X too. This is not
+bookkeeping: the scoring skill names an experience record as its verified
+backbone *and documents a real under-scoring caused by that record's absence* —
+agents marked genuine, already-written-down experience as unmatched because the
+evidence pack was short. A load list that names the skill but not its
+dependencies rebuilds that exact failure structurally. **Close the list
+transitively, or the `Depends on:` header is decoration.**
 
 **Why harvest loads a query-construction skill and the others do not:** a board
 and a careers site do not share a title vocabulary, so a query narrowed against

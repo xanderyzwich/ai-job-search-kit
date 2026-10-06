@@ -6,6 +6,44 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — A role inherits its skills' dependencies, or the declaration is decoration
+
+Tracing every role's load list, not just one, found that the contract table was
+naming skills without naming what those skills declare they need.
+
+The worst case was scoring. Its skill opens by naming an experience record as
+its verified backbone, **and documents a real under-scoring caused by that
+record's absence** — agents marked genuine, already-written-down experience as
+unmatched because the evidence pack handed to them was short. The load list said
+"contracts and the scoring skill" and named none of the six things that skill
+declares. It rebuilt the documented failure structurally, in the one place that
+failure is written down.
+
+So the rule is now stated outright: **a role that loads a skill loads that
+skill's `Depends on:` set too.** Otherwise the header is decoration.
+
+Closing the list transitively immediately exposed a disagreement the two
+documents had been hiding from each other. The scoring skill's first step is to
+deduplicate against the application tracker. The delegated flow deduplicates in
+the coordinator, before any scoring agent is launched. Following the dependency
+honestly meant every scoring agent loading 700+ lines of tracker to repeat work
+already done — so the skill now scopes that step to the case it was written for,
+scoring without a sweep in front of it, and the flow's coordinator keeps the
+job.
+
+Two more gaps from the same trace. The check comparing a posting as the board
+showed it against the same posting on the employer's own system lived in the
+coordinator's file, while the agent that performs it loads a different one — it
+was being asked to return a verdict whose rule it could not read. And the role
+that fills application forms had no access to the skill deciding which resume
+variant to attach.
+
+**What generalises: every other check here asks whether the FILES are correct.
+Tracing a role asks whether a READER can work, and those are different
+questions.** All the structural checks passed while three roles were missing
+inputs they could not function without.
+
+
 ## 2026-10-06 — Trace a role's load list before trusting the decomposition
 
 Structural checks all passed — every skill had a valid header, every reference
