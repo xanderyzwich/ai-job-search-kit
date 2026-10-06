@@ -31,6 +31,14 @@ was already described in a neighbouring entry but never cited — mentioned in
 prose is not the same as claimed, and the citation is what makes the difference
 checkable.
 
+**The check has a start date, because chasing history is the wrong instinct.**
+Widening the window showed gaps running back weeks. Filling them would mean
+reconstructing dozens of entries from diffs alone, producing text that LOOKS
+like a record while carrying none of the reasoning that makes one worth
+keeping — and a thin entry is worse than an honest absence, because it stops
+anyone looking further. Commits before the rule was written are reported as
+predating it and do not fail the check.
+
 
 ## 2026-10-06 — The changelog rule was too narrow, and skipped the changes that mattered most
 

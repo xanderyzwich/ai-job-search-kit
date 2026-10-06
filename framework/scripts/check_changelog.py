@@ -28,8 +28,16 @@ the discipline is slipping even while every commit technically passes.
 **A cited hash is verified to resolve.** Two ways to be covered is also a second
 way to be wrong: a typo'd hash would otherwise read as covered forever.
 
+THE RULE HAS A START DATE, AND CHASING HISTORY IS THE WRONG INSTINCT. Commits
+before RULE_START are reported as predating it and do not fail the check. The
+gaps behind that line run back weeks, and filling them would mean reconstructing
+dozens of entries from diffs alone — which produces text that LOOKS like a
+record while carrying none of the reasoning that makes one worth keeping. A
+thin entry is worse than an honest absence, because it stops anyone looking
+further.
+
 Usage: check_changelog.py [N]      (default: last 20 commits)
-Exit 1 if any public commit is uncovered.
+Exit 1 if any public commit on or after RULE_START is uncovered.
 """
 import re
 import subprocess
@@ -38,6 +46,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 CHANGELOG = ROOT / "CHANGELOG.md"
+# The day the rule was written down and the audit that forced it was run.
+# Earlier commits predate it; see the docstring on why they are not chased.
+RULE_START = "2026-10-01"
 # A change to any of these owes an entry.
 PUBLIC = re.compile(r"^(framework/|README\.md|SESSION_INIT\.md|QUICKSTART\.md"
                     r"|ARCHITECTURE\.md|CLAUDE\.md|AGENTS\.md)")
@@ -64,12 +75,13 @@ def cited_hashes():
 def main():
     n = int(sys.argv[1]) if len(sys.argv) > 1 else 20
     cited, bogus = cited_hashes()
-    same, late, missing = 0, 0, []
+    same, late, predates, missing = 0, 0, 0, []
 
     for line in git("log", f"-{n}", "--format=%h%x00%s").splitlines():
         if not line.strip():
             continue
         sha, subject = line.split("\x00", 1)
+        when = git("log", "-1", "--format=%ad", "--date=short", sha).strip()
         files = git("show", "--stat=200", "--format=", sha).splitlines()
         names = [f.split("|")[0].strip() for f in files if "|" in f]
         if not any(PUBLIC.match(f) for f in names):
@@ -78,6 +90,8 @@ def main():
             same += 1
         elif sha in cited:
             late += 1
+        elif when < RULE_START:
+            predates += 1
         else:
             missing.append((sha, subject))
 
@@ -89,6 +103,7 @@ def main():
     total = same + late
     print(f"check_changelog: {total} public commit(s) covered "
           f"({same} at the time, {late} backfilled), {len(missing)} uncovered"
+          + (f", {predates} predate the rule" if predates else "")
           + (f", {len(bogus)} bad citation(s)" if bogus else ""))
     if late and not missing:
         print("  note: backfilled entries are weaker than entries written at the"
