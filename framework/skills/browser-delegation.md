@@ -91,10 +91,22 @@ previous one.
   most do not, and the tool output still reads as success. A DOM-level setter
   works, and on frameworks that track their own state the value survives a
   re-render, which is the real test that it registered.
-- **Verify by reading the values back**, never by screenshot.
+- **Verify by reading the values back**, never by screenshot — **but know the
+  one case where that is not enough.** A custom select widget can accept a
+  programmatic value, display it, and read back correctly, while the form still
+  flags the field as empty at submit. Read-back cannot detect this; only an
+  actual submit attempt can. Where a vendor is known to behave this way, fill
+  the field anyway and report it as needing human re-selection regardless of
+  what it reads back.
 - **Fields a DOM set cannot drive** — custom typeahead widgets, comboboxes, file
   upload — go on the report as "needs foreground", to be done when the human
   brings the tab up for review.
+- **One form-filling agent at a time.** A browser handles one interaction at a
+  time without conflict, so pipelining runs at depth ONE: prepare a single tab,
+  and start the next only when the human takes over the prepared one. Agents
+  that hold no browser — fetching, scoring — still fan out freely. On one real
+  run three parallel fill agents happened to finish cleanly; that is a near
+  miss rather than a licence, and the rule was set immediately after.
 - **Do not disturb the human's own tab.** Work in a new one, never switch the
   active tab, and be careful closing tabs: on some setups closing the tab that
   anchors the automation's tab group dissolves it and orphans everything created

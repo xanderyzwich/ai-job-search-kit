@@ -6,6 +6,37 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — A field that reads back correctly and still fails to submit
+
+Verifying a background form fill by reading the value back is the rule, because
+a screenshot cannot be trusted and a tool reporting success cannot either. A run
+of eight real applications found the case where reading back is not enough.
+
+On one ATS, four of four forms accepted a programmatic value into a custom
+select widget. The widget displayed the chosen option. Reading the field back
+returned the correct value. The form still flagged it as required and empty at
+submit, until the human re-selected it by hand. **Nothing available to the agent
+could detect this** — only an actual submit attempt reveals it, and the agent
+never submits.
+
+So the rule gains its exception: where a vendor is known to behave this way,
+fill the field anyway, because it saves the human the choosing, and report it as
+needing re-selection **regardless of what it reads back**. Treat it as unfilled.
+
+The contrast is the useful part, and it is why vendor behaviour lives in
+per-vendor files rather than in the cross-vendor rules. On a different ATS the
+same session filled two forms entirely from hidden tabs — button pairs,
+typeaheads, text — with nothing flagged at submit. Same technique, opposite
+outcome, and the only difference is the vendor.
+
+The same run set a limit on pipelining. A browser handles one interaction at a
+time, so a fill agent works one step ahead of the human and no further: prepare
+one tab, start the next only when they take over the prepared one. Three
+parallel fill agents happened to complete cleanly on the day the rule was set,
+which is a near miss rather than a licence. Agents holding no browser — fetching,
+scoring — still fan out freely.
+
+
 ## 2026-10-06 — A third closing audit, for readers rather than files
 
 Two audits closed every maintenance batch: do the docs match the filesystem,
