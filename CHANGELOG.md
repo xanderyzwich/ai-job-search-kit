@@ -6,6 +6,28 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — A moved file breaks links silently
+
+Splitting an oversized skill left four relative links one level short. Nothing
+reported them: a dangling reference in prose produces no error, no failed
+build, and no symptom until a reader follows one and finds nothing. The same
+pass turned up a wrong data path that had been wrong for an unknown length of
+time.
+
+So the skill linter now resolves every backticked file reference and treats an
+unresolvable one as an error. It lives in the existing linter rather than a
+second script, which keeps it on a check that already runs and adds no
+documentation ripple.
+
+The rule that makes it usable is that a reference WITHOUT a slash is prose, not
+a path. Skills say "run `the-tool.py`" and "the `state-file.md`" constantly, and
+resolving those against a directory is wrong. A bare name passes if such a file
+exists anywhere; only a spelled-out path, or a name that exists nowhere, can be
+broken. The first version ignored that and produced fifty-one errors, none of
+them real — the second time in one day a too-strict first draft would have
+caused churn instead of catching a defect.
+
+
 ## 2026-10-06 — One file per surface, because agents pay for every line
 
 A single search-criteria file had reached 2,207 lines. Under one context that
@@ -50,6 +72,46 @@ churn across fifteen files for two things that were not problems. It now errors
 only on what breaks the mechanism — a missing routing header, or one below the
 scan budget — and warns on the rest, including file size, which is how the next
 oversized file announces itself early.
+
+## 2026-10-06 — Screenshots are an architecture problem, not a discipline problem
+
+Browser automation produces screenshots, screenshots accumulate in the
+conversation that drives them, and a long session dies of it. The instinct is
+to take fewer. That is the wrong lever: the form-filling rules prescribe a
+screenshot per field for a real reason, and removing them reintroduces a bug
+that scrambled a work-history section once already.
+
+The right lever is where the screenshots land. A sub-agent's working context is
+discarded when it returns, so delegating browser work converts a hundred images
+into one text report. Measured on a real setup: an agent that drove a browser
+through 45 tool calls and 4 screenshots moved its parent by 2.2K tokens against
+~149K spent inside it.
+
+The corollary is the part that gets missed, so it is stated outright: routing
+content through the parent to hand it to another agent defeats the whole
+design. Harvested text goes to disk and the parent passes paths.
+
+Four findings here were paid for in testing rather than reasoned out, and every
+one of them fails silently. A file-write tool that does not create parent
+directories lets a whole batch of agents work and then lose everything at the
+write. A summarising fetch tool erases exactly what scoring depends on while
+still returning something that reads like a posting. In a background tab,
+simulated clicking and typing fails unreliably rather than cleanly, with the
+tool output still reporting success, while a DOM-level set works and survives a
+framework re-render. And a sub-agent costs a large fixed amount simply to
+start, so batching work per agent matters more than parallelism.
+
+The apply ritual gains the step it never had: decide where the browser work
+happens. The agent fills and stops; the human reviews on the live form rather
+than on screenshots in a transcript, which is why delegating costs the review
+nothing.
+
+## 2026-10-05 — Map a board's title vocabulary before narrowing a query
+
+A query narrowed against the wrong words returns a thin result set that looks
+like a thin market. Boards do not share a title vocabulary — the same role is
+posted under different words on different surfaces — so narrowing before
+learning the local words measures the query rather than the board.
 
 ## 2026-10-01 — Delete the mirror, keep the reference
 
@@ -110,6 +172,67 @@ twice as a result: a hard-coded skill count, and a description of the generated
 map that predated the map indexing scripts. The entry says to prefer deleting
 the mirror over adding an obligation — describe what a generated view contains,
 never how many things are in it.
+
+## 2026-10-01 — Rules that argue with an absent file
+
+The instance's always-loaded file opened by arguing against a file in an
+ancestor directory: it named that file, described what it was for, and framed
+this project's own rules as exceptions to it. That file belongs to unrelated
+work, is not guaranteed to exist in future, and will not exist at all for
+anyone else who clones the framework.
+
+Rules written as rebuttals degrade badly when the thing they rebut disappears:
+what remains is a reader being argued out of a position nobody holds, with the
+actual rule never stated plainly. So the rules are now stated positively and
+unconditionally, and the ancestor case is a short clause underneath. The clause
+keeps the one thing worth knowing — a rule that is correct in another project
+can be actively harmful here, since a blanket "do not commit" would disable
+this framework's entire recovery path.
+
+## 2026-10-01 — Check for a connection at vet time, and rank it by who would vouch
+
+Whether anyone you know works at a company is cheap to check and changes what
+you do next, but it had been checked twice in several hundred logged roles,
+both on the same day, and never again. It is now a step in the vetting ritual
+with a fixed note convention, so the answer is recorded either way — recording
+"none" matters as much as recording a hit, or nothing distinguishes a company
+that was checked from one nobody looked at.
+
+The guardrail is the part worth stating, because it is counterintuitive and it
+comes from outcomes rather than instinct. **Degree of connection is not the
+signal.** On one real search, every human-sourced interview came from someone
+who knew the candidate BEFORE the search began — a community they belonged to,
+a former manager, a recruiter who had placed them — and no connection made
+during the search produced an interview across two cohorts and two months.
+Meanwhile a nominal second-degree link turned out to be hollow: the mutual had
+no idea who the person was.
+
+The cold half of the tactic has a measured record, and it is 0 for 12. Thirteen
+applications went out with a message attached to someone at the company; one
+advanced, and that one was not cold — the recipient already knew the candidate
+and had sent him the posting. Nine of the twelve failures were messages to
+recruiters rather than to engineers on the team, which is the one variant that
+remains untested rather than disproven. Negative results are the ones that get
+lost and re-tried, which is why this is recorded with its denominator.
+
+## 2026-10-01 — A sweep that claims rows it did not find
+
+The sweep recorder matched rows on board name with no bound, so closing a sweep
+claimed every previously-unattributed row for that board rather than the ones
+the sweep actually produced. On one real tracker the next close would have
+claimed 44 old rows, inflating that sweep's yield eightfold and mis-dating the
+rest — corrupting the one measurement the ledger exists to produce, silently,
+on first use.
+
+`start` now snapshots the existing rows and `end` claims only the difference. A
+row that was already present belongs to whatever found it first; this sweep
+re-encountering it is a collision, and collisions belong in the already-known
+count rather than in yield.
+
+Rows whose board is known but whose sweep is not carry a reserved
+`<board>-unknown` label instead of a blank, and readers exclude it from
+per-sweep rates — counting it would attribute rows to a sweep that has no
+screened count, which is the same error as judging a board on volume.
 
 ## 2026-10-01 — A rejection erased the interview that preceded it
 

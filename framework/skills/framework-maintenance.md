@@ -91,8 +91,14 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   tolerate it. Standing compatibility rule: columns get **added, never
   renamed or removed**; scripts read by column name and treat absent or
   blank as empty.
-- **A new skill** → the header contract above · a CHANGELOG line if
-  public. A skill in a CONVENTIONED directory (one file per board, per
+- **ANY public change — not just a new skill** → a CHANGELOG entry, in the
+  same commit. **This is the ripple most often skipped**: an audit on
+  2026-10-06 found nine of fourteen framework-touching commits had none, and
+  the entries had to be reconstructed afterwards from the diffs. The CHANGELOG
+  is the public record of WHY the framework looks like this, tied to the
+  failure that forced each change — a commit message is not a substitute,
+  because nobody reads a log to learn a system's reasoning. A new skill also
+  owes the header contract above. A skill in a CONVENTIONED directory (one file per board, per
   ATS vendor, per any other named surface) still needs the header, but nothing
   routes to it — the parent derives the path from the surface name, and the
   directory listing is the inventory. `build_context_map.py`'s `COLLAPSED_DIRS`
