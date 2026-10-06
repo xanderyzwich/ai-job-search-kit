@@ -43,12 +43,18 @@ an index to choose.
 
 | role | fixed | derived |
 |---|---|---|
-| harvest | contracts · browser rules · constraints | the board file for the named board |
+| harvest | contracts · browser rules · constraints · **search-execution** | the board file for the named board |
 | fetch | contracts | the board file for the named board |
 | browser-JD | contracts · browser rules | the board file |
 | score | contracts · the scoring skill | — |
 | rank | contracts · the scoring skill's sort and flag rules | — |
 | apply | contracts · browser rules · cross-vendor form rules · the profile | the ATS file for the named vendor |
+
+**Why harvest loads a query-construction skill and the others do not:** a board
+and a careers site do not share a title vocabulary, so a query narrowed against
+the wrong words measures the query rather than the board. That rule is
+execution-time knowledge and it has to reach the agent running the sweep, not
+only the coordinator choosing the board.
 
 **No file for that surface yet?** That is not an error state — it is the
 new-surface evaluation in `board-evaluation.md`, whose deliverable IS that

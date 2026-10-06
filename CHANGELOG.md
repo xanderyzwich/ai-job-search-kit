@@ -6,6 +6,39 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — Trace a role's load list before trusting the decomposition
+
+Structural checks all passed — every skill had a valid header, every reference
+resolved, every file was the planned size. Then tracing what one ROLE actually
+loads found a defect none of them could see.
+
+The harvest role's load list named the contracts, the browser rules, the
+constraints and the board's own file. It did not name the skill holding the
+rule that a board's title vocabulary must be mapped before a query is narrowed
+— that rule lived with board PRIORITY, which is the coordinator's question, not
+the harvester's. **The first real sweep would have queried a board with a single
+keyword against titles that may not use that word**, which is the exact failure
+the vocabulary rule exists to prevent, reintroduced by filing the rule under the
+wrong reader.
+
+So that file split again, by reader: which board to sweep and in what order
+stays with the coordinator; how to construct the query for whichever board was
+chosen goes to the agent running the sweep. The load table names it, with the
+reason, so the next person does not quietly drop it as redundant.
+
+A second gap in the same trace: the board's own file carried its filters and its
+fetch capability but not its scale or its marginal yield — that a shallow
+re-sweep of page one is mostly re-reading rows already tracked, measured at 18
+of 26 companies on one pass. An agent deciding how deep to go needs that, and it
+was sitting in an archive.
+
+**The lesson is about the checks, not the files.** Structure, references, size
+and headers can all be correct while a role is unable to do its job, because
+every one of those asks whether the FILES are right and none of them asks
+whether the READER has what it needs. Tracing one role end to end costs a few
+minutes and is the only check here that found anything.
+
+
 ## 2026-10-06 — Codify the changelog rule, and name who it is written for
 
 The rule had been enforced by intention, which is how nine of fourteen
