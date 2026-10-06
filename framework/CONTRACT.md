@@ -29,7 +29,10 @@ private/
 ├── job_tracker.csv          application log — the ONLY hand-edited application
 │                            record; every other view of it is generated
 │
-├── skills/                  filled-in methodology, one file per concern —
+├── skills/                  filled-in methodology, one file per concern, plus
+│                            CONVENTIONED SUBDIRECTORIES whose files are
+│                            addressed by name rather than by routing (one per
+│                            job board, one per ATS vendor) —
 │                            resume/lane strategy, search criteria, outreach and
 │                            screen-call patterns (a communications/ subdirectory
 │                            is a reasonable grouping), any domain-specific

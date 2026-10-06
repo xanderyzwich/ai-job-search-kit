@@ -32,7 +32,8 @@ independent verification they need:
 
 The actual title lists for each tier, and which lane they map to, live in
 `private/profile.yml` (`lanes.pc.titles`, `lanes.ic.titles`) and the
-person's own filled `search_criteria.md`.
+person's own filled instance material — one file, or one file per surface
+once per-board detail outgrows a single file.
 
 ## Org shape, not title, is the real filter
 
@@ -65,7 +66,7 @@ salary floor filter (dropping it floods results with underpaid postings),
 prefer remote-only filtering over a text search for "remote" (title text is
 unreliable), and sort by date/recency to catch fresh postings before they
 accumulate high applicant counts. The specific parameter syntax for each board
-in current use is tracked in the person's own filled `search_criteria.md`,
+in current use is tracked in the person's own filled instance material,
 since board URL parameters change over time and are exactly the kind of detail
 that needs periodic re-verification rather than being treated as permanently
 correct.

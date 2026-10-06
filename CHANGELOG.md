@@ -6,6 +6,51 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-06 — One file per surface, because agents pay for every line
+
+A single search-criteria file had reached 2,207 lines. Under one context that
+was awkward; under a sub-agent flow it is a repeated cost, because an agent
+sweeping one board loads the whole file to reach the hundred lines that concern
+it, and pays again on every agent and every sweep.
+
+It also carried two faults that size alone does not explain. Twenty-one dated
+table rows sat in a methodology file, which the contract forbids outright. And
+knowledge about a single application vendor was spread across five separate
+places in it, because the file was organised by when things were learned rather
+than by who needs them.
+
+So it dissolved. Per-board detail became one file per board; application-vendor
+detail became one file per vendor, on a separate axis, since finding a job and
+applying for one are different questions asked by different readers. A vendor
+that is both a job board and an application target gets a file on each axis,
+which is deliberate and is written down so a later cleanup does not merge them.
+Constraints, lane definitions, board strategy and cross-vendor form rules each
+became their own file. The dated rows moved to the data directory.
+
+Files in those per-surface directories are addressed BY NAME, not by routing: a
+coordinator hands an agent a surface name and the agent derives the path.
+Nothing scans an index to choose one, and the directory listing is the
+inventory. The context map collapses each such directory to a single line,
+because a dozen near-identical routing entries would drown the skills that are
+genuinely routed.
+
+Two new skills support the flow. An agent-contracts skill defines what crosses
+the boundary in both directions — the literal return shape per role, errors
+inside the object rather than as prose, which skills each role loads, and what
+an agent must never do: submit anything, choose what to apply to, or edit a
+skill file. A capability change is reported as data and written up later by a
+context that knows the repository's standards, because an agent mid-sweep is
+not that context and neither is a coordinator in the middle of getting
+applications out.
+
+Finally, the header contract is now checked by a script rather than by eye, and
+it runs at close rather than on request. Its first version errored on a literal
+title prefix and on any routing header over three lines, and would have forced
+churn across fifteen files for two things that were not problems. It now errors
+only on what breaks the mechanism — a missing routing header, or one below the
+scan budget — and warns on the rest, including file size, which is how the next
+oversized file announces itself early.
+
 ## 2026-10-01 — Delete the mirror, keep the reference
 
 Scripts were enumerated by hand in seven places: a Scripts block in the private

@@ -127,8 +127,9 @@ Dated inventory findings do not belong in a skill file at all.
    and how many of those were already tracked, exist nowhere else the moment
    the tab closes. Start counting as you scroll; estimates beat blanks.
 1. **Load the criteria.** This repo's `search-criteria.md` for the
-   constraint logic; the private instance's filled version for the actual
-   board filters, tier rules, and skip rules; `profile.yml` for the hard
+   constraint logic; the instance's own filled constraint and board material
+   for the actual filters, tier rules, and skip rules — **which may be one
+   file or, once it outgrows that, one file per surface**; `profile.yml` for the hard
    constraints (floor, location, travel).
 2. **Sweep boards in the private file's priority order.** Collect
    candidates without evaluating deeply yet — sweep and vet are different

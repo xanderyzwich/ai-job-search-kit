@@ -36,6 +36,8 @@ COPIES = [  # (source relative to framework/, destination relative to private/)
     ("templates/experience_summary.md", "experience_summary.md"),
     ("templates/tracker_schema.csv", "job_tracker.csv"),
     ("templates/session_init.md", "skills/session_init.md"),
+    # skill_surface.md is NOT copied: it is a shape to create FROM, on demand,
+    # not a file every instance must start with.
     ("templates/resume_content.yml", "resume/resume_content.yml"),
     ("scripts/build_resume.py", "resume/build_resume.py"),
     ("scripts/build_history.py", "scripts/build_history.py"),

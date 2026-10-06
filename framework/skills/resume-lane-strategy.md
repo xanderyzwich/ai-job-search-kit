@@ -42,7 +42,7 @@ Route a given opportunity into a lane using, in order of reliability:
    `pc.org_size` threshold in `profile.yml`, default to PC read.
 2. **Title-implies-scale-up language** in the posting. Titles that almost always
    grow into pure people-management (see the "requires explicit qualification"
-   tier in `search_criteria.md`) should be read as PC only if the JD body
+   tier in the instance's filled constraint material) should be read as PC only if the JD body
    explicitly disclaims that growth path.
 3. **When genuinely ambiguous**, prefer whichever resume a warm contact at the
    company would find familiar — if there's a referral path, ask rather than guess.

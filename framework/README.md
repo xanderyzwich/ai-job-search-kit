@@ -16,7 +16,8 @@ No personal data lives anywhere in `framework/`.
   `grep -rA2 --include='*.md' '^\*\*Load when' framework/skills private/skills`
 - **`templates/`** — the canonical shape of every file type that has one
   (company brief, profile, experience summary, tracker schema, resume
-  content, session init, feedback). State files (session log, open threads)
+  content, session init, feedback, and the per-surface skill shape used for
+  one-file-per-board and one-file-per-ATS-vendor). State files (session log, open threads)
   start empty; generated views come from `scripts/`. **Rule: before creating any new file, check
   here — if a template exists, the file is created from it and keeps its
   sections.** Structural edits to an existing instance preserve the

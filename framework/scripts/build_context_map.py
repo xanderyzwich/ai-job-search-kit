@@ -35,18 +35,42 @@ OUT = PRIVATE / "temp" / "context_map.md"
 RIPPLE_HEADING = "## The ripple map"
 
 
+# Directories whose files are addressed BY CONVENTION, not by routing. An agent
+# is handed a surface name and derives the path; it never scans this map to pick
+# one. Listing them individually would add a dozen near-identical entries and
+# drown the skills that ARE routed, so each such directory collapses to a single
+# line. `skills/communications/` is deliberately NOT here: those files are chosen
+# by trigger like any other skill. The directory itself is the inventory --
+# `ls skills/boards/` answers "which boards have files".
+COLLAPSED_DIRS = {"boards", "ats"}
+
+
 def scan_load_when(*skill_dirs):
-    """[(relpath, load_when_text)] for every skill file, from its first 8 lines."""
+    """[(relpath, load_when_text)] for every skill file, from its first 8 lines.
+
+    Files under a COLLAPSED_DIRS directory are summarised as one entry for that
+    directory rather than listed individually."""
     entries = []
+    collapsed = {}
     for d in skill_dirs:
         if not d.is_dir():
             continue
         for path in sorted(d.rglob("*.md")):
+            if path.parent.name in COLLAPSED_DIRS and path.parent != d:
+                key = path.parent.relative_to(ROOT).as_posix()
+                collapsed.setdefault(key, []).append(path.stem)
+                continue
             head = "\n".join(path.read_text(encoding="utf-8").splitlines()[:8])
             m = re.search(r"\*\*Load when:\*\*\s*(.+?)(?:\n\n|\Z)", head, re.S)
             lw = " ".join(m.group(1).split()) if m else "(!! no Load-when header)"
             entries.append((path.relative_to(ROOT).as_posix(), lw))
-    return entries
+    for key, names in sorted(collapsed.items()):
+        entries.append((
+            key + "/",
+            f"addressed BY NAME, not by routing — {len(names)} file(s): "
+            f"{', '.join(sorted(names))}. Derive the path from the surface name; "
+            f"do not scan for one."))
+    return sorted(entries)
 
 
 def extract_ripple_section():

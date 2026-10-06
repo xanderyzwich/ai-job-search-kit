@@ -77,7 +77,12 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   renamed or removed**; scripts read by column name and treat absent or
   blank as empty.
 - **A new skill** → the header contract above · a CHANGELOG line if
-  public. Nothing enumerates skills by design (discovery is the header
+  public. A skill in a CONVENTIONED directory (one file per board, per
+  ATS vendor, per any other named surface) still needs the header, but nothing
+  routes to it — the parent derives the path from the surface name, and the
+  directory listing is the inventory. `build_context_map.py`'s `COLLAPSED_DIRS`
+  is what keeps a dozen near-identical entries from drowning the skills that
+  ARE routed; add a new conventioned directory there or it will. Nothing enumerates skills by design (discovery is the header
   scan), so there's no index to update — keep it that way.
 - **Anything an always-loaded instance file DESCRIBES** (the private
   `CLAUDE.md`, or whatever the harness auto-loads) → that file. It was

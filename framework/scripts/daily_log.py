@@ -580,6 +580,28 @@ def warn_unswept_rows():
         return
 
 
+def run_skill_lint():
+    """Advisory skill-header check at close, not on request.
+
+    The header contract is what makes one grep list every skill's routing and
+    what makes the generated context map complete. It was enforced by eye until
+    2026-10-06, which is the same arrangement that let a 2,207-line file
+    accumulate and a delegation rule go unfollowed for two months because nobody
+    could find it. Errors here break the scan; warnings are design smells, and
+    the size warning is how the next oversized file announces itself early."""
+    lint = ROOT.parent / "framework" / "scripts" / "lint_skills.py"
+    if not lint.exists():
+        return
+    try:
+        r = subprocess.run([sys.executable, str(lint)], capture_output=True,
+                           text=True, check=False)
+        out = (r.stdout or "").strip()
+        if r.returncode != 0 or "warn" in out:
+            print("\n" + out)
+    except Exception:
+        return
+
+
 def warn_sweep_left_open():
     """A sweep left open overnight silently mis-attributes the next day's rows.
 
@@ -730,6 +752,7 @@ def cmd_close(mid_day=False):
     # forgotten, so both sweep checks run here as well as at open.
     warn_sweep_left_open()
     warn_unswept_rows()
+    run_skill_lint()
     # Before the history view regenerates, so the generated tables and the
     # funnel both read a tracker whose high-water marks are already current.
     ratchet_peak_stage()
