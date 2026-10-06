@@ -19,12 +19,20 @@ commit as covered if it touched the changelog OR if an entry cites its hash,
 and it verifies the hash resolves — two ways to be covered is also a second way
 to be wrong, and a typo would otherwise read as covered forever.
 
-**The two kinds are counted separately on purpose.** An entry written at the
-decision records why the alternative was rejected; one reconstructed from a
-diff records only what changed. Collapsing both into "covered" would hide
-exactly the signal worth watching, so the check prints the ratio: on the first
-clean run it was seven written at the time against twelve backfilled, which is
-not a flattering number and should not be smoothed away.
+**The two kinds are counted separately on purpose**, though the first version of
+this entry had the reason wrong. It claimed a backfilled entry necessarily
+loses the reasoning. Checking that against the actual commits showed something
+more precise: where the commit message was written by the same person, days
+earlier, and carried the mechanism and the numbers, the backfilled entry
+inherited all of it. **The one entry that came out thin was backfilled from
+SOMEONE ELSE'S commit** — the message was there, the surrounding context was
+not, and the gap got papered over with an abstraction that read well and said
+less.
+
+So the ratio is still worth watching, but it measures a narrower risk than
+claimed: backfilling your own recent work is close to free, and backfilling
+another author's is where the detail goes. The real preservation mechanism is a
+commit message rich enough that an entry can be derived from it at all.
 
 Running it also found four more uncovered commits, including one whose change
 was already described in a neighbouring entry but never cited — mentioned in
@@ -196,10 +204,16 @@ nothing.
 ## 2026-10-05 — Map a board's title vocabulary before narrowing a query
 <!-- covers: 1d81216 · backfilled 2026-10-06 -->
 
-A query narrowed against the wrong words returns a thin result set that looks
-like a thin market. Boards do not share a title vocabulary — the same role is
-posted under different words on different surfaces — so narrowing before
-learning the local words measures the query rather than the board.
+**A single keyword can hide most of an employer's inventory.** Boards and
+careers sites do not share a title vocabulary, so a query narrowed against the
+wrong words returns a thin result set that reads as a thin market — measuring
+the query rather than the board.
+
+The fix is procedural and goes first: a first look at a new board or employer
+careers site starts with **no keyword at all, or the full title family**, and
+**records the per-term counts**. Those counts are what reveal which words that
+surface actually uses, and they are cheap to collect only on the first pass —
+once the query is narrowed, the terms it excluded are invisible.
 
 ## 2026-10-01 — Delete the mirror, keep the reference
 

@@ -19,11 +19,17 @@ TWO WAYS TO BE COVERED, AND THEY ARE NOT EQUAL:
                     <!-- covers: abc1234 def5678 · backfilled YYYY-MM-DD -->
                 Invisible in rendered Markdown, greppable here.
 
-Backfilling is deliberately NOT silent. An entry reconstructed from a diff
-carries what changed; an entry written at the decision carries why the
-alternative was rejected, and that half does not survive the week. So the two
-are counted separately and the ratio is printed — a rising backfill count means
-the discipline is slipping even while every commit technically passes.
+Backfilling is deliberately NOT silent, though the risk is narrower than it
+first looks. Checked against real commits: where the message was written by the
+same author days earlier and carried the mechanism and the numbers, the
+backfilled entry inherited all of it. The entry that came out thin was
+backfilled from ANOTHER author's commit — the message was there, the
+surrounding context was not, and the gap got papered over with an abstraction
+that read well and said less. So the ratio is worth watching, and what it
+actually measures is how much is being written up second-hand.
+
+The real preservation mechanism is a commit message rich enough that an entry
+can be derived from it at all.
 
 **A cited hash is verified to resolve.** Two ways to be covered is also a second
 way to be wrong: a typo'd hash would otherwise read as covered forever.
@@ -106,8 +112,10 @@ def main():
           + (f", {predates} predate the rule" if predates else "")
           + (f", {len(bogus)} bad citation(s)" if bogus else ""))
     if late and not missing:
-        print("  note: backfilled entries are weaker than entries written at the"
-              " decision — a rising count here means the rule is slipping.")
+        print("  note: backfilled entries are second-hand to a degree. Backfilling"
+              " your own recent work is near-free;")
+        print("        backfilling another author's is where the detail goes."
+              " Watch this count for the latter.")
     return 1 if (missing or bogus) else 0
 
 
