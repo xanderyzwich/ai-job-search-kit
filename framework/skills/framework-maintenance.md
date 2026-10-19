@@ -16,6 +16,38 @@ updated, and the other three quietly start lying. The fixes below were all
 earned during real maintenance sessions; this file exists so the next one
 doesn't rediscover them.
 
+## Is it a skill or is it data? Ask who EXECUTES it
+
+**The test is not "does it have a trigger." It is "who acts on it."**
+
+- **A skill is something the ASSISTANT does.** An agent loads it mid-task and
+  acts: filling a form, sweeping a surface, scoring a posting, running a ritual.
+- **Data is something the PERSON reads.** It informs a decision or a
+  conversation the assistant is not party to and cannot execute.
+
+**This was got wrong on 2026-10-19 and the error is instructive, because the
+file passed every structural check.** Per-platform notes for automated coding
+assessments were filed as skills. They had a clean `Load when`, they were
+addressed by name the way the board and ATS directories are, they carried real
+measured findings, and they linted clean. **They were still data**: nobody but
+the candidate ever opens them, because no agent sits a coding assessment.
+
+**Why the resemblance is so convincing, and worth naming so it does not recur:**
+the vendor-shaped directories really are skills — a board file is loaded by the
+agent running the sweep, an ATS file by the agent filling the form. An
+assessment file is shaped identically and loaded by a human on their way into a
+room the assistant cannot enter. **Same shape, different executor, different
+home.**
+
+The owner's formulation, which is the one to keep: **"skills are for Claude to
+do things; data is informational."**
+
+Practical consequence when this is misjudged: the misfiled thing drags routing
+machinery behind it. The 10/19 error also added the directory to the context
+map's collapse list, which had to be reverted — **a file in the wrong half pulls
+index and ripple changes with it, so the test is cheaper to apply before
+writing than after.**
+
 ## The header contract (skill routing in one call)
 
 Every skill file must deliver its complete routing information — the

@@ -6,6 +6,56 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-19 — Same shape, different executor, different home
+
+Two automated coding assessments had failed on two platforms, and both results
+had been filed under one heading: timed assessments are the weak point. That
+heading was hiding the useful part.
+
+**The failures had nothing in common.** On one platform a step that did not
+compile scored zero rather than partial credit, so the work never reached the
+tests at all, while time went into polishing an earlier step that was already
+passing half its cases. On the other, the code compiled, ran, and returned the
+right answer on everything the candidate had thought of — and scored badly on
+hidden edge cases, with time left on the clock and a corner-case checklist
+unspent.
+
+**The two platforms reward opposite behaviour.** One says ship something that
+builds for every step and let the later steps subsume the earlier ones. The
+other says do not submit when it works, submit when the checklist is spent. A
+single "timed assessments" section can hold one of those rules and is actively
+wrong on the other platform. So they were split per platform — and only for
+platforms with measured history. A third appeared in the record but had never
+produced a graded result, only a scheduling link; writing guidance for it would
+have meant inventing advice and giving it the standing of advice paid for in
+failed assessments.
+
+**Then the split was filed in the wrong half of the repository, and that is the
+part worth recording.** The per-platform notes went into skills, beside the
+directories for job boards and ATS vendors. They had a clean loading trigger,
+they were addressed by name exactly as those are, they carried real measured
+findings, and they passed every structural check. The owner read them and said
+they felt like data.
+
+**He was right, and the test that catches it is not "does this have a trigger"
+but "who executes it."** A skill is something the assistant does — an agent
+loads it mid-task and acts. Data is something the person reads. The board and
+ATS directories really are skills: an agent loads a board file while sweeping
+and an ATS file while filling a form. An assessment file is shaped identically
+and is read by a human on their way into a room the assistant cannot enter.
+**Nobody but the candidate ever opens it, because no agent sits a coding
+assessment.**
+
+The maintenance skill now carries that test, because every structural check the
+repository owns had passed. Lint was clean, the header contract held, the
+routing resolved. **Nothing mechanical can distinguish a file an agent loads
+from a file a human loads; only the question of who acts can.**
+
+There is a practical cost to getting it wrong, which is the reason to ask early:
+a misfiled file drags routing machinery behind it. This one had already been
+added to the context map's collapse list, and that had to be reverted.
+
+
 ## 2026-10-06 — Line accounting says content moved; it does not say anyone can read it
 
 A file split balanced perfectly. What left the source matched what arrived,
