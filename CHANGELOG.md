@@ -6,6 +6,38 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Fourteen commits, four features, ten repairs
+
+A day's commit log, read back: four features shipped, and ten of the fourteen
+commits were repairs to the commit immediately before. Every repair came from
+RUNNING the thing. Not one came from re-reading the diff.
+
+The three that cost most were invisible to review by construction. A template
+shipped with a worked example still inside its schema block, so copying it the
+way its own header instructs wrote a fabricated meeting into a real calendar
+under a real person's name — **the one view built to be trusted about
+commitments was the easiest place to inject one nobody made.** A conformance
+check ran at every session close with its output captured and discarded, which
+made it an assertion nobody read. A generator crashed the instant it was pointed
+at a directory outside the repository.
+
+So the ripple map gains a commit-ordering rule: **anything executable — a
+script, a template that gets copied, a schema a parser reads — is exercised
+BEFORE the commit, not after.** Run it against the real directory and a
+throwaway one. Copy the template and look at what the copy produces. Feed the
+parser a malformed line and confirm it reports rather than drops.
+
+It also records a failure mode found the same day: **a test that exercises a
+nearby path proves nothing.** One repair was first verified by invoking a
+command that never calls the code under test, and it passed. The companion rule
+is to prove a check works by breaking it on purpose — if deleting the thing it
+guards produces no error, the check is decoration.
+
+This is not an argument for fewer commits. The commit remains the recovery point
+and the checkpoint still runs constantly. It is about which commit the dogfood
+pass lands in: before it, the history records what was built; after it, the
+history records what was nearly built and then fixed.
+
 ## 2026-10-20 — Annotate the record instead of exempting the directory
 
 Twenty-six references in write-once records pointed at a file that had been

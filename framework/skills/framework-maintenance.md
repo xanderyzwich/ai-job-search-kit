@@ -197,6 +197,32 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   booked schedule reads as nothing scheduled. Anything needing nesting goes
   in a body block with a line grammar, which can at least report the lines it
   could not read.
+- **ANYTHING EXECUTABLE — a script, a template that gets COPIED, a schema a
+  parser reads** → **exercise it BEFORE the commit, not after.** Run the script
+  against the real directory and against a throwaway one. Copy the template the
+  way its own header says to, and look at what the copy produces. Feed the
+  parser a malformed line and confirm it REPORTS rather than drops.
+
+  **The evidence is one day's log: fourteen commits produced four features, and
+  ten of the fourteen were repairs to the commit immediately before.** Every
+  repair came from running the thing; not one came from re-reading it. A
+  template shipped with a worked example still in it, so copying it wrote a
+  fabricated meeting into a real calendar under a real person's name. A
+  conformance check ran at every session close with its output captured and
+  discarded, asserting nothing. A generator crashed the moment it was pointed
+  outside the repository. **None of those are visible in a diff**, which is
+  exactly why reading the change again is not the check.
+
+  **A test that exercises a NEARBY path proves nothing.** One of those repairs
+  was first "verified" by invoking a command that never calls the code under
+  test, and it passed. Run the path that actually runs, and prove a check works
+  by breaking it on purpose — if deleting the thing it guards produces no
+  error, the check is decoration.
+
+  This is not an argument for committing less often. **The commit is still the
+  recovery point and the checkpoint should run constantly.** It is about which
+  commit the dogfood pass lands in: before it, the history records what was
+  built; after it, the history records what was nearly built and then fixed.
 - **ANY public change — not just a new skill** → a CHANGELOG entry, in the
   same commit. **This is the ripple most often skipped**: an audit on
   2026-10-06 found nine of fourteen framework-touching commits had none, and
