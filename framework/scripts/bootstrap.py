@@ -39,6 +39,11 @@ DIRS = [
     # analyses. A web view renders its README on arrival, which is the whole
     # point on a phone.
     "data/dashboard",
+    # sweeps/ takes the procedurally generated search output and analysis/ the
+    # dated one-off studies, because both accumulate without bound and burying
+    # the handful of live-state files under forty of them is how a data layer
+    # stops being browsable.
+    "data/sweeps", "data/analysis",
     "scripts", "feedback", "resume", "temp",
 ]
 

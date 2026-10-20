@@ -81,6 +81,8 @@ ai-job-search-kit/
 │   │                                  log), open_threads.md (read at startup),
 │   │                                  dated snapshots, per-company briefs,
 │   │                                  per-contact records, assessment cards,
+│   │                                  sweeps/ (generated search output) and
+│   │                                  analysis/ (dated one-off studies),
 │   │                                  and dashboard/ — every rendered view the
 │   │                                  candidate reads (calendar, contact index,
 │   │                                  funnel, application history), committed so

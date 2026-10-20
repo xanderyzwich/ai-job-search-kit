@@ -52,7 +52,7 @@ else:                                            # running from framework/
     PRIV = ROOT.parent / "private"
 
 TRACKER = PRIV / "job_tracker.csv"
-SWEEPS = PRIV / "data" / "sweeps.csv"
+SWEEPS = PRIV / "data" / "sweeps" / "sweeps.csv"
 OPEN_FILE = PRIV / "data" / "sweep_open.json"
 
 FIELDS = ["sweep_id", "date", "board", "query", "lane", "screened",

@@ -6,6 +6,41 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — A data layer where generated output buries live state
+
+Moving the rendered views into their own directory fixed the symptom and left
+the cause. The data layer still held forty-odd loose files, and the ten that are
+read most sessions — what is open, who is owed, the narrative log — sat
+alphabetically among thirty that are written once and never touched again. **A
+directory nobody can browse is a directory nobody browses**, and this one gets
+browsed from a phone in the evening, which is the least forgiving reading
+environment there is.
+
+The split is by LIFECYCLE rather than by topic, because topic does not predict
+growth:
+
+- **`sweeps/`** takes procedurally generated search output — per-sweep stack
+  ranks, apply queues, the effort ledger and its archive. This pile grows
+  without bound by process, every sweep, forever.
+- **`analysis/`** takes dated one-off studies — comp analyses, lane
+  explorations, runway math, interview-day records, proposals. These accumulate
+  by decision rather than by process, but they accumulate.
+- **The root keeps only live state**: read most sessions, few enough not to bury
+  each other.
+
+The directory gained a `README.md` that describes **the layout and not the
+contents** — where a new file goes, never what is currently there. A file list
+would mirror the filesystem, and `ls` already answers that.
+
+**The skill linter found two stale references that three separate greps had
+missed**, and then two more after the first fix. The greps missed them because
+the same path appears with different prefixes and quoting across skills
+(`../data/`, `../../data/`, backticked, templated with a placeholder), and a
+pattern tuned to one form silently returns nothing for the others. **A reference
+checker that resolves paths finds what a text search cannot**, and the only
+honest loop is to run it, fix, and run it again until it is clean rather than to
+declare the scan complete.
+
 ## 2026-10-20 — Every view the candidate reads now lives in one directory
 
 Committing a view makes it reachable. It does not make it findable. The
