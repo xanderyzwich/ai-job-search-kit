@@ -6,6 +6,44 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Three ways to get a message wrong by not reading the file first
+
+The skill for logging a communication had a fan-out, an ownership rule and a
+follow-up rule, and assumed the thing being logged was already understood. One
+day produced three failures that all came from writing before reading.
+
+**A contact offered roles on her own project, unposted.** The reply discussed a
+different, posted role found on the company's site. She corrected it politely
+and repeated the offer — and that second offer then sat unanswered for six days.
+Re-reading her actual message before replying would have cost ten seconds.
+
+**An existing record had a contact's employer right.** A later session
+researched him from scratch, found stale third-party profiles that disagreed,
+and overwrote the correct entry with a wrong one. It was corrected by the person
+who knew. The existing file was the better source and was never opened.
+
+**And a thread closed by someone who had already been thanked**, whose stated
+etiquette is no follow-up push, very nearly acquired a logged action owed to
+him. That is the mirror image of the failure that cost a six-month contract
+earlier the same month: one direction invents a wait, the other invents a debt,
+and both come from writing without reading.
+
+So the skill now opens by saying which file is primary for a given
+communication and to load it **before replying and before logging**. The
+frontmatter is the cheap read — who owed whom, when they were last spoken to,
+what was supposed to happen next — and is usually enough. The log is for when
+the message is ambiguous, cold, or surprising.
+
+It also says what writing in light of that means. **If the new entry agrees with
+the file, do not restate it.** If it contradicts, say so explicitly and date the
+thing being superseded, because a silent overwrite destroys the provenance that
+makes a record worth trusting and leaves the next reader unable to tell a
+correction from a disagreement. And if the direction of who-owes-whom changed,
+the summary changes in the same edit as the log — **a file whose log says one
+thing while its header says another is arguing with itself, and the header is
+what gets read.**
+
+
 ## 2026-10-20 — The index nobody was told to read
 
 The project's own three closing audits, run end to end against the whole

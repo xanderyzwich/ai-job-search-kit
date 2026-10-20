@@ -23,6 +23,62 @@ A communication is the **only** thing that changes the state of a thread.
 Applications do not advance on their own. So this is the moment the whole
 record either stays true or starts drifting.
 
+## READ THE PRIMARY FILE FIRST — before replying, before logging
+
+**A communication cannot be understood, answered, or recorded correctly without
+the state it arrives into.** Load the primary file for that conversation BEFORE
+doing anything with the message.
+
+**Which file is primary follows the ownership rule below:**
+
+| the communication is from | primary file |
+|---|---|
+| a person whose value spans employers, or none | **their contact record** |
+| someone who IS the employer — a hiring manager, an ATS, an internal recruiter | **that company's brief** |
+| a recruiter about a specific requisition | **both** — the brief for the role, the record for the person |
+
+**The frontmatter is the cheap read and usually enough**: `owed_by`,
+`last_contact`, `next_action` tell you in one glance whose move it was. **The
+log tells you why**, and you need that whenever the message is ambiguous, cold,
+or surprising.
+
+### The three failures this prevents, all observed in a single day
+
+**1. Answering a question nobody asked.** A contact offered roles on *her own
+project*, unposted. The reply discussed a *posted* role found on the company
+site. She corrected it politely and re-offered — and the re-offer then sat
+unanswered for six days. **Re-reading her actual message before replying would
+have cost ten seconds.**
+
+**2. "Correcting" a record that was already right.** An existing entry recorded
+a contact's employer accurately. A new session researched him from scratch,
+found stale third-party profiles, and overwrote the correct entry with a wrong
+one — then had to be corrected back by the person who knew. **The existing file
+was the better source and was never opened.**
+
+**3. Nearly inventing an obligation.** A thread had just been closed by someone
+who had already been thanked and whose stated etiquette is no follow-up push.
+Without reading his record first, the instinct was to log an action owed to him.
+**That is the mirror image of the failure that cost a six-month contract** — one
+direction invents a wait, the other invents a debt, and both come from writing
+without reading.
+
+### Writing in light of what is there
+
+**A new entry has to be consistent with the file it joins, or explicitly say it
+is not.**
+
+- **If it agrees, do not restate it.** Add what is new; the history is already
+  written.
+- **If it contradicts, say so in the entry**, with the date of the thing being
+  superseded. **A silent overwrite destroys the provenance that makes the record
+  trustworthy** — and the next reader cannot tell a correction from a
+  disagreement.
+- **If it changes the direction of who owes whom, update the frontmatter in the
+  SAME EDIT**, not just the log. A log that says one thing while the summary
+  above it says another is the file arguing with itself, and the summary is what
+  gets read.
+
 ## The fan-out, and it is ONE EDIT
 
 **A state change goes into every file that carries it, in the same edit.** Not
