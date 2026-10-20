@@ -400,6 +400,8 @@ def main():
         d = DATE.match(sched)
         if d:
             due.append((sched, c, na))
+        elif na.strip().upper().startswith("NONE"):
+            pass             # DECIDED not to act, and that is at rest
         elif na:
             owed.append(c)   # an action with no date = undecided
 

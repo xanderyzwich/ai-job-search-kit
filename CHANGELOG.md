@@ -6,6 +6,28 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The index printed the convention and then ignored it
+
+Writing a real contact record found it. A community peer had delivered what he
+offered, was thanked, and was owed nothing back, so his record said
+`owed_by: nobody` and `next_action: NONE — he delivered what he offered`. The
+index listed him under NEEDS A DECISION OR AN ACTION anyway.
+
+**The same view prints the rule it was breaking**, three lines below the list:
+"a contact with no next-action date is NOT at rest — it is undecided.
+Deliberate inaction is recorded as `next_action: NONE` with its reason." The
+generator treated any non-empty next-action without a date as undecided, so the
+documented way to record a decision was reported as a failure to make one.
+
+That is the worst shape a view can take: it teaches a convention, the person
+follows it, and the view punishes them for it. A list that cries wolf about a
+thread deliberately set down is a list that gets skimmed, and the whole reason
+this index exists is that nine warm introductions once went unworked because
+nobody could see the list as a list.
+
+Found only by writing a record that used the convention — not by reading the
+generator, which had looked correct through several passes over it the same day.
+
 ## 2026-10-20 — Fourteen commits, four features, ten repairs
 
 A day's commit log, read back: four features shipped, and ten of the fourteen
