@@ -124,6 +124,10 @@ def main():
     out = [
         f"# Session Context Map (generated {now})",
         "",
+        "> **READ BY: the assistant.** A working reference to what exists,",
+        "> rebuilt every session and never committed — see CONTRACT on where a",
+        "> generated view is written.",
+        ">",
         "> GENERATED at session start by framework/scripts/build_context_map.py.",
         "> Do NOT edit — rebuilt every session from the skill headers and the",
         "> framework-maintenance ripple map. A view, never a source.",

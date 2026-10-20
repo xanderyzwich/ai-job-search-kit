@@ -6,6 +6,28 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Four generated views, and not one of them said who it was for
+
+Every generated view in the kit carried a header explaining how it was built
+and warning against editing it. **Not one named its reader.** That omission is
+what put a calendar built for phone-reading into a gitignored directory, and
+then — once the mistake was visible — nearly moved a view that belongs there
+out of it, on the reasoning that the two were the same kind of thing. They are
+not, and nothing written down distinguished them.
+
+The rule they imply, now stated in the contract and in the ripple map: **where a
+generated view is written is decided by who reads it.** A view the assistant
+reads to orient itself — what skills exist, who the search knows — belongs in
+the ephemeral directory. It is rebuilt every session, worthless the moment it is
+stale, and committing it buys a daily diff nobody opens. A view the candidate
+reads belongs in the committed data layer, because the search gets checked from
+a phone when the machine is off.
+
+**Each view now states its audience in its own first line**, so the next one has
+to answer the question before it can be written. "Put it with the other
+generated files" is a decision about audience wearing the clothes of a decision
+about tidiness, and it is only obvious in hindsight which one it was.
+
 ## 2026-10-20 — A view that exists only on the machine that rendered it
 
 The calendar was written to the instance's `temp/` directory, alongside the

@@ -115,6 +115,9 @@ def main():
     parts = [
         "# Application History",
         "",
+        "> **READ BY: the candidate.** Committed, so it reads with the"
+        " machine off.",
+        ">",
         "> **GENERATED FILE — do not hand-edit.** Rendered from"
         " `job_tracker.csv` by `scripts/build_history.py` on"
         f" {date.today().isoformat()}. The tracker is the single hand-edited"

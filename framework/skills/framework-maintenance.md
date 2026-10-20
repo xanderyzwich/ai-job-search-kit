@@ -150,6 +150,15 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   scripts" when there were five. **If you find yourself writing a list of
   scripts into a document, you are recreating a mirror that was deliberately
   deleted** — write the reference instead.
+- **A new GENERATED VIEW** → answer "who reads this" BEFORE choosing a path,
+  and put the answer in the file's own header. The assistant's working
+  references go in the gitignored `temp/`; anything the candidate reads goes in
+  `data/` and is committed, because the search is checked from a phone when the
+  machine is off. **A view written to `temp/` by default is a view its intended
+  reader cannot open**, which is how a calendar built for phone-reading spent
+  its first day where only one machine could see it. Committed views compute
+  their internal links relative to their own directory — a wrong relative link
+  renders as a dead link rather than failing, so it survives review.
 - **Tracker schema** → CONTRACT schema text · the template CSV · migrate
   the live CSV (backup to `temp/` first) · confirm the readers still
   tolerate it. Standing compatibility rule: columns get **added, never
