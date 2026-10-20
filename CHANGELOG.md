@@ -6,6 +6,58 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — A hiring loop is a list, and the schedule field was a scalar
+
+A contact record carried one `next_contact` date. That is enough for a thread
+where the next event is a single call, and it silently fails the moment a real
+process starts: a four-stage interview round with an assessment deadline running
+beside it has no honest representation in one field. The soonest date hides the
+rest, rescheduling one leg rewrites the field another leg owns, and a deadline
+has no counterparty slot at all. **Three different kinds of date — a commitment
+someone else is holding, a deadline that expires, and a follow-up you imposed on
+yourself — were collapsed into one, and the collapse is what lost them.**
+
+**The obvious fix was to nest a list in the frontmatter, and it does not work.**
+The parsers here are hand-rolled on purpose, splitting each line on its first
+colon so that a public framework does not acquire a dependency for fifteen lines
+of parsing. Probing one with a list showed three failures in four lines: the
+undated item vanished (no colon to split on), a `08:30` timestamp became a key
+named `- 2026-11-04 08`, and the list key itself read as present-but-empty —
+which several readers treat as MEANINGFUL. **A fully booked schedule parsed as
+nothing scheduled**, which is the worst available direction to fail in, and all
+of it silent.
+
+So the schedule became a `## Scheduled` body block with a line grammar
+(`- <WHEN> | <KIND> | <WHO> | <NOTE>`) on whichever file is primary — the
+company brief when a loop spans several people, the contact record for a
+one-to-one. `next_contact` narrowed to mean only the self-imposed follow-up.
+**`<WHEN>` accepts `TBD`**, because a stage that is real but unscheduled is the
+one most likely to be forgotten and a scalar cannot represent it at all.
+
+`build_contact_index.py` gained a second output, `calendar.md`: overdue first,
+then this week, then upcoming, then the undated-but-sequenced stages that a
+chronological view has nowhere to put. **A line that does not match the grammar
+is printed under `DIDN'T PARSE` rather than dropped** — the property the
+frontmatter could not offer, and the whole reason the schedule is a body block.
+One script with two outputs rather than two scripts, because two parsers reading
+one schema is a mirror waiting to disagree.
+
+**The ripple check found a collision before the schema landed, which is the part
+worth recording.** The communication skill's fan-out table already assigned "a
+date created or killed" to the open-items file's hard-dates section. A
+`## Scheduled` block holding the same fact would have created a second owner for
+it — the one-owner rule violated by the change meant to strengthen it. That
+section narrowed in the same batch to dates belonging to no person and no
+company, and the company-brief template's claim that the open-items file owns
+"what is owed and when" narrowed with it.
+
+That collision was only found by grepping for it, because **the ripple map had
+no entry for a data-file schema** — it covered tracker columns and the resume
+content keys, but nothing for frontmatter keys or body blocks in the
+hand-written markdown records. That entry now exists, and it says to grep the
+ownership tables for THE FACT rather than the filename, since a filename search
+finds nothing when the conflict is about meaning.
+
 ## 2026-10-20 — Three ways to get a message wrong by not reading the file first
 
 The skill for logging a communication had a fan-out, an ownership rule and a

@@ -48,6 +48,12 @@ FIELD NOTES, in the order that matters:
       at rest** — and the index reports it that way, because those two look
       identical from outside and mean opposite things.
 
+      **This field is the SELF-IMPOSED follow-up only** — when to reach out if
+      nothing is on the books. A date someone else is holding (a call, an
+      interview) and a hard deadline are different facts with different failure
+      modes, and they go in the `## Scheduled` block below. Do not put a booked
+      meeting here: it is a scalar, so the second one overwrites the first.
+
   next_action:
       One line. Leave blank ONLY when `owed_by: nobody`, and say why in the
       body. Deliberate inaction is a decision and gets recorded as one.
@@ -74,6 +80,44 @@ What this person is actually useful for, stated honestly. A recruiter who
 places in the wrong band, a friend with no hiring authority, and a hiring
 manager at a target employer are all "contacts" and none of them are the same
 lever.
+
+## Scheduled
+
+<!-- LIVE COMMITMENTS AND DEADLINES ONLY, one line each. PARSED — the grammar
+     is a contract. `framework/scripts/build_contact_index.py` reads this block
+     at every session start and renders private/temp/calendar.md.
+
+       - <WHEN> | <KIND> | <WHO> | <NOTE>
+
+     <WHEN>  YYYY-MM-DD · YYYY-MM-DD HH:MM TZ · DUE YYYY-MM-DD (a deadline)
+             · TBD (a stage that is real but not yet scheduled)
+     <KIND>  one uppercase token. SCREEN · PANEL · CALL are commitments someone
+             else is holding; ASSESSMENT · DEADLINE expire; EVENT is a dated
+             thing that happens with or without you. FOLLOW-UP appears here ONLY
+             on a company brief, which has no `next_contact` field -- on a
+             contact record a self-imposed follow-up belongs in that field
+             instead, and putting it here gives the same fact two owners.
+     <WHO>   the counterparty, or a dash for a deadline nobody is holding
+     <NOTE>  stage number, duration, what is blocking it
+
+     WHY A BLOCK AND NOT A FRONTMATTER FIELD: `next_contact` is a scalar and a
+     hiring process is a list. A four-stage loop with an assessment deadline
+     running alongside it cannot fit in one field -- the soonest date hides the
+     rest, and rescheduling one leg rewrites the field another leg owns.
+     `next_contact` therefore means only "when to reach out if nothing is on
+     the books."
+
+     TBD IS THE POINT. A stage that exists but has no date is the one that
+     disappears, and a scalar cannot represent it at all.
+
+     LIVE ONLY. A held stage leaves this block; a cancelled one is REMOVED and
+     the reason goes in the log. A date cleared without a log entry reads as
+     undecided when it was in fact decided against.
+
+     A line that does not match the grammar is reported under DIDN'T PARSE in
+     the rendered calendar rather than silently dropped. -->
+
+- TBD | ASSESSMENT | — | stage 3, blocked on repo access
 
 ## Contact log
 

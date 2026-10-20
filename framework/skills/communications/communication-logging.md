@@ -88,7 +88,8 @@ is not.**
 |---|---|---|
 | `job_tracker.csv` | status, dates, the full reasoning | **always** |
 | `open_threads.md` §1 | that the thread exists and what is live | any thread that is live, newly live, or just closed |
-| `open_threads.md` §3 | a date created or killed | an interview booked, a window opened, a revisit promised |
+| the primary file's `## Scheduled` block | **every live commitment and deadline, one line each** | a meeting booked, moved or cancelled; a deadline set, met or missed |
+| `open_threads.md` §3 | a date belonging to NO person and NO company | a renewal, a lapse, a market window — **never an interview** |
 | `pending_outreach.md` | **who owes whom, right now** | any change in direction |
 | `data/companies/<name>.md` | the readable brief | anything a human would need before the next conversation |
 
@@ -107,6 +108,7 @@ DIFFERENT SLICE of the same event, not the same slice repeated.
 | the **reasoning trail** on a role — how it scored, what the apply pass found, what was decided and when | **the tracker row** | a pointer |
 | the **current structured state** of an APPLIED-TO role — status, comp, match and gap, talking points, interview notes | **the company brief's role block** | a pointer |
 | the person — what they did, said, offered; what they are owed | **the contact record's log** | a pointer |
+| a **booked commitment or a hard deadline** — when, with whom, which stage | **the `## Scheduled` block** on whichever file is primary | a pointer |
 | what is open right now | **the open-items file** | one line and a link |
 | who owes whom | **`owed_by` plus the outreach queue** | — |
 | the narrative of the day | **the session log** | — |
@@ -211,6 +213,79 @@ index** — and a contact nobody can see is a contact nobody works.
 **`last_contact` is a date and never a duration.** The index does the
 arithmetic every run, so the file cannot go stale by sitting still.
 
+## A BOOKED DATE IS NOT A FOLLOW-UP DATE
+
+**`next_contact` is a scalar, and a hiring process is a list.** An interview
+round spanning four days, with an assessment deadline running in parallel, has
+no honest representation in one field: the soonest date hides the rest,
+rescheduling one leg rewrites the field another leg owns, and a deadline has no
+counterparty slot at all. **Three different kinds of date got collapsed into
+one, and the collapse is what loses them.**
+
+| kind | who is holding it | what a passed date means |
+|---|---|---|
+| **commitment** | someone else cleared a slot | it happened, or something went wrong — never ambiguous |
+| **deadline** | nobody; it expires | the opportunity is gone |
+| **follow-up** | self-imposed | nothing was promised; decide now |
+
+**Only the third belongs in `next_contact`**, which narrows to mean *when to
+reach out if nothing is on the books.* The first two go in a `## Scheduled`
+block on whichever file is primary — same test as every other routing decision
+in this skill.
+
+### The block: live items only, one line each
+
+```
+## Scheduled
+- <WHEN> | <KIND> | <WHO> | <NOTE>
+```
+
+`<WHEN>` is `YYYY-MM-DD`, or `YYYY-MM-DD HH:MM TZ`, or `DUE YYYY-MM-DD` for a
+deadline, or **`TBD` for a stage that exists but has no date.** `<KIND>` is one
+uppercase token — `SCREEN`, `PANEL`, `CALL` for a slot someone else is
+holding; `ASSESSMENT`, `DEADLINE` for something that expires; `EVENT` for a
+dated thing that happens whether or not you act.
+
+**`FOLLOW-UP` is allowed in the block ONLY on a company brief**, which has no
+`next_contact` field to hold one. On a contact record it belongs in that field,
+and writing it in the block instead gives one fact two owners — the precise
+thing the rest of this skill exists to prevent.
+
+**A loop spanning several people goes on the COMPANY BRIEF** — no single
+contact record owns a panel of three. **A one-to-one goes on the CONTACT
+RECORD.** Stages already held, and stages still hypothetical, are not in the
+block; the prose description of the process stays where it is and remains worth
+reading.
+
+**`TBD` is the whole reason this is a block and not a date field.** A stage
+that is real but unscheduled is the one most likely to vanish, and a scalar
+cannot represent it. Two TBDs stacked on a live thread is a stall you can
+see.
+
+### Rescheduling and cancelling are communications, so they are this skill
+
+**Rescheduling touches one line.** The other legs are untouched — which is
+precisely what a single date field cannot do without risking the wrong one.
+
+**Cancelling REMOVES the line and the log records why.** The block holds only
+what is live, so nothing stale accumulates, and the history goes where history
+already goes. **A cleared date with no log entry is the failure mode**: the
+views will report it as undecided when it was in fact decided against, and that
+reads as neglect for as long as nobody checks.
+
+**Neither is a new obligation.** Both are state changes, so the one-edit
+fan-out above already governs them: the log and the block move together.
+
+### What reads it
+
+**`framework/scripts/build_contact_index.py` parses these blocks at every
+session start** — from `data/contacts/*.md` and `data/companies/*.md` alike —
+and renders `private/temp/calendar.md`: overdue first, then this week, then
+upcoming, then the undated-but-sequenced stages. **A line that does not match
+the grammar is printed under `DIDN'T PARSE` rather than dropped**, which is the
+property the frontmatter cannot offer: a malformed entry there becomes a key
+named `- 2026-11-04 08` and is never seen again.
+
 ## IF IT NEEDS PICKING UP LATER, IT GETS A DATE NOW
 
 **The direction question above has a time dimension, and it is the half that
@@ -227,10 +302,12 @@ same edit:**
 3. **What happens if nothing arrives.** A date with no stated action is a
    reminder to feel bad, not an instruction.
 
-**The date goes where dated things already live** — the hard-dates section of
-the open-items file — **not only in a tracker note.** A note is read when
-someone opens that row; a date is read at the start of every session, which is
-the point.
+**The date goes where that KIND of date lives** — a booked commitment or a
+hard deadline in the primary file's `## Scheduled` block, a self-imposed
+follow-up in `next_contact`, and only a date belonging to no person and no
+company in the open-items file — **not only in a tracker note.** A note is read
+when someone opens that row; all three of those render into a session-start
+view, which is the point.
 
 ### THIS SKILL DOES NOT SET THE INTERVAL, AND MUST NOT
 

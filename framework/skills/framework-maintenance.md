@@ -155,6 +155,28 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   tolerate it. Standing compatibility rule: columns get **added, never
   renamed or removed**; scripts read by column name and treat absent or
   blank as empty.
+- **A data-file SCHEMA** — a frontmatter key, or a structured body block, in
+  `data/contacts/*.md`, `data/companies/*.md` or any other hand-written
+  markdown record → CONTRACT's row for that file type · the template it is
+  created from · whatever parses it · **every skill whose ownership or
+  fan-out table names the fact the new structure now holds.**
+
+  **That last one is the trap, and it is why this entry exists.** A block
+  that holds a fact an existing table already assigns to another file creates
+  a SECOND OWNER for it, silently — so the one-owner rule gets violated by
+  the very change meant to strengthen it. Grep the ownership tables for THE
+  FACT, not for the filename, before writing the schema; if a row already
+  claims it, that row has to narrow in the same batch or the schema does not
+  land.
+
+  **Frontmatter stays FLAT key/value scalars by contract.** The hand-rolled
+  parsers split on the first colon, so a nested list reads as a present-but-
+  empty value — which several of them treat as MEANINGFUL — and a line
+  carrying a timestamp becomes a garbage key from the `08:30`. Both fail
+  silently, and the empty-value case fails in the worst direction: a fully
+  booked schedule reads as nothing scheduled. Anything needing nesting goes
+  in a body block with a line grammar, which can at least report the lines it
+  could not read.
 - **ANY public change — not just a new skill** → a CHANGELOG entry, in the
   same commit. **This is the ripple most often skipped**: an audit on
   2026-10-06 found nine of fourteen framework-touching commits had none, and

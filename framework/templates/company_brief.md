@@ -28,9 +28,13 @@
 #
 # WHAT DOES NOT GO HERE
 # - Roles still being researched, and roles skipped before any application.
-# - Company-level next actions. The open-threads file owns what is owed and
-#   when; two sources of truth is how one goes stale. "None identified" is a
-#   complete References entry. "Worth a LinkedIn pass" is a next action.
+# - Company-level next actions. The open-threads file owns what is OWED; two
+#   sources of truth is how one goes stale. "None identified" is a complete
+#   References entry. "Worth a LinkedIn pass" is a next action.
+#   BOOKED DATES ARE THE EXCEPTION and live in Scheduled below. A commitment
+#   someone else is holding is not a next action, and prose in the open-threads
+#   file proved unable to hold a multi-stage loop: the stages that had no date
+#   yet simply vanished from it.
 # - Status words invented here. Status is the tracker's literal token plus a
 #   date, nothing more; narrative goes in the summary line. One vocabulary
 #   note that matters for the funnel: declined_by_us is a POST-application
@@ -58,6 +62,44 @@ Anything known about how THIS company interviews, independent of any single
 req: loop shape, stages and what each tests, standing rules (tools allowed or
 banned, behavioral expectations), typical timeline. Details of one specific
 interview belong under that role's Interview Notes, below.
+
+## Scheduled
+
+<!-- LIVE COMMITMENTS AND DEADLINES ONLY, one line each. PARSED — the grammar
+     is a contract. `framework/scripts/build_contact_index.py` reads this block
+     at every session start and renders private/temp/calendar.md.
+
+       - <WHEN> | <KIND> | <WHO> | <NOTE>
+
+     <WHEN>  YYYY-MM-DD · YYYY-MM-DD HH:MM TZ · DUE YYYY-MM-DD (a deadline)
+             · TBD (a stage that is real but not yet scheduled)
+     <KIND>  one uppercase token. SCREEN · PANEL · CALL are commitments someone
+             else is holding; ASSESSMENT · DEADLINE expire; EVENT is a dated
+             thing that happens with or without you. FOLLOW-UP appears here ONLY
+             on a company brief, which has no `next_contact` field -- on a
+             contact record a self-imposed follow-up belongs in that field
+             instead, and putting it here gives the same fact two owners.
+     <WHO>   the counterparty, or a dash for a deadline nobody is holding
+     <NOTE>  stage number, duration, what is blocking it
+
+     WHY A BLOCK AND NOT A FRONTMATTER FIELD: `next_contact` is a scalar and a
+     hiring process is a list. A four-stage loop with an assessment deadline
+     running alongside it cannot fit in one field -- the soonest date hides the
+     rest, and rescheduling one leg rewrites the field another leg owns.
+     `next_contact` therefore means only "when to reach out if nothing is on
+     the books."
+
+     TBD IS THE POINT. A stage that exists but has no date is the one that
+     disappears, and a scalar cannot represent it at all.
+
+     LIVE ONLY. A held stage leaves this block; a cancelled one is REMOVED and
+     the reason goes in the log. A date cleared without a log entry reads as
+     undecided when it was in fact decided against.
+
+     A line that does not match the grammar is reported under DIDN'T PARSE in
+     the rendered calendar rather than silently dropped. -->
+
+- TBD | ASSESSMENT | — | stage 3, blocked on repo access
 
 ## References / Contacts
 
