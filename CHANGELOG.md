@@ -6,6 +6,25 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The checkpoint that runs constantly was the one that did not re-render
+
+The fix for a stale rendered view was a line in a skill telling the assistant to
+re-run the generator after editing a source. That is the weakest kind of
+trigger: a rule someone has to remember in the middle of doing something else.
+
+The daily-log tool already refreshed the generated views at `open` and when
+picking up a cross-harness handoff — but not at `close`, which is the
+checkpoint command run many times a day, immediately after the edits that would
+have invalidated them. Moving the refresh there bounds the staleness window to
+one checkpoint instead of one day, and it needed one line.
+
+**Partial regeneration was considered and rejected on measurement.** A full
+render across every contact record and company brief in a working instance
+takes 30ms. Incremental update would have bought nothing and cost the one
+property that makes a generated view trustworthy: a partly-updated calendar
+mixes old and new state, which is worse than a wholly stale one because nothing
+about it looks wrong.
+
 ## 2026-10-20 — A rendered view is only current until someone edits its source
 
 The calendar renders at session start, which is correct for reading it and
