@@ -150,6 +150,17 @@ this heading, which fails loudly (an empty section) if the heading is renamed.
   scripts" when there were five. **If you find yourself writing a list of
   scripts into a document, you are recreating a mirror that was deliberately
   deleted** — write the reference instead.
+- **A FILE MOVED OR DISSOLVED** → every reference to it, in BOTH halves — and
+  the reference check only finds those it is scoped to scan, so widen the scope
+  before trusting a clean run. Live pointers get repointed individually, each to
+  the successor **verified to hold the content it cites**: a dissolved file has
+  several successors and one destination will be wrong for most of them.
+  Chronological records (a session log, an archive) keep their text and get a
+  link whose TEXT is the historical path and whose TARGET is current. Write-once
+  records get a `<!-- moved-refs -->` annotation instead, since their claims are
+  about a date. **Search the CONTENT's vocabulary, not the referring file's**,
+  before concluding anything is missing — a pointer names things in its own
+  words, and grepping those words finds nothing and looks exactly like loss.
 - **A new GENERATED VIEW** → answer "who reads this" BEFORE choosing a path,
   and put the answer in the file's own header. The assistant's working
   references go in the gitignored `temp/`; anything the candidate reads goes in

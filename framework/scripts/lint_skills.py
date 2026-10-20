@@ -60,14 +60,40 @@ DATA_DIRS = [ROOT / "private" / "data"]
 # lie about its own history. Where such an entry should still be navigable, the
 # convention is a link whose TEXT is the historical path and whose TARGET is the
 # current one -- which is why link text is stripped before matching below.
-DATA_SKIP = ("archive/", "session_log.md", "sweeps/", "analysis/")
-# sweeps/ and analysis/ are exempt for the SAME reason, stated in CONTRACT:
-# both are write-once -- "procedurally generated" and "written once and
-# referenced later, never updated in place". A dated stack rank saying it was
-# scored against a file that existed that day is a true claim about that day;
-# repointing it at a successor would assert it was scored against something
-# that did not yet exist. A checker that demands write-once records be
-# rewritten contradicts the contract those records are kept under.
+DATA_SKIP = ("archive/", "session_log.md")
+
+# MOVED-REFS ANNOTATION. A write-once record -- a dated stack rank, a one-off
+# study -- states what was true the day it was written, and repointing it at a
+# successor would assert it had cited something that did not yet exist. But
+# exempting whole directories hides genuinely NEW breakage in them, so instead
+# such a file carries an annotation block naming each path that has since moved:
+#
+#   <!-- moved-refs
+#     skills/search_criteria.md -> skills/search-constraints.md (dissolved 2026-10-06)
+#   -->
+#
+# The body text is never touched; only metadata is appended. A reference listed
+# there resolves, so the record stays honest AND checkable.
+#
+# THE ANNOTATION IS ITSELF CHECKED. Its right-hand side must exist, or the
+# annotation is a mirror that rots -- a note claiming a file moved somewhere it
+# is not, which is worse than the dead reference it was meant to explain.
+MOVED = re.compile(r"<!--\s*moved-refs\s*\n(.*?)-->", re.S)
+MOVED_LINE = re.compile(r"^\s*(\S+)\s*->\s*(\S+)(?:\s*\((.*?)\))?\s*$", re.M)
+
+
+def moved_refs(text, root):
+    """-> (resolved_paths, [error]) from a file's moved-refs annotation."""
+    resolved, bad = set(), []
+    m = MOVED.search(text)
+    if not m:
+        return resolved, bad
+    for old_p, new_p, _note in MOVED_LINE.findall(m.group(1)):
+        resolved.add(old_p)
+        if not ((root / new_p).exists() or (root / "private" / new_p).exists()):
+            bad.append(f"moved-refs annotation points at `{new_p}`,"
+                       f" which does not exist — the annotation has rotted")
+    return resolved, bad
 
 HEADER_BUDGET = 8      # Load-when must START within this many lines
 LOADWHEN_MAX = 3       # ...and SHOULD run no longer than this (warning)
@@ -108,6 +134,8 @@ def check_refs(path, root, index):
     churn when the header rules were first written."""
     bad = []
     text = path.read_text(encoding="utf-8", errors="replace")
+    annotated, ann_errors = moved_refs(text, root)
+    bad += ann_errors
     # `[`old/path.md`](new/path.md)` -- the backticked text is DISPLAY, showing
     # where a file used to live; only the target is a reference. Matching the
     # text would flag every deliberately-preserved historical pointer.
@@ -118,6 +146,8 @@ def check_refs(path, root, index):
         # filename shortened mid-sentence, not a path anyone can follow.
         if ref.startswith("...") or ref.startswith(".._"):
             continue
+        if ref in annotated or ref.lstrip("./") in annotated:
+            continue    # declared moved, and the destination was verified above
         if any(k in ref for k in ("<", "*", "example", "your", "YYYY")):
             continue
         if any(ref.endswith(t) for t in TRANSIENT):

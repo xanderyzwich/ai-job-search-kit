@@ -6,6 +6,38 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Annotate the record instead of exempting the directory
+
+Twenty-six references in write-once records pointed at a file that had been
+dissolved. Rewriting them was wrong — a dated stack rank saying it was scored
+against a file that existed that day is telling the truth about that day — so
+the two directories were exempted from the reference check wholesale.
+
+**That fix was lazy in a way worth naming: a blanket exemption does not just
+spare the old references, it hides every future one.** Those directories take
+new files continuously, and a genuinely broken pointer written tomorrow would
+have gone unreported forever.
+
+The exemption is replaced by an annotation. A record that cites a path which has
+since moved carries a block below its title:
+
+    <!-- moved-refs
+      skills/search_criteria.md -> skills/search-constraints.md (dissolved 2026-10-06)
+    -->
+
+**The body is never touched** — only metadata is appended, so the write-once
+guarantee holds — and the check treats an annotated path as resolved. The record
+stays honest about its own date AND remains checkable for anything new.
+
+**The annotation is itself verified.** Its right-hand side must exist, or the
+check reports that the annotation has rotted. A note claiming a file moved
+somewhere it is not would be worse than the dead reference it was written to
+explain, and this kit has removed enough rotted mirrors to assume that one left
+unchecked would eventually become one.
+
+Eleven records annotated; the linter is clean, and both the rot check and the
+resolution were verified by breaking them on purpose.
+
 ## 2026-10-20 — The dissolved skill lost nothing, and the check said otherwise
 
 A skill dissolved into five successors on 2026-10-06 left 38 dead references
