@@ -76,6 +76,20 @@ so the linter now diffs every installed copy against its source. The conclusion
 generalises: **the answer to a rule that keeps being missed is not a clearer
 rule.**
 
+## 2026-10-20 — A rule that broke itself in the commit that added it
+
+<!-- covers: 56556f8 · backfilled 2026-10-20 -->
+
+Adding the method-travels placement test to the maintenance skill put that file
+at 451 lines against the 450-line advisory it applies to every other skill. **A
+rule about keeping files loadable, breaking the limit in the act of being
+written.**
+
+Tightened by three lines rather than left as a warning created in the same batch
+that created the rule. It is a small thing, recorded because the alternative —
+one warning, permanently, on the file everyone loads before changing anything —
+is exactly how an advisory stops being read.
+
 ## 2026-10-20 — A second test: method travels, research about one employer does not
 
 Decomposing a 728-line call-prep skill turned up a section that passed the
