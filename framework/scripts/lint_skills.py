@@ -48,6 +48,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 SKILL_DIRS = [ROOT / "framework" / "skills", ROOT / "private" / "skills"]
+# The reference check also runs over the DATA layer, which skills alone never
+# covered. That gap was invisible for fourteen days: the check was added on
+# 2026-10-06, the same day a skill was dissolved into five successors, and every
+# stale pointer left behind sat in data files the linter did not scan. A
+# directory reorganisation is exactly when references break, and data files hold
+# as many as skills do.
+DATA_DIRS = [ROOT / "private" / "data"]
+# Chronological records are EXEMPT. A dated log entry naming a path is a claim
+# about what was true that day; rewriting it to satisfy a checker makes the log
+# lie about its own history. Where such an entry should still be navigable, the
+# convention is a link whose TEXT is the historical path and whose TARGET is the
+# current one -- which is why link text is stripped before matching below.
+DATA_SKIP = ("archive/", "session_log.md")
 
 HEADER_BUDGET = 8      # Load-when must START within this many lines
 LOADWHEN_MAX = 3       # ...and SHOULD run no longer than this (warning)
@@ -58,7 +71,11 @@ REF = re.compile(r"`([A-Za-z0-9_\-./]+\.(?:md|py|csv|yml|json))`")
 # daily-log tool at `open` and folded away at `close`, so it is absent far more
 # often than present; a template's relative links resolve from the directory it
 # is copied INTO, not from the template itself.
-TRANSIENT = ("temp/today.md", "temp/context_map.md")
+# `sweep_open.json` is the in-flight sweep marker: written by `sweep.py start`
+# and deleted by `sweep.py end`, so at rest it is correctly absent. A bare
+# `today.md` is the same file as temp/today.md named without its directory.
+TRANSIENT = ("temp/today.md", "temp/context_map.md", "today.md",
+             "sweep_open.json")
 
 
 def _index(root):
@@ -84,8 +101,16 @@ def check_refs(path, root, index):
     churn when the header rules were first written."""
     bad = []
     text = path.read_text(encoding="utf-8", errors="replace")
+    # `[`old/path.md`](new/path.md)` -- the backticked text is DISPLAY, showing
+    # where a file used to live; only the target is a reference. Matching the
+    # text would flag every deliberately-preserved historical pointer.
+    text = re.sub(r"\[`[^`]+`\]\(([^)]*)\)", r"`\1`", text)
     for m in REF.finditer(text):
         ref = m.group(1)
+        # A reference starting with an ellipsis is elided prose -- a long
+        # filename shortened mid-sentence, not a path anyone can follow.
+        if ref.startswith("...") or ref.startswith(".._"):
+            continue
         if any(k in ref for k in ("<", "*", "example", "your", "YYYY")):
             continue
         if any(ref.endswith(t) for t in TRANSIENT):
@@ -135,12 +160,20 @@ def main():
     n = fails = 0
     out = []
     index = _index(ROOT)
-    for d in SKILL_DIRS:
+    for d in SKILL_DIRS + DATA_DIRS:
         if not d.is_dir():
             continue
+        is_data = d in DATA_DIRS
         for path in sorted(d.rglob("*.md")):
-            n += 1
-            errors, warns = check(path)
+            rel_in = path.relative_to(d).as_posix()
+            if is_data and any(k in rel_in for k in DATA_SKIP):
+                continue
+            # Data files are not skills: only their references are checked.
+            if is_data:
+                errors, warns = [], []
+            else:
+                n += 1
+                errors, warns = check(path)
             errors += check_refs(path, ROOT, index)
             rel = path.relative_to(ROOT).as_posix()
             for e in errors:

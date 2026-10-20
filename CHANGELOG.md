@@ -6,6 +6,46 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The reference checker never looked at the data layer
+
+A reference check was folded into the skill linter on 2026-10-06. It scans
+`framework/skills/` and `private/skills/` and nothing else — and data files hold
+as many cross-references as skills do. **The check went in on the same day a
+skill was dissolved into five successors, and could not see a single one of the
+pointers that dissolution left behind.** They sat dead for fourteen days.
+
+Reorganising two directory trees in one session made that gap expensive. Across
+both moves, **thirty-seven references broke and were repaired**: twelve whose
+`../` prefix was correct one level up and wrong after the move, and the rest
+pointing at paths that no longer existed — in live company briefs, the
+open-items file, the outreach queue, an assessment card, and the dashboard's own
+predecessor path.
+
+The linter now scans the data layer too, with two rules the first version
+needed:
+
+**Chronological records are exempt.** A dated log entry naming a path is a claim
+about what was true that day; rewriting it to satisfy a checker makes the log
+lie about its own history. Where such an entry should still be navigable, the
+convention is a link whose TEXT is the historical path and whose TARGET is the
+current one — forty-five were converted that way.
+
+**Link text is not a reference.** That convention immediately broke the checker,
+which read the backticked historical path inside the link and reported it dead.
+A checker that flags the exact pattern introduced to satisfy it is worse than no
+checker, because the noise buries the real findings.
+
+**And the dead references turned out to be a probe for something worse than
+dead links.** Two topics referenced through the dissolved skill — a
+Private-Use-Area glyph corruption, and an alignment register with an explicit
+employer avoid-list — were checked against every successor. The first survived
+intact under a different heading. **The second exists nowhere in the
+repository.** A live company brief still says that register governs an open
+ethical question and "has not been run against this company yet", pointing at a
+mechanism that no longer exists. A broken link is cheap; a decomposition that
+quietly dropped content is not, and nothing but following the links would have
+found it.
+
 ## 2026-10-20 — A check whose result nobody sees
 
 The data layer's conformance check ran at every session close and printed
