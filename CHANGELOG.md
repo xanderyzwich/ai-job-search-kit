@@ -6,6 +6,31 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The leak scan failed on the two states every new user starts in
+
+Written and verified against a populated instance, the scan exited non-zero on a
+fresh clone and on a freshly bootstrapped one — because it derived zero name
+patterns and treated that as a broken control. **Both are states every new user
+passes through**, and the same blind spot that had already produced three
+defects in the generators that morning.
+
+The distinction it was missing: **an instance with no private data has nothing
+that could leak**, so zero name patterns is the correct answer there. What must
+never pass is the inverse — private data present and patterns empty, which means
+derivation broke and a clean result describes a public half the scan never
+examined. That now hard-fails and says why.
+
+**The figure and address checks are universal and run either way**, because a
+hard-coded salary can be written into a framework file on day one, before any
+private data exists. Verified by planting one on a fresh clone and watching it
+report.
+
+All three paths were proved rather than reasoned about: clean exits 0, findings
+exit 1, broken derivation exits 2, and a real name planted in a public file is
+still caught on the populated instance. **The rule written four commits earlier
+— a zero is not an answer until the check has proved it can fire — applied to
+the check that enforces it.**
+
 ## 2026-10-20 — Five checks returned zero, and every zero was read as good news
 
 A day of moving files produced a pattern worth naming. **Every check that can

@@ -118,15 +118,42 @@ def derived_patterns():
     return pats
 
 
+def has_private_data():
+    """True when there is anything a name pattern could be derived FROM."""
+    for sub in ("companies", "contacts"):
+        d = PRIVATE / "data" / sub
+        if d.is_dir() and any(d.glob("*.md")):
+            return True
+    return False
+
+
 def self_test(pats):
-    """Prove the matcher fires. A clean run is meaningless without this."""
-    if not pats:
-        return "no patterns derived — is private/data populated?"
-    probe_key = sorted(pats)[0]
-    if not pats[probe_key].search(f"a line mentioning {probe_key} here"):
-        return f"control FAILED: pattern {probe_key!r} did not match its own probe"
+    """Prove the matcher fires. A clean run is meaningless without this.
+
+    THE EMPTY CASE IS NOT A FAILURE, and getting that wrong made this script
+    exit non-zero on a fresh clone and on a freshly bootstrapped instance --
+    the two states every new user passes through. **An instance with no private
+    data has nothing that could leak**, so zero name patterns is the correct
+    answer there, not a broken scan.
+
+    What must never happen is the inverse: private data present and patterns
+    empty, which means derivation broke and the scan would cheerfully report a
+    clean public half it never actually examined. That is a hard failure.
+
+    The money and address patterns are universal and are controlled either way,
+    because a hard-coded figure can be written into a framework file on day one,
+    before any private data exists at all.
+    """
     if not MONEY.search("a probe figure of $123,456 not real"):  # leak-scan: allow
         return "control FAILED: money pattern did not match a known-positive"
+    if pats:
+        probe_key = sorted(pats)[0].split(":")[-1].replace("-", " ")
+        if not pats[sorted(pats)[0]].search(f"a line mentioning {probe_key} here"):
+            return f"control FAILED: pattern {probe_key!r} did not match its own probe"
+    elif has_private_data():
+        return ("control FAILED: private data exists but NO name patterns were"
+                " derived — derivation is broken, and a clean result here would"
+                " be meaningless")
     return None
 
 
@@ -171,8 +198,11 @@ def main():
                     hits.append((rel, i, m.group(0)[:40]))
                     break
 
-    print(f"leak_scan: {len(files_to_scan(staged))} public file(s), "
-          f"{len(pats)} derived pattern(s), control PASSED.")
+    scope = (f"{len(pats)} derived pattern(s)" if pats else
+             "NO name patterns — this instance has no private data yet, so only"
+             " the universal figure/address checks ran")
+    print(f"leak_scan: {len(files_to_scan(staged))} public file(s), {scope}, "
+          f"control PASSED.")
     for rel, i, what in hits[:40]:
         print(f"  !! {rel}:{i}  {what!r}")
     if hits:
