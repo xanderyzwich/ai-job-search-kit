@@ -229,7 +229,13 @@ one, and the collapse is what loses them.**
 | **follow-up** | self-imposed | nothing was promised; decide now |
 
 **Only the third belongs in `next_contact`**, which narrows to mean *when to
-reach out if nothing is on the books.* The first two go in a `## Scheduled`
+reach out if nothing is on the books.* **It still reaches the calendar** — a
+self-imposed date is a dated item you own, and the point of the view is that
+there is one place to look. What it does NOT do is collide: only `SCREEN`,
+`PANEL`, `CALL`, `INTERVIEW` and `ONSITE` occupy a slot someone else is
+holding, so only those can flag a conflict. **A reminder, a published report
+and a follow-up fit around a day rather than competing for it**, and flagging
+them trains the reader to ignore the flag. The first two go in a `## Scheduled`
 block on whichever file is primary — same test as every other routing decision
 in this skill.
 

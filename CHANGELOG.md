@@ -6,6 +6,38 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — A tool's chore is not a person's task, and the calendar conflated them
+
+The calendar's first real render flagged a conflict between a 10:30 call and
+"next weekly review" on the same Friday. The weekly review is run and stamped by
+the daily-log tool at that day's close. **It was never the candidate's task, it
+occupies no time, and it cannot collide with anything** — but it sat in the same
+list as a booked call, under a warning symbol.
+
+Two separate defects, and the second was worse.
+
+**The conflict flag counted every kind equally.** Only `SCREEN`, `PANEL`,
+`CALL`, `INTERVIEW` and `ONSITE` represent a slot another person is holding; a
+reminder, a published report, a deadline and a self-imposed follow-up all fit
+around a day rather than competing for it. A flag that fires on those teaches
+the reader to ignore it, which costs more than the flag was ever worth.
+
+**And the ritual line was a hand-written mirror of arithmetic.** `rituals.yml`
+already carries `anchor: friday` and a `last_run` stamp, and the tool computes
+dueness from them. A prose line saying "next weekly review is Friday" restates a
+computed fact and is wrong the first week nobody edits it — the exact mirror
+this kit's rules forbid, introduced the same morning by reformatting that line
+so the parser would read it instead of deleting it. **Making a mirror
+machine-readable is not the same as removing it.**
+
+The calendar now computes ritual dates from the stamp file and renders them in a
+trailing section marked as the tooling's own, so "where is every dated thing"
+still has one answer while nothing a tool does appears as something owed.
+
+**`next_contact` also reaches the calendar now.** A self-imposed follow-up is a
+dated item the candidate owns, and splitting owned dates across two views
+defeats the purpose of having one.
+
 ## 2026-10-20 — The checkpoint that runs constantly was the one that did not re-render
 
 The fix for a stale rendered view was a line in a skill telling the assistant to
