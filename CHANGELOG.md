@@ -6,6 +6,38 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The maintenance skill outgrew its own size rule
+
+Four ripple entries added in one day pushed the framework-maintenance skill from
+392 lines to 492, past the advisory the linter applies to every skill: an agent
+that loads this pays for all of it.
+
+**The obvious split was the wrong one.** The ripple map is 183 of those lines
+and the biggest single section, but the skill's `Load when` is dominated by
+"changing the system itself" — which always needs the ripple map. Splitting it
+out would have produced two files that are always loaded together plus a pointer
+to follow, which is worse than one file. **Size is not a concern boundary.**
+
+The audits are. The same `Load when` has a third clause — "auditing whether the
+docs still match reality" — and that is a different MOMENT: this file is read
+WHILE changing something, the audits are read AFTER. Mid-edit lookups were
+paying for seventy-seven lines they never used. 492 → 424, under the line, on a
+boundary the file's own trigger already described.
+
+**The moved section contains `Splitting a file safely`, so it governed its own
+move**, which is as good a test as it will ever get. Line accounting balanced
+(492 − 78 + 10 = 424). Destination verified live by distinctive phrase, where
+one apparent miss turned out to be a grep spanning a line break rather than lost
+content — the procedure's own warning that counting is not enough, demonstrated
+on itself. Seams read, inbound references re-pointed, leak scan run per moved
+section rather than once at the end.
+
+Also fixed: a board skill whose `Load when` ran four lines because it carried
+both a trigger AND a disambiguation ("not for this other company's reqs"). The
+warning asks whether a long trigger is one concern or two; it was two. The
+disambiguation moved to the body, where it is now longer and more useful than it
+was when compressed into a trigger line.
+
 ## 2026-10-20 — Bootstrapping a brand-new instance found three defects in an hour-old build
 
 Everything had been exercised against the working instance, which has
