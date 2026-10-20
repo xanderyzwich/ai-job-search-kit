@@ -310,7 +310,7 @@ This review is ANCHORED to Friday's daily close. The daily-log tool tracks it
 with an `anchor: friday` stamp: it comes due every Friday and STAYS due if a
 Friday is missed, surfacing at the next `open` rather than resetting a rolling
 clock. Running a bare `close` on a due Friday performs the measurable part for
-you — it runs the funnel report, writes `data/funnel_report.md`, stamps the
+you — it runs the funnel report, writes `data/dashboard/funnel_report.md`, stamps the
 ritual, and makes its OWN `weekly-review: <date>` commit, separate from the daily
 `log:` commit so the week's measurement reads as its own event in history. The
 judgment steps above (staleness sweeps, the passed-date scan) are done in-session

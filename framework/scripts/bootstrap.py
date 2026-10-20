@@ -34,6 +34,11 @@ DIRS = [
     # nobody has used is invented guidance wearing the authority of measured
     # guidance.
     "data/companies", "data/contacts", "data/assessments", "data/archive",
+    # Every human-readable rendered view lands here, so the candidate has one
+    # place to look instead of hunting them among the data layer's one-off
+    # analyses. A web view renders its README on arrival, which is the whole
+    # point on a phone.
+    "data/dashboard",
     "scripts", "feedback", "resume", "temp",
 ]
 

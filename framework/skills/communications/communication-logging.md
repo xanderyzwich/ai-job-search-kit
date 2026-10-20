@@ -204,7 +204,7 @@ rest" is what stops a future session surfacing them as overdue.
 ## The index reads these files, so the frontmatter is load-bearing
 
 **`framework/scripts/build_contact_index.py` runs at every session start** and
-builds `private/temp/contact_index.md` from the frontmatter of every contact
+builds `private/data/dashboard/contact_index.md` from the frontmatter of every contact
 record: what needs a decision, how long since each last contact, and who
 referred whom. **Shape the frontmatter per
 `framework/templates/contact_record.md` or the contact drops out of the
@@ -291,7 +291,7 @@ fan-out above already governs them: the log and the block move together.
 
 **`framework/scripts/build_contact_index.py` parses these blocks at every
 session start** — from `data/contacts/*.md` and `data/companies/*.md` alike —
-and renders `private/data/calendar.md`: overdue first, then this week, then
+and renders `private/data/dashboard/calendar.md`: overdue first, then this week, then
 upcoming, then the undated-but-sequenced stages. **A line that does not match
 the grammar is printed under `DIDN'T PARSE` rather than dropped**, which is the
 property the frontmatter cannot offer: a malformed entry there becomes a key

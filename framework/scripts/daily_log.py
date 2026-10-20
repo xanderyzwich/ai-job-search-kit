@@ -10,7 +10,7 @@ Workflow:
           Protocol: framework/skills/cross-harness-handoff.md
   close   fold private/temp/today.md into the top of data/session_log.md, archive
           entries older than ARCHIVE_DAYS into data/archive/YYYY-MM.md,
-          regenerate data/application_history.md, then stage everything and
+          regenerate data/dashboard/application_history.md, then stage everything and
           commit as the single daily commit "log: YYYY-MM-DD" — amending
           today's commit if it exists and hasn't been pushed yet
   close --mid-day
@@ -34,7 +34,7 @@ Weekly review — anchored to Friday's close (not a rolling 7-day timer):
   of that weekday. So the weekly review comes due every Friday and STAYS due
   until it runs — a skipped Friday simply carries forward. When a bare `close`
   runs and the weekly review is due, close first runs the funnel report, writes
-  data/funnel_report.md, stamps weekly_review, and makes its OWN commit
+  data/dashboard/funnel_report.md, stamps weekly_review, and makes its OWN commit
   ("weekly-review: YYYY-MM-DD") — separate from the daily "log:" commit that
   follows. `open` flags the weekly review when it's due so the next session
   picks up a missed Friday and closes it out.
@@ -51,7 +51,7 @@ Notes:
   - close stages the whole working tree (git add -A), on purpose: the daily
     commit carries the day's tracker edits and regenerated views together.
     The weekly-review commit is made first and stages only its own two
-    artifacts (data/funnel_report.md, data/rituals.yml) so it stays distinct.
+    artifacts (data/dashboard/funnel_report.md, data/rituals.yml) so it stays distinct.
   - Remote pushes still happen through GitKraken; this script only makes
     local commits. Amending stops automatically once today's commit has
     been pushed (a pushed commit gets an addendum commit instead).
@@ -74,7 +74,7 @@ TODAY_FILE = ROOT / "temp" / "today.md"
 DECOY_FILE = ROOT.parent / "temp" / "today.md"
 ARCHIVE_DIR = ROOT / "data" / "archive"
 RITUALS = ROOT / "data" / "rituals.yml"
-FUNNEL_MD = ROOT / "data" / "funnel_report.md"
+FUNNEL_MD = ROOT / "data" / "dashboard" / "funnel_report.md"
 ARCHIVE_DAYS = 21
 
 HEADER_RE = re.compile(r"^## Session Notes \((\w{3} \d{1,2} \d{4})", re.M)
@@ -270,9 +270,45 @@ def refresh_context_map():
         pass
 
 
+def refresh_contact_index():
+    """Best-effort: rebuild the dashboard views.
+
+    Separate from the context map because it answers a different question. The
+    map says what the assistant can DO; these say who the search knows, how
+    cold each thread is, who brought whom, and what is committed when.
+
+    ONE SCRIPT, TWO VIEWS, on purpose: both parse the same record files, and
+    two scripts reading one schema is a mirror waiting to disagree.
+
+    It prints the count of contacts awaiting a decision rather than the whole
+    index, because a number in the session banner is read and a table is
+    scrolled past. The cost of not surfacing it is measured: nine warm
+    recruiter introductions went untouched for three months, including one who
+    had volunteered a weekly cadence and a direct phone channel, and one of the
+    nine had already produced an interview."""
+    script = ROOT.parent / "framework" / "scripts" / "build_contact_index.py"
+    if not script.exists():
+        return
+    try:
+        r = subprocess.run([sys.executable, str(script)], check=False,
+                           capture_output=True, text=True)
+        lines = [l for l in (r.stdout or "").strip().splitlines() if l.strip()]
+        for l in lines:
+            print(l)
+        if lines:
+            dash = ROOT.parent / "framework" / "scripts" / "build_dashboard.py"
+            if dash.exists():
+                subprocess.run([sys.executable, str(dash)], check=False,
+                               capture_output=True, text=True)
+            print("  -> data/dashboard/ — calendar, contact index, funnel, history."
+                  " All committed, so they read from a phone.")
+    except Exception:
+        pass
+
+
 def run_weekly_review():
     """Friday-anchored weekly review, run as part of `close` but committed on
-    its own. Refreshes the funnel report into data/funnel_report.md, stamps
+    its own. Refreshes the funnel report into data/dashboard/funnel_report.md, stamps
     weekly_review, and commits just those two artifacts as
     "weekly-review: YYYY-MM-DD" — separate from the daily "log:" commit.
 
@@ -289,9 +325,11 @@ def run_weekly_review():
         except Exception:
             output = ""
     header = (f"# Weekly Funnel Report\n\n"
-              f"_Generated {date.today().isoformat()} at the Friday weekly"
-              f" close. Regenerated view — do not hand-edit; it is rewritten"
-              f" each time `close` runs on/after a due Friday._\n\n")
+              f"> **READ BY: the candidate.** Rendered"
+              f" {date.today().isoformat()} at the Friday weekly close, and"
+              f" committed so it reads from a phone with the machine off.\n>\n"
+              f"> **GENERATED FILE — do not hand-edit**; it is rewritten each"
+              f" time `close` runs on/after a due Friday.\n\n")
     FUNNEL_MD.parent.mkdir(parents=True, exist_ok=True)
     FUNNEL_MD.write_text(header + "```\n" + output + "\n```\n", encoding="utf-8")
     stamp_ritual("weekly_review")
@@ -420,6 +458,7 @@ def cmd_handoff(clear=False):
     # opened, which may be hours and many commits ago — so re-index here, at the
     # one moment we know the repo has moved underneath us.
     refresh_context_map()
+    refresh_contact_index()
     marker = "**FROM:**"
     print("=" * 68)
     print("OPEN HANDOFF — act on it, then: daily_log.py handoff --clear")
@@ -651,7 +690,8 @@ def warn_sweep_left_open():
 
 def cmd_open():
     TODAY_FILE.parent.mkdir(exist_ok=True)
-    refresh_context_map()  # always refresh, even on re-open
+    refresh_context_map()
+    refresh_contact_index()  # always refresh, even on re-open
     warn_decoy()
     # Printed rather than left to session_init.md because Cowork takes its init
     # from a PROJECT-LOADED copy of that file, which drifts from the repo. The
@@ -775,6 +815,14 @@ def cmd_close(mid_day=False):
     warn_unswept_rows()
     run_skill_lint()
     run_changelog_check()
+    # A record edited this session may have changed a Scheduled block, and the
+    # calendar renders at open. Between a reschedule logged at midday and the
+    # next open it would show the date that was just changed, stamped as if
+    # current -- and `close --mid-day` is the checkpoint that runs constantly,
+    # so re-rendering here bounds the staleness window to one checkpoint
+    # instead of one day. It costs ~30ms across every record in the kit, which
+    # is far below the cost of thinking about whether to skip it.
+    refresh_contact_index()
     # Before the history view regenerates, so the generated tables and the
     # funnel both read a tracker whose high-water marks are already current.
     ratchet_peak_stage()

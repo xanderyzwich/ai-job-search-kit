@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render data/application_history.md from job_tracker.csv.
+"""Render data/dashboard/application_history.md from job_tracker.csv.
 
 The tracker is the single hand-edited application record. This script
 generates the human-readable views (active, closed, vetted) plus summary
@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TRACKER = ROOT / "job_tracker.csv"
-OUT = ROOT / "data" / "application_history.md"
+OUT = ROOT / "data" / "dashboard" / "application_history.md"
 
 ACTIVE = ("applied", "dm_sent", "phone_screen", "interview", "offer")
 # closed_no_response: applied, the posting later came down, and no reply ever

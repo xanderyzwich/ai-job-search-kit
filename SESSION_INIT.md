@@ -81,7 +81,10 @@ ai-job-search-kit/
 │   │                                  log), open_threads.md (read at startup),
 │   │                                  dated snapshots, per-company briefs,
 │   │                                  per-contact records, assessment cards,
-│   │                                  and generated views of the tracker
+│   │                                  and dashboard/ — every rendered view the
+│   │                                  candidate reads (calendar, contact index,
+│   │                                  funnel, application history), committed so
+│   │                                  the search reads with the machine off
 │   ├── scripts/                       installed tooling (see the context map)
 │   ├── feedback/                      external input received along the way
 │   └── resume/                        generated resumes and their build scripts
