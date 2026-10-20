@@ -79,8 +79,9 @@ ai-job-search-kit/
 │   │                                  loaded first). Methodology only — no state.
 │   ├── data/                          working state: session_log.md (the dynamic
 │   │                                  log), open_threads.md (read at startup),
-│   │                                  dated snapshots, per-company briefs, and
-│   │                                  generated views of the tracker
+│   │                                  dated snapshots, per-company briefs,
+│   │                                  per-contact records, assessment cards,
+│   │                                  and generated views of the tracker
 │   ├── scripts/                       installed tooling (see the context map)
 │   ├── feedback/                      external input received along the way
 │   └── resume/                        generated resumes and their build scripts

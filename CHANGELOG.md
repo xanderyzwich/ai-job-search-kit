@@ -6,6 +6,48 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The index nobody was told to read
+
+The project's own three closing audits, run end to end against the whole
+repository rather than against the day's diff.
+
+**Audit 2 passed clean.** Every script is named in at least one task-time
+skill, which is the check that stops tooling from being discoverable only in
+setup documentation.
+
+**Audit 1 found two directories that existed, held real content, and appeared
+in no contract.** Both had been created the same week — one for per-contact
+records, one for per-platform assessment cards. The coarse directory trees in
+the human-readable docs were fine, because they draw `data/` as a single line;
+the gap was in the file-by-file table that is supposed to say what each thing is
+for, and in the bootstrap script, which would not have created either directory
+for anyone cloning the kit.
+
+**Audit 3 found the one that matters, and it is the audit that asks about
+readers rather than files.** A contact index had been built, wired into session
+start, documented in a contract, described in a template and written up in a
+changelog entry. It is generated every morning and prints a line saying where it
+is. **And no skill told anyone to read it** — including the always-loaded
+session manual, which is the one file whose entire job is saying what happens at
+the start of a session.
+
+That is the repository's own documented failure mode, reproduced exactly: a
+session generates an index, prints one line, and forgets it exists. The skill
+map has a counter-measure for this, a deliberate "READ IT" in the session
+banner, written after that failure was measured once. **The new index was given
+the generator and not the instruction.**
+
+The session manual now says to read it, and says why in the terms that make it
+expensive to skip: the funnel shows the people channel is where advances come
+from, so a stale contact list is a cost rather than an untidiness. It also
+carries the distinction the index is built on — a contact with no next date is
+**undecided, not at rest**, and deliberate inaction is recorded as such.
+
+**Three audits, three different kinds of finding: a file that was wrong, files
+that were undocumented, and an artifact with no reader.** Only the first kind is
+visible to tooling.
+
+
 ## 2026-10-20 — The audit found two names where no name may ever appear
 
 A day of structural work ended with the owner asking whether any of it upheld

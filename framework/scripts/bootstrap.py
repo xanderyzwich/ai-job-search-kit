@@ -27,9 +27,13 @@ DIRS = [
     # created on demand, one per surface, from templates/skill_surface.md. The
     # directories exist so the shape is visible before the first one is written.
     "skills/communications", "skills/boards", "skills/ats",
-    # data/contacts starts EMPTY for the same reason as boards/ and ats/:
-    # one file per person, created when the person exists.
-    "data/companies", "data/contacts", "data/archive",
+    # data/contacts and data/assessments start EMPTY for the same reason as
+    # boards/ and ats/: one file per person, one per assessment platform,
+    # created when the person or the platform exists. An assessment card in
+    # particular is written AFTER a real sitting -- a card for a platform
+    # nobody has used is invented guidance wearing the authority of measured
+    # guidance.
+    "data/companies", "data/contacts", "data/assessments", "data/archive",
     "scripts", "feedback", "resume", "temp",
 ]
 
