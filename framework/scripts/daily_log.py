@@ -298,9 +298,17 @@ def refresh_contact_index():
         if lines:
             for name in ("build_dashboard.py", "build_data_index.py"):
                 extra = ROOT.parent / "framework" / "scripts" / name
-                if extra.exists():
-                    subprocess.run([sys.executable, str(extra)], check=False,
+                if not extra.exists():
+                    continue
+                e = subprocess.run([sys.executable, str(extra)], check=False,
                                    capture_output=True, text=True)
+                # Normally silent -- these just rewrite an index. But the data
+                # index also checks the data layer against CONTRACT, and a
+                # conformance gap found and never shown is a check that does
+                # nothing. Surface it, and only it.
+                line = (e.stdout or "").strip()
+                if "undocumented" in line and ", 0 undocumented" not in line:
+                    print("  !! " + line + " — see data/README.md Conformance.")
             print("  -> data/dashboard/ — calendar, contact index, funnel, history."
                   " All committed, so they read from a phone.")
     except Exception:

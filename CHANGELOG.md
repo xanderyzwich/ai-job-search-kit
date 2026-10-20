@@ -6,6 +6,25 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — A check whose result nobody sees
+
+The data layer's conformance check ran at every session close and printed
+nothing. Its output was captured along with the other index rebuilds, because
+those are routine and a line per rebuild is noise — but this one is not a
+rebuild, it is an assertion about whether the data layer matches its contract,
+and **an assertion whose result is discarded is not a check.** It would have
+found an undocumented file on the day it appeared and said nothing until someone
+happened to open the generated README and read to the bottom.
+
+It now prints only when there is a gap, and only the gap. Verified both
+directions: a probe file produces the warning, and removing it produces silence.
+
+**The first test of this was itself worthless and had to be redone.** It ran the
+status command, which does not invoke the refresh at all, so it proved only that
+nothing crashed. Testing the path that actually runs — rather than a nearby one
+that is easier to invoke — is the difference between a passing test and a tested
+behaviour.
+
 ## 2026-10-20 — The index that checks itself against the contract
 
 The data layer's README was hand-written, and it was a second description of
