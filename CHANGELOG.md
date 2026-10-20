@@ -6,6 +6,51 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Five checks returned zero, and every zero was read as good news
+
+A day of moving files produced a pattern worth naming. **Every check that can
+report "nothing found" can also report it because the check is broken, and the
+two are identical in the output.** Five times in one session:
+
+a shell silently declined to split an unquoted list, so a loop over twenty
+search terms ran once against the whole string; a glob matched nothing and
+aborted its loop before the first iteration, printing zeros for every term; a
+case-sensitive match missed an uppercased heading and looked like content lost
+in a split; phrase searches spanned a line break, twice, each looking like a
+deleted block; and a name scan derived only from contact records passed a
+planted real surname, because that person was named in a company brief instead.
+
+**None of them errored. All of them reassured.**
+
+Two fixes, and the second matters more than the first. The rule — *a zero is not
+an answer until the check has proved it can fire* — is written down with its
+five examples. And the highest-stakes check in the kit stopped being an ad-hoc
+grep: **the public/private leak scan is now a script whose patterns are DERIVED
+from the private half** (employer names from brief filenames, people from both
+contact records and the `###` headings inside briefs' contacts sections,
+personal values from the profile) **and which refuses to print a clean result
+unless a known-positive control matched first.**
+
+It caught two real leaks in its own first hour, both written by its author: a
+real salary band in its docstring, and a real employer and a real contact used
+as illustrative examples in a public comment. **A scan that cannot catch its own
+author is not a scan.**
+
+It also had the exact failure it exists to prevent: a planted real surname
+sailed through a clean run because the patterns came only from contact records,
+and sixty-one people in this instance are named in company briefs with no record
+of their own. That gap was found by planting the name — which is the rule the
+same commit writes down.
+
+Separately, the same sweep found an installed script that had drifted from its
+canonical framework copy, pointing at a ledger that had been moved hours
+earlier. **That is the second installed-copy drift in one day**, both missed by
+a ripple rule that has said "re-copy after an upstream change" for weeks. A rule
+missed twice in a day by the person who wrote it is a rule that needs a check,
+so the linter now diffs every installed copy against its source. The conclusion
+generalises: **the answer to a rule that keeps being missed is not a clearer
+rule.**
+
 ## 2026-10-20 — A second test: method travels, research about one employer does not
 
 Decomposing a 728-line call-prep skill turned up a section that passed the

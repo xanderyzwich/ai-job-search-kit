@@ -111,6 +111,36 @@ TRANSIENT = ("temp/today.md", "temp/context_map.md", "today.md",
              "sweep_open.json")
 
 
+def check_installed_copies():
+    """-> [error] for every installed script that has drifted from canonical.
+
+    bootstrap.py COPIES several framework scripts into the instance, and the
+    INSTALLED copy is the one that runs. The ripple map has always said to
+    re-copy after an upstream change; on 2026-10-20 that step was missed twice
+    in one day. The first left the whole calendar wiring downstream-only. The
+    second left a sweep tool pointing at a ledger that had been moved, so the
+    next sweep would have written to a path nothing reads.
+
+    Both were invisible: nothing errors, both files exist, and the divergence
+    only shows if someone thinks to diff them. A rule that is missed twice in a
+    day by the person who wrote it is a rule that needs a check.
+    """
+    fw = ROOT / "framework" / "scripts"
+    priv = ROOT / "private" / "scripts"
+    if not fw.is_dir() or not priv.is_dir():
+        return []
+    bad = []
+    for src in sorted(fw.glob("*.py")):
+        dst = priv / src.name
+        if not dst.exists():
+            continue        # not installed for this instance, which is fine
+        if src.read_bytes() != dst.read_bytes():
+            bad.append(f"private/scripts/{src.name} has DRIFTED from the canonical"
+                       f" framework/scripts/{src.name} — the installed copy is the"
+                       f" one that runs; re-copy it")
+    return bad
+
+
 def _index(root):
     """(relative paths, basenames) of every real file in the repo."""
     paths, names = set(), set()
@@ -197,6 +227,9 @@ def main():
     n = fails = 0
     out = []
     index = _index(ROOT)
+    for e in check_installed_copies():
+        out.append(f"  ERROR  {e}")
+        fails += 1
     for d in SKILL_DIRS + DATA_DIRS:
         if not d.is_dir():
             continue

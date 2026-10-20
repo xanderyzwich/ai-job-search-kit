@@ -24,6 +24,34 @@ End every maintenance batch by asking, and actually checking:
 If an audit finds nothing, say so and stop; if it finds something, the fix
 belongs in the same batch, not a someday list.
 
+### A zero is not an answer until the check has proved it can fire
+
+**Every check that can report "nothing found" can also report it because the
+check is broken, and the two are identical in the output.** On 2026-10-20 that
+happened five times in one session, each time reading as good news:
+
+- a shell that **silently declined to split an unquoted list**, so a loop over
+  twenty search terms ran once, against the whole string, and found nothing;
+- a **glob that matched no files and aborted the loop** before its first
+  iteration, printing zeros for every term;
+- a **case-sensitive match** against an uppercased heading;
+- phrase searches **spanning a line break**, twice, each looking like deleted
+  content after a move;
+- a name scan whose patterns came only from contact records, which **passed a
+  planted real surname** because that person was named in a company brief
+  instead.
+
+**So: before believing a clean result, make the same check fire.** Plant what it
+hunts for and confirm it is reported, then remove the plant. A scan that has
+never produced a positive in your presence has not been tested, it has merely
+been run — and the last of those five was found exactly this way, by planting a
+real name and watching a "clean" scan sail past it.
+
+**Where a check is permanent, build the control in.** `leak_scan.py` refuses to
+print a clean result unless a known-positive probe matched first, and reports
+the broken control instead. That is the difference between a check and a
+decoration, and it costs four lines.
+
 ### Splitting a file safely
 
 A split is the operation where content disappears without anyone noticing,

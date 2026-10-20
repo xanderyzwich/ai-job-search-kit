@@ -815,6 +815,28 @@ def head_is_pushed():
     return contained.returncode == 0
 
 
+def run_leak_scan():
+    """Best-effort: scan the PUBLIC half for private data before a commit.
+
+    The one mistake in this kit that cannot be undone. It ran for months as an
+    ad-hoc grep typed fresh each time, which meant its pattern list was whatever
+    the author remembered -- and a company added last week was not in it. The
+    script derives its patterns from the private half instead, and refuses to
+    report clean unless a known-positive control matched first.
+    """
+    scan = ROOT.parent / "framework" / "scripts" / "leak_scan.py"
+    if not scan.exists():
+        return
+    try:
+        r = subprocess.run([sys.executable, str(scan)], check=False,
+                           capture_output=True, text=True)
+        for line in (r.stdout or "").strip().splitlines():
+            if line.startswith("  !!") or "POSSIBLE LEAK" in line or "control" in line.lower():
+                print(line)
+    except Exception:
+        pass
+
+
 def cmd_close(mid_day=False):
     warn_decoy()  # before folding — this is the last moment to rescue it
     # Closing a sweep happens after applying, when moving to another board, or
@@ -824,6 +846,7 @@ def cmd_close(mid_day=False):
     warn_unswept_rows()
     run_skill_lint()
     run_changelog_check()
+    run_leak_scan()
     # A record edited this session may have changed a Scheduled block, and the
     # calendar renders at open. Between a reschedule logged at midday and the
     # next open it would show the date that was just changed, stamped as if
