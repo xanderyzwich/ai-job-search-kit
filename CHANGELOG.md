@@ -6,6 +6,25 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — A rendered view is only current until someone edits its source
+
+The calendar renders at session start, which is correct for reading it and
+wrong for the case it was built for. Someone moves a meeting, the block line is
+corrected in the same edit as the log — and the view keeps showing the old day,
+under a generation stamp that makes it look current, until the next open. **A
+stale view that announces its own freshness is worse than no view**, and
+rescheduling is the single most likely thing to produce one.
+
+The skill now says to re-run the generator after editing a block mid-session.
+It costs under a second.
+
+The same pass found the instance's screen-prep skill still sending every new
+due-date to the open-items file, which stopped being true the moment thread
+dates moved into blocks. **That is the second stale pointer this narrowing has
+produced**, after the completeness check, and both were found by grepping for
+the old destination rather than by reading the diff — which is the argument for
+the ripple map entry carrying a grep target rather than a file list.
+
 ## 2026-10-20 — The template shipped a fake meeting, and the calendar believed it
 
 Dogfooding the schedule block the same day it landed: copying

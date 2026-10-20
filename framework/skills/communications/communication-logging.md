@@ -291,6 +291,14 @@ the grammar is printed under `DIDN'T PARSE` rather than dropped**, which is the
 property the frontmatter cannot offer: a malformed entry there becomes a key
 named `- 2026-11-04 08` and is never seen again.
 
+**RE-RUN IT AFTER EDITING A BLOCK MID-SESSION.** It renders at session start, so
+between a reschedule logged at midday and the next `open` the calendar shows the
+date that was just changed — and it shows it with a generation stamp that makes
+it look current. The script costs under a second and reads every record; there
+is no reason to defer it to tomorrow. **This is most dangerous in exactly the
+case the block was built for**: someone moves a meeting, the line is corrected,
+and the view still says the old day.
+
 ## IF IT NEEDS PICKING UP LATER, IT GETS A DATE NOW
 
 **The direction question above has a time dimension, and it is the half that
