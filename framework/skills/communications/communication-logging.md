@@ -104,7 +104,7 @@ person.
 mentions a possible different role in two months. The tracker row carries the
 decline, the level read, the comp arithmetic and the future date. The contact
 log carries one entry: he chased the hiring manager for a real answer, came back
-candid rather than silent, Corey replied the same day, **nothing owed**. **The
+candid rather than silent, the candidate replied the same day, **nothing owed**. **The
 contact log does not re-explain the comp arithmetic, and the tracker row does
 not re-explain that he is a reliable correspondent.** Both are complete; neither
 is redundant.
@@ -142,6 +142,18 @@ looked again.**
 contact who brought a lead unprompted, chased it, and reported back candidly is
 owed nothing further if the person has already replied. Recording that as "at
 rest" is what stops a future session surfacing them as overdue.
+
+## The index reads these files, so the frontmatter is load-bearing
+
+**`framework/scripts/build_contact_index.py` runs at every session start** and
+builds `private/temp/contact_index.md` from the frontmatter of every contact
+record: what needs a decision, how long since each last contact, and who
+referred whom. **Shape the frontmatter per
+`framework/templates/contact_record.md` or the contact drops out of the
+index** — and a contact nobody can see is a contact nobody works.
+
+**`last_contact` is a date and never a duration.** The index does the
+arithmetic every run, so the file cannot go stale by sitting still.
 
 ## IF IT NEEDS PICKING UP LATER, IT GETS A DATE NOW
 

@@ -6,6 +6,43 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The audit found two names where no name may ever appear
+
+A day of structural work ended with the owner asking whether any of it upheld
+the project's own standards. Running the checks found that it mostly did, and
+that the two most serious rules had both been broken quietly.
+
+**A personal name had reached two framework files.** The public half of this
+repository exists on one promise: that someone could clone it without ever
+seeing a name, a salary figure, or a company from the original search. Both
+breaches were in worked examples — a line of narrative in a skill and a sentence
+in a template — written while explaining how something should be recorded. **The
+boundary does not bend for illustrations.** Both were replaced with "the
+candidate", and a scan of every framework file and root document now comes back
+clean.
+
+**And the ripple map had been ignored on three counts.** It says a new directory
+touches the contract and the bootstrap script, and that a new script must be
+named in the skill that governs its moment. A directory had been created, filled
+with twenty files, indexed by a new generator, wired into session start,
+documented in a template, described in a changelog entry — and the contract did
+not mention it, the bootstrap script would not have created it for anyone
+cloning the kit, and the skill that depends on the index never named the script
+that builds it.
+
+**Every structural check had passed throughout.** The skill linter was clean,
+the changelog check reported no uncovered commits, and the new tooling ran
+correctly. **None of them can see a missing entry in a contract, and none of
+them can see a name inside a sentence about something else.** This is the same
+shape as the earlier finding that a correct rule behind the wrong trigger is
+invisible to tooling: the automated checks verify what is written, not what is
+absent.
+
+The cheap lesson is to run the audit. The expensive one is that the audit only
+works if it is run against the standards rather than against the diff — the diff
+looked fine.
+
+
 ## 2026-10-20 — Nine warm introductions, three months, nobody could see the list
 
 A funnel review found the shape of the search had been misread for months.

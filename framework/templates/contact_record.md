@@ -57,7 +57,7 @@ relationship, not the category — see the communication-logging skill. This
 template requires only that the decision be made and written.
 -->
 
-One paragraph: who they are, how they know Corey, and what they can actually
+One paragraph: who they are, how they know the candidate, and what they can actually
 do. Not a biography — the thing a reader needs before picking up the phone.
 
 ## Referral provenance

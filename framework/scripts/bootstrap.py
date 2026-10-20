@@ -27,12 +27,15 @@ DIRS = [
     # created on demand, one per surface, from templates/skill_surface.md. The
     # directories exist so the shape is visible before the first one is written.
     "skills/communications", "skills/boards", "skills/ats",
-    "data/companies", "data/archive",
+    # data/contacts starts EMPTY for the same reason as boards/ and ats/:
+    # one file per person, created when the person exists.
+    "data/companies", "data/contacts", "data/archive",
     "scripts", "feedback", "resume", "temp",
 ]
 
 COPIES = [  # (source relative to framework/, destination relative to private/)
-    # On-demand templates (company_brief.md, feedback.md) are intentionally
+    # On-demand templates (company_brief.md, contact_record.md, feedback.md)
+    # are intentionally
     # NOT listed here: they're canonical shapes created when the need arises,
     # not files that must exist at setup. Don't "fix" their absence by adding
     # them — see the 2026-07-16 CHANGELOG entry.
