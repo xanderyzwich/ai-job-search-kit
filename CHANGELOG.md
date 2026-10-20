@@ -6,6 +6,35 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The template shipped a fake meeting, and the calendar believed it
+
+Dogfooding the schedule block the same day it landed: copying
+`templates/contact_record.md` the way its own header says to produces a file
+whose block already contains a worked example. The renderer read it and the
+calendar showed a commitment named "Full Name" with a stage-three assessment
+against a company that has no thread. **The one view built to be trusted about
+what is committed was the easiest place in the system to inject something that
+was never agreed.**
+
+Both templates now keep their examples INSIDE the HTML comment and ship the
+block empty. Verified by copying each template into the live data directories
+and confirming zero calendar rows, which is the only form of this check that
+proves anything.
+
+Three smaller corrections from the same pass. The CONTRACT row described the
+open-items source as "the undated-items section" when the parser reads lines
+that LEAD with a bold date from the hard-dates section — wrong in both the name
+and the direction. The completeness check still asked whether that section was
+right after a date changed, which stopped being true the moment thread dates
+moved into blocks. And the routing table's "both" for a recruiter about a
+requisition is a rule for READING; applied to the block it would put one date in
+two files, so the block section now says where the single copy goes.
+
+**`NOTE` is documented as synthesized rather than authored.** The renderer emits
+it for the handful of dates that belong to no person and no company; a reader
+finding one in the calendar and no `NOTE` in the grammar would reasonably
+conclude the grammar was incomplete.
+
 ## 2026-10-20 — A hiring loop is a list, and the schedule field was a scalar
 
 A contact record carried one `next_contact` date. That is enough for a thread

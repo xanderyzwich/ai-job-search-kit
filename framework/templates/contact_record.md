@@ -115,9 +115,20 @@ lever.
      undecided when it was in fact decided against.
 
      A line that does not match the grammar is reported under DIDN'T PARSE in
-     the rendered calendar rather than silently dropped. -->
+     the rendered calendar rather than silently dropped.
 
-- TBD | ASSESSMENT | — | stage 3, blocked on repo access
+     NOTE is not written by hand -- the renderer synthesizes it for dates kept
+     in the open-items file. A block line always uses one of the kinds above.
+
+     THIS BLOCK SHIPS EMPTY ON PURPOSE. A sample event left in a copied
+     template renders as a REAL commitment on a REAL calendar, under the name
+     of whoever the file was copied for -- precisely the invented date this
+     view exists to make impossible. Examples therefore live in here, where
+     the parser cannot reach them:
+
+       - 2026-02-03 14:00 ET | CALL | — | the intro call they offered
+       - DUE 2026-02-10 | DEADLINE | — | they asked for a decision by then
+-->
 
 ## Contact log
 

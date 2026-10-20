@@ -244,12 +244,17 @@ in this skill.
 deadline, or **`TBD` for a stage that exists but has no date.** `<KIND>` is one
 uppercase token — `SCREEN`, `PANEL`, `CALL` for a slot someone else is
 holding; `ASSESSMENT`, `DEADLINE` for something that expires; `EVENT` for a
-dated thing that happens whether or not you act.
+dated thing that happens whether or not you act. **`NOTE` is never written by hand** — the renderer synthesizes it for the handful of dates that belong to no person and no company and so stay in the open-items file.
 
 **`FOLLOW-UP` is allowed in the block ONLY on a company brief**, which has no
 `next_contact` field to hold one. On a contact record it belongs in that field,
 and writing it in the block instead gives one fact two owners — the precise
 thing the rest of this skill exists to prevent.
+
+**The routing table above says "both" for a recruiter about a requisition. That
+is a rule for READING, not for the block** — a date has exactly one home, or it
+has two owners. The event goes where the event is: an interview for that req on
+the company brief, a call about the person's own pipeline on their record.
 
 **A loop spanning several people goes on the COMPANY BRIEF** — no single
 contact record owns a panel of three. **A one-to-one goes on the CONTACT
@@ -362,7 +367,10 @@ Before calling it logged, confirm:
   session — this happened to two simultaneous live threads and went unnoticed
   until someone asked.
 - **If the status is now terminal, does every file that mentioned it say so?**
-- **If a date was created or killed, is §3 right?**
+- **If a date was created, moved or killed, is the `## Scheduled` block right?**
+  A new commitment is a line; a reschedule edits that one line; a cancellation
+  REMOVES it and the reason goes in the log. Only a date belonging to no person
+  and no company belongs in §3.
 - **Does `pending_outreach.md` now say the true direction?**
 
 ## What belongs in the tracker note and what does not

@@ -97,9 +97,21 @@ interview belong under that role's Interview Notes, below.
      undecided when it was in fact decided against.
 
      A line that does not match the grammar is reported under DIDN'T PARSE in
-     the rendered calendar rather than silently dropped. -->
+     the rendered calendar rather than silently dropped.
 
-- TBD | ASSESSMENT | — | stage 3, blocked on repo access
+     NOTE is not written by hand -- the renderer synthesizes it for dates kept
+     in the open-items file. A block line always uses one of the kinds above.
+
+     THIS BLOCK SHIPS EMPTY ON PURPOSE. A sample event left in a copied
+     template renders as a REAL commitment on a REAL calendar, under the name
+     of whoever the file was copied for -- precisely the invented date this
+     view exists to make impossible. Examples therefore live in here, where
+     the parser cannot reach them:
+
+       - 2026-02-03 10:00 CT | SCREEN | [name] | stage 2, 45m
+       - TBD | PANEL | hiring manager + an IC | stage 3, after the screen
+       - DUE 2026-02-14 | ASSESSMENT | — | take-home, ~4h, NOT STARTED
+-->
 
 ## References / Contacts
 
