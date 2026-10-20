@@ -6,6 +6,73 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The rule was right, and it was behind a trigger that never fired
+
+Two threads went wrong in one week in the same way. A recruiter answered every
+outstanding question in a single message, which moved the ball squarely back to
+the candidate — and the file whose entire job is tracking who owes whom still
+read "awaiting his answer, nothing owed." It stayed that way for three weeks.
+Every review that consulted it saw a thread correctly waiting on someone else.
+The role was filled before anyone looked again. Separately, two applications
+advanced to live interview stages, got full tracker entries and company briefs,
+and were never added to the file that is read first at every session. Nobody
+noticed until the owner asked whether the index was complete.
+
+**Neither was a missing rule.** The procedure — update the brief, the open-items
+file, any new date, and the tracker, in the same edit — was already written
+down, correctly, and had been for months.
+
+**It was written in the skill for preparing and debriefing a CALL.** And almost
+nothing that changes the state of a search is a call. The week's state changes
+arrived as rejection emails, a recruiter's text, a scheduling invite, four
+LinkedIn messages and a message sent outbound. None of them load a skill whose
+trigger is "a phone screen or recruiter call is scheduled or might happen." The
+guidance was correct, current, and sitting behind a door that the relevant
+events never knock on.
+
+So the fan-out moved into a skill of its own, triggered by the thing that
+actually happens: **a communication lands or goes out.** That is also the
+sentence the owner says out loud at the start of half these sessions — "I have
+some comms to log" — which had no procedure attached to it at all.
+
+The skill carries one rule that is worth more than the checklist. **After every
+communication, say which of three things is now true: they owe us, we owe them,
+or nobody owes anybody.** The third has to be written down, because a thread at
+rest that is not recorded as at rest reads as waiting on the other party
+forever. The inverse error is equally real — a contact who already replied is
+owed nothing, and recording that is what stops a future session surfacing them
+as overdue.
+
+It also says that **outbound counts**. A message sent is a state change, and it
+is the transition most often lost, because sending feels like the end of the
+task.
+
+It also requires that anything left pending gets a **date, a condition, and a
+stated action if nothing arrives** — written where dated things are already read
+at the start of every session, not only in a record that is opened one row at a
+time. An unfinished thread with no date on it is indistinguishable, a month
+later, from one that is over.
+
+**What it deliberately does not do is set the interval.** There is no table of
+how long to wait by contact type, because the correct interval is a fact about
+the relationship rather than the category. A recruiter who asked not to be
+chased, a contact who is travelling, a hiring manager who named their own
+timeline, and a thread where the other party has already done more than their
+share are identical to a rule and completely different to a person. A rule
+firing on all of them produces nagging, which costs more than the thing it was
+protecting. The requirement is only that the decision is made and written, not
+that it is made a particular way.
+
+And **choosing not to follow up is itself a decision that gets recorded**, with
+its reason — otherwise a later session reads the silence as an oversight and
+schedules a chase nobody wanted. That protects the relationship from the system.
+
+The tracking skill, whose trigger does fire on a status change, now points at
+it. The call skill keeps the call-specific half and defers the general rule,
+with a line saying why: a call is one kind of communication, and most are not
+calls.
+
+
 ## 2026-10-19 — Same shape, different executor, different home
 
 Two automated coding assessments had failed on two platforms, and both results

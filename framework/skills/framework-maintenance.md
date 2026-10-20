@@ -16,6 +16,38 @@ updated, and the other three quietly start lying. The fixes below were all
 earned during real maintenance sessions; this file exists so the next one
 doesn't rediscover them.
 
+## When something should happen and nothing triggers it, that is the skill
+
+**A gap in this system almost never looks like a missing rule. It looks like a
+correct rule nobody loads**, because its trigger does not match the event that
+should fire it.
+
+**The diagnostic, in the owner's words:** *if there is something that should be
+done and the trigger doesn't already exist, create a skill for that trigger.*
+
+**The worked example, 2026-10-20.** Two threads went wrong in a week — one
+state file said a thread was waiting on someone who had already answered, and
+two live interview stages never reached the index read first at every session.
+Both looked like discipline failures. Neither was. **The procedure was written
+down, correctly, and had been for months — inside the skill for preparing and
+debriefing a CALL.** Almost nothing that changes the state of a search is a
+call; that week's changes arrived as rejection emails, a text, a scheduling
+invite and several direct messages. **The rule was correct, current, and behind
+a door those events never knock on.**
+
+**So the test when something goes wrong: before writing a new rule, check
+whether the rule already exists and ask what would have had to happen for
+someone to read it.** If the answer is "an event that did not occur", the fix is
+a new trigger, not new content — and often the content can simply move.
+
+**Name the trigger after the thing that actually happens**, in the words someone
+would use when it happens. *"A communication lands or goes out"* is a trigger.
+*"Keeping records consistent"* is a topic, and nobody loads a topic.
+
+**A good sign you have found a real one: it is a sentence the person already
+says out loud.** The example above became a skill because *"I have some comms to
+log"* opens half of these sessions and had no procedure attached to it.
+
 ## Is it a skill or is it data? Ask who EXECUTES it
 
 **The test is not "does it have a trigger." It is "who acts on it."**

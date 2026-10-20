@@ -58,6 +58,11 @@ halves of its tech-fit score. The brief must answer, at a glance:
 
 ## After (same day, not later)
 
+**The general fan-out — which files change when any communication lands, and
+the who-owes-whom question — is in `communication-logging.md`.** What follows
+is the call-specific part. **A call is one kind of communication; most are not
+calls, which is why the general rule does not live here.**
+
 Update the brief (what changed, what was promised, by whom, by when); log
 the outcome; update the tracker if a status moved; promote anything reusable
 (a comp data point, a framing that landed) to the right durable file.

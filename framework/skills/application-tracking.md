@@ -131,6 +131,18 @@ create a confusing duplicate record, or worse, contradict answers already
 given in a prior application (a different desired salary, a different
 answer to a repeated screening question).
 
+## A status change is a COMMUNICATION — log it there
+
+**A status almost never changes on its own.** Something arrived: an email, a DM,
+a recruiter relay, a form rejection, a scheduling invite. **The tracker is one
+of five files that change when that happens, and updating only this one is the
+documented way threads die.**
+
+`communications/communication-logging.md` carries the fan-out, the
+who-owes-whom question, and the completeness check. **Load it when a
+communication lands — not when a call is scheduled**, which is a narrower
+trigger that misses most of them.
+
 ## Status hygiene
 
 Update status as it changes rather than only logging the initial application.
