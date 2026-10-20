@@ -6,6 +6,35 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Waiting is a decision, and the index called it indecision
+
+Fixing `next_action: NONE` cleared one contact out of the to-do list and left
+the larger version of the same mistake in place. Sixteen contacts sat under
+NEEDS A DECISION OR AN ACTION; **six of them read "Wait — she owes the JD and a
+band" or its equivalent.** Those are not undecided. The decision was made and it
+was to wait, and the record already said so in a field the generator never
+read: `owed_by: them`.
+
+A to-do list that is two-thirds things you cannot act on is a list that gets
+skimmed, which is the exact failure this index was built to prevent.
+
+So it reports three states rather than two: **due** (a date is set), **needs a
+decision** (nobody owes the next move and none is scheduled), and **waiting on
+them** (their move, decided). Sixteen became six.
+
+**The waiting section still shows elapsed days, and still judges nothing.** That
+is deliberate and the script's own docstring already required it — pacing is a
+fact about a relationship, not about a category. Waiting is a decision that goes
+stale, so the threads age in view until a person looks at the number and
+decides; what the index must not do is pick the interval.
+
+The split immediately exposed a data problem it cannot fix: four contacts sit in
+the waiting section at 78 to 91 days with a `next_action` reading "decide
+whether to check in". **The record says they owe the move while the action says
+the candidate does.** At three months that is not waiting, it is a dropped
+thread wearing the wrong label — and it was invisible while everything shared
+one bucket.
+
 ## 2026-10-20 — The index printed the convention and then ignored it
 
 Writing a real contact record found it. A community peer had delivered what he

@@ -393,7 +393,13 @@ def main():
          "> files themselves. Do NOT edit — fix the contact file and regenerate.",
          "> **Elapsed days are computed here; the files carry only a date.**", ""]
 
-    owed, due = [], []
+    # THREE STATES, NOT TWO. A thread where the other party owes the next move
+    # is NOT undecided -- the decision was made and it was "wait". Listing six
+    # waiting threads under NEEDS A DECISION is how a to-do list stops being
+    # read. They still appear, with elapsed days, because waiting forever is a
+    # decision that goes stale -- but the interval is NOT judged here. Pacing
+    # is a fact about a relationship, not about a category.
+    owed, due, waiting = [], [], []
     for c in cs:
         na = c["fields"].get("next_action") or ""
         sched = (c["fields"].get("next_contact") or "").strip()
@@ -402,6 +408,8 @@ def main():
             due.append((sched, c, na))
         elif na.strip().upper().startswith("NONE"):
             pass             # DECIDED not to act, and that is at rest
+        elif (c["fields"].get("owed_by") or "").strip().lower() == "them":
+            waiting.append(c)   # their move: decided, not undecided
         elif na:
             owed.append(c)   # an action with no date = undecided
 
@@ -417,8 +425,21 @@ def main():
                 c["name"], cdir, c["file"], a, strip_md(c["fields"].get("next_action", ""), 76)))
         L += ["",
               "**A contact with no next-action date is NOT at rest — it is undecided.**",
-              "Deliberate inaction is recorded as `Next action: NONE` with its reason, which",
-              "is what keeps a later session from inventing a chase nobody wanted.", ""]
+              "Deliberate inaction is recorded as `next_action: NONE` with its reason,",
+              "which keeps a later session from inventing a chase nobody wanted.", ""]
+
+    if waiting:
+        L += ["## WAITING ON THEM — their move, not yours", ""]
+        for c in sorted(waiting, key=agedays, reverse=True):
+            a = "%d days" % agedays(c) if c["last"] else "no date on file"
+            L.append("- [%s](%s/%s) — silent %s: %s" % (
+                c["name"], cdir, c["file"], a,
+                strip_md(c["fields"].get("next_action", ""), 72)))
+        L += ["",
+              "**These are DECIDED, and the decision was to wait.** They are listed so that",
+              "waiting does not quietly become forgetting — a thread the other party dropped",
+              "ages here until someone judges the silence. **No interval is applied:** how",
+              "long to wait is a fact about the relationship, not about the category.", ""]
 
     L += ["## By time since last contact", "",
           "| days | contact | owed | next action | who |", "|---:|---|---|---|---|"]
