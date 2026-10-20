@@ -6,6 +6,40 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The dissolved skill lost nothing, and the check said otherwise
+
+A skill dissolved into five successors on 2026-10-06 left 38 dead references
+behind. Following two of them suggested content had been dropped: a glyph
+corruption that turned up intact under a new heading, and an alignment register
+— an employer ethical-screening rating with an explicit avoid list — that
+appeared to exist nowhere.
+
+**That second conclusion was wrong, and the way it was reached is the lesson.**
+The search used the words the REFERRING file chose — "Alignment register",
+"avoid list" — rather than the words the content itself used. The whole section
+had moved to the successor covering hard constraints, verbatim, and that
+successor's own routing header says it handles "rating a company's alignment".
+Searching for a pointer's vocabulary instead of a document's own vocabulary
+finds nothing and looks like absence.
+
+Recovered properly, from git rather than from a stray backup, the deleted file
+ran 2168 lines across 34 sections. A phrase-level survival audit against the
+successors found exactly one orphan: a fill-in template with no content in it.
+**The decomposition was clean.** Every dead reference was a stale pointer, not a
+hole.
+
+Twelve live pointers — company briefs and a platform inventory — were repointed
+individually, each to the successor verified to hold the content it cites:
+constraints, gap scoring, two ATS cards, a board card, form mechanics. Guessing
+a single destination for all twelve would have been wrong for five of them.
+
+The remaining twenty-six sit in the two write-once directories, and those are
+now exempt from the reference check for the reason CONTRACT already gives: they
+are "written once and referenced later, never updated in place". A dated stack
+rank that says it was scored against a file which existed that day is making a
+true claim about that day. Repointing it would assert it had been scored against
+something that did not yet exist.
+
 ## 2026-10-20 — The reference checker never looked at the data layer
 
 A reference check was folded into the skill linter on 2026-10-06. It scans

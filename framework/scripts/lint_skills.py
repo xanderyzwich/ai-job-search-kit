@@ -60,7 +60,14 @@ DATA_DIRS = [ROOT / "private" / "data"]
 # lie about its own history. Where such an entry should still be navigable, the
 # convention is a link whose TEXT is the historical path and whose TARGET is the
 # current one -- which is why link text is stripped before matching below.
-DATA_SKIP = ("archive/", "session_log.md")
+DATA_SKIP = ("archive/", "session_log.md", "sweeps/", "analysis/")
+# sweeps/ and analysis/ are exempt for the SAME reason, stated in CONTRACT:
+# both are write-once -- "procedurally generated" and "written once and
+# referenced later, never updated in place". A dated stack rank saying it was
+# scored against a file that existed that day is a true claim about that day;
+# repointing it at a successor would assert it was scored against something
+# that did not yet exist. A checker that demands write-once records be
+# rewritten contradicts the contract those records are kept under.
 
 HEADER_BUDGET = 8      # Load-when must START within this many lines
 LOADWHEN_MAX = 3       # ...and SHOULD run no longer than this (warning)
