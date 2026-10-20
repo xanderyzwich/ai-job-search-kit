@@ -296,10 +296,11 @@ def refresh_contact_index():
         for l in lines:
             print(l)
         if lines:
-            dash = ROOT.parent / "framework" / "scripts" / "build_dashboard.py"
-            if dash.exists():
-                subprocess.run([sys.executable, str(dash)], check=False,
-                               capture_output=True, text=True)
+            for name in ("build_dashboard.py", "build_data_index.py"):
+                extra = ROOT.parent / "framework" / "scripts" / name
+                if extra.exists():
+                    subprocess.run([sys.executable, str(extra)], check=False,
+                                   capture_output=True, text=True)
             print("  -> data/dashboard/ — calendar, contact index, funnel, history."
                   " All committed, so they read from a phone.")
     except Exception:

@@ -6,6 +6,34 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — The index that checks itself against the contract
+
+The data layer's README was hand-written, and it was a second description of
+what CONTRACT already defines: what each directory holds and what must exist.
+Two descriptions of one fact is the mirror this kit keeps paying to remove, and
+writing it by hand also made it a template problem — a fresh instance would
+either ship a copy to edit or get nothing.
+
+It is generated instead, and **the descriptions are EXTRACTED from CONTRACT's
+own rows rather than re-encoded**, the same way the context map lifts the ripple
+section verbatim. CONTRACT stays the single place a directory's purpose is
+defined, and a framework-level script means a fresh instance gets the file
+without a template to keep in sync.
+
+**Generating it bought a conformance check a hand-written file could never
+perform**, and the check found seven gaps on its first run: an archive directory
+and five root files with no row in CONTRACT at all, plus the dashboard directory
+itself — documented only through its children. All seven are now documented.
+
+Two defects in the generator, both found by reading its first output rather than
+trusting it. **A directory with no row of its own silently inherited a child
+file's description**: the dashboard was reported as "GENERATED from
+job_tracker.csv", which is true of one file inside it and false of the
+directory. A generated index that produces a plausible wrong answer is worse
+than one that reports a gap, so a directory is now matched only by a row for the
+directory. And the README reported ITSELF as missing from disk, because it was
+excluded from the scan and then compared against it.
+
 ## 2026-10-20 — A data layer where generated output buries live state
 
 Moving the rendered views into their own directory fixed the symptom and left
