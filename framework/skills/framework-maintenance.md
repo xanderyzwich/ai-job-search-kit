@@ -80,6 +80,33 @@ map's collapse list, which had to be reverted — **a file in the wrong half pul
 index and ripple changes with it, so the test is cheaper to apply before
 writing than after.**
 
+## Method travels; research about one employer does not
+
+**A second test, and it cuts across the first.** "Is it a skill or is it data?"
+asks who EXECUTES something. This one asks **where it still applies** — and a
+section can pass the first test and still be in the wrong file.
+
+A question bank in a call-prep skill held both halves at once: a list of likely
+questions sourced from third-party guides for ONE employer, and a rubric for
+what a senior loop is actually scoring. **Both are method by the first test.**
+Nobody but the reader executes either. But the rubric travels to every interview
+the candidate will ever have, and the question list is research about one
+company's hiring process — which belongs in that company's brief, beside
+everything else known about them, and which goes stale the moment that thread
+closes.
+
+**The tell is a proper noun in a rule.** When a sentence of method cannot be
+written without naming a specific employer, board or platform, it is usually
+research wearing method's clothes. Conventioned directories already encode this
+for whole files — one per board, one per ATS vendor — and the same split applies
+*inside* a file: keep the rule, move the named instance to the record that owns
+that name.
+
+**It matters because the costs differ.** Method that travels is loaded often and
+should be short and durable. Research about one employer is loaded once, by one
+reader, at one moment — and when it sits in a skill, every unrelated reader pays
+for it and nobody updates it when that company's process changes.
+
 ## The header contract (skill routing in one call)
 
 Every skill file must deliver its complete routing information — the

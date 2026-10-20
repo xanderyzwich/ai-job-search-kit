@@ -6,6 +6,33 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — A second test: method travels, research about one employer does not
+
+Decomposing a 728-line call-prep skill turned up a section that passed the
+skill-vs-data test and was still in the wrong place. Its question bank held two
+things at once: a list of likely questions sourced from third-party guides for
+ONE employer, and a rubric for what a senior loop is actually scoring. **Both
+are method — nobody but the reader executes either** — so the first test said
+leave them.
+
+The second test separates them. The rubric travels to every interview there will
+ever be. The question list is research about one company's hiring process, it
+belongs in that company's brief beside everything else known about them, and it
+goes stale the moment that thread closes. **The tell is a proper noun in a
+rule:** when a sentence of method cannot be written without naming a specific
+employer, board or platform, it is usually research wearing method's clothes.
+
+The costs differ, which is why it matters. Method that travels is loaded often
+and should be short and durable. Research about one employer is loaded once, by
+one reader, at one moment — and sitting in a skill it charges every unrelated
+reader and nobody updates it when that company's process changes.
+
+The same decomposition found a STAR story written into a skill, four sections
+along from where that was being looked for, and a spent one-off exception
+occupying half of a gate rule that is read on every scoring run. **Three
+different wrong-file problems in one afternoon, each invisible until something
+forced a read of the file as a whole.**
+
 ## 2026-10-20 — The maintenance skill outgrew its own size rule
 
 Four ripple entries added in one day pushed the framework-maintenance skill from
