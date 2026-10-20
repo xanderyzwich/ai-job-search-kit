@@ -6,6 +6,39 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Bootstrapping a brand-new instance found three defects in an hour-old build
+
+Everything had been exercised against the working instance, which has
+twenty-one contact records, sixty company briefs and a year of accumulated
+state. **Nothing had been run against an empty one**, and a public framework's
+entire purpose is working for someone who has none of that. Three defects, all
+invisible from inside a populated repo:
+
+**The calendar was never written when no contact records existed.** Its four
+sources are the Scheduled blocks of contact records AND company briefs, the
+open-items hard dates, and the ritual stamps — only one of those needs a
+contact file. But the generator returned early on "no contacts found" before
+reaching the calendar, so an instance running a search purely through job
+boards, or any instance on its first day, got no calendar at all.
+
+**The conformance check told every new user that five things were missing.**
+Most of what the contract documents is created ON DEMAND — an outreach queue
+when there is outreach, a story bank when there are stories — and reporting
+those as absent makes a correct installation look broken on first run. What a
+fresh instance should contain is already defined by the bootstrap script's own
+lists, so the check reads them rather than guessing; one source of truth, and
+it follows automatically when bootstrap changes.
+
+**The shipped session-init template had no `Load when:` header**, so the very
+first generator run of a new instance emitted a warning about the only file
+that loads every session. That is the first thing a new user sees.
+
+And a fourth, caught while fixing the second: a loop variable named `d`
+shadowed the data directory also named `d`, so the generator crashed on write.
+**It was written, read back, and committed-ready before being run** — which is
+the whole argument for the rule added earlier today, now paying for itself the
+same afternoon.
+
 ## 2026-10-20 — Waiting is a decision, and the index called it indecision
 
 Fixing `next_action: NONE` cleared one contact out of the to-do list and left

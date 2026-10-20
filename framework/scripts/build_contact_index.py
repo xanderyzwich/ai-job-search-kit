@@ -362,16 +362,21 @@ def render_calendar(today, cal_out, contacts=()):
 def main():
     out = Path(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else DEFAULT_OUT
     cal = Path(sys.argv[sys.argv.index("--cal-out") + 1]) if "--cal-out" in sys.argv else DEFAULT_CAL
-    if not CONTACTS.is_dir():
-        print("No private/data/contacts/ directory — nothing to index.")
-        return 0
     today = date.today()
-    cs = [read(p) for p in sorted(CONTACTS.glob("*.md"))]
+    cs = [read(p) for p in sorted(CONTACTS.glob("*.md"))] if CONTACTS.is_dir() else []
+
+    # THE CALENDAR IS RENDERED FIRST AND UNCONDITIONALLY. Its sources are the
+    # Scheduled blocks of contact records AND company briefs, plus the
+    # open-items hard dates and the ritual stamps -- only one of those four
+    # needs a contact file to exist. Returning early on "no contacts" skipped
+    # it entirely, so an instance with live company threads and no contact
+    # records got no calendar at all, which is precisely the shape of a fresh
+    # instance and of any search run purely through job boards.
+    render_calendar(today, cal, cs)
+
     if not cs:
         print("contact index: no contact files found.")
         return 0
-
-    render_calendar(today, cal, cs)
 
     brought = {}
     for c in cs:

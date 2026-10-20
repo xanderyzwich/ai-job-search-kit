@@ -109,9 +109,37 @@ def main():
             L.append("| `%s` | **NOT IN CONTRACT** — document it or move it. |" % p.name)
 
     present = {p.name for p in dirs} | {p.name for p in files} | {"README.md"}
+
+    # WHAT A FRESH INSTANCE IS SUPPOSED TO HAVE IS DEFINED BY bootstrap.py, so
+    # ask it rather than guessing. Most of what CONTRACT documents is created
+    # ON DEMAND -- an outreach queue when there is outreach, a story bank when
+    # there are stories -- and reporting those as missing told a new user that
+    # five things were broken about an installation that was perfectly correct.
+    # Importing the lists keeps one source of truth: change bootstrap and this
+    # follows.
+    expected = set()
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import bootstrap
+        for bd in getattr(bootstrap, "DIRS", []):
+            expected.add(bd.split("/")[-1] + "/")
+        for k in getattr(bootstrap, "SEEDS", {}):
+            expected.add(k.split("/")[-1])
+        for _src, dst in getattr(bootstrap, "COPIES", []):
+            expected.add(dst.split("/")[-1])
+    except Exception:
+        expected = None      # cannot tell -- report nothing rather than noise
+
+    def want(spec):
+        if expected is None:
+            return False
+        base = spec.rstrip("/").split("/")[-1]
+        return (base + "/") in expected or base in expected
+
     missing = [s for s in specs
-               if "/" not in s and "*" not in s and s not in present]
-    missing += [s for s in specs if s.endswith("/") and s.rstrip("/") not in present]
+               if "/" not in s and "*" not in s and s not in present and want(s)]
+    missing += [s for s in specs
+                if s.endswith("/") and s.rstrip("/") not in present and want(s)]
 
     if undocumented or missing:
         L += ["", "## Conformance", ""]

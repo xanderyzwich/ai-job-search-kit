@@ -1,9 +1,16 @@
 # Template: session_init.md
 #
+# KEEP THE `**Load when:**` LINE when you copy this. The skill linter and the
+# context map both read it, and a copy without one warns on the very first
+# generator run of a brand-new instance -- the first thing a new user sees.
+#
 # Copy this to private/skills/session_init.md. This is the one skill file
 # that loads every session unconditionally, unlike everything else in
 # skills/, which loads only on demand. See
 # framework/skills/session-continuity.md for the full reasoning.
+
+**Load when:** every session, first, before any other task. This is the one
+exception to "load on demand" that applies to every other file in `skills/`.
 #
 # This file is meant to be stable enough to load once into a persistent
 # context feature (a Claude Project's knowledge base, or similar) and mostly
