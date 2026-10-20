@@ -102,10 +102,9 @@ for whole files — one per board, one per ATS vendor — and the same split app
 *inside* a file: keep the rule, move the named instance to the record that owns
 that name.
 
-**It matters because the costs differ.** Method that travels is loaded often and
-should be short and durable. Research about one employer is loaded once, by one
-reader, at one moment — and when it sits in a skill, every unrelated reader pays
-for it and nobody updates it when that company's process changes.
+**The costs differ.** Method that travels is loaded often, so it should be short
+and durable. Research about one employer is loaded once, by one reader — in a
+skill it charges everyone else, and nobody updates it when that process changes.
 
 ## The header contract (skill routing in one call)
 
