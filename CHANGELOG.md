@@ -6,6 +6,83 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — Nine warm introductions, three months, nobody could see the list
+
+A funnel review found the shape of the search had been misread for months.
+Nine advances, seven of them sourced by a person, against roughly 180 board
+applications producing two. The people channel was not a supplement. It was the
+channel.
+
+Then the owner asked whether contacts should be tracked separately from
+companies, and the answer turned out to be sitting in the record already. A
+recruiter had handed over **nine personal introductions** on a single day in
+July, each vouched for by name. Three months later: one had produced an
+application, and the thread that followed became one of those nine advances.
+The other eight had not been touched. **One of them had held a call, offered to
+send roles weekly whether or not they fit, and said to text him directly** —
+and that invitation had gone eighty-five days unanswered.
+
+**Nothing about this was a discipline failure. The list had never been
+visible as a list.** The names lived in a row of a queue file, inside a table,
+inside a section about something else. Nobody could ask "who do I know, and who
+has gone quiet" without grepping, so nobody asked.
+
+So contacts get their own records, and the rule for where one lives is a single
+question: **does this person's value survive if the company goes away?** A
+hiring manager is the company and belongs in its brief. An agency recruiter
+spans employers. A college friend has no company at all. The first stays put;
+the other two were homeless and now are not.
+
+**Referral provenance is recorded at both ends**, so a hub's yield is visible
+without anyone maintaining a tally — the difference between "I met nine
+recruiters once" and "this person is personally responsible for two of my nine
+advances."
+
+An index is generated from the files at session start, and two decisions in it
+matter more than the rest.
+
+**Elapsed time is computed, never stored.** The first draft of these records
+wrote "85 days ago" into the file. That number is wrong tomorrow and misleading
+next month. Files carry a date; the index does the arithmetic.
+
+**And a date mentioned in prose is not a schedule.** An early version read
+"retirement recommended 2026-10-02" and reported it as a deadline, inventing
+three due dates nobody had set. A next-action date must open the field or it is
+history, not a plan.
+
+**The records carry YAML frontmatter, and the reason is narrower than
+convention.** These files are parsed more often than they are read — an index
+walks every one of them at session start, while a person opens one occasionally
+before a call. That is the shape frontmatter suits. Skills deliberately do not
+get it: an agent loads a skill in full, mid-task, and metadata at the top is
+noise it pays for every time.
+
+**It is parsed with fifteen lines of standard library rather than a YAML
+dependency.** The frontmatter is flat key/value scalars by contract, and a
+public framework someone clones should not acquire a package to read it.
+
+**A key present with an empty value is meaningful and is not the same as a
+missing key.** `next_contact:` with nothing after it means no date has been
+set, which is reported as undecided.
+
+**Each record also carries a contact log, newest first**, so the current state
+sits beside the frontmatter that summarises it. This deliberately contradicts
+the company-brief rule that forbids dated sections, and the exception is
+narrow: a company brief is state because its history lives in the session log,
+but **a contact's history IS their state** — that someone offered a weekly
+cadence in July is not background, it is the live fact — and the session log
+is indexed by date, not by person. The guard is that the frontmatter and the
+top log entry are updated in the same edit, because a summary drifting from its
+own log is the same failure as a mirror drifting from its source, and the
+mirror is what gets believed.
+
+The index leads with what needs a decision rather than what is oldest, and
+treats a contact with no next-action date as **undecided rather than at rest** —
+because those look identical from the outside and are opposite in meaning.
+Deliberate inaction is recorded with its reason, which is what stops a later
+session inventing a chase nobody wanted.
+
+
 ## 2026-10-20 — The rule was right, and it was behind a trigger that never fired
 
 Two threads went wrong in one week in the same way. A recruiter answered every
@@ -46,6 +123,23 @@ as overdue.
 It also says that **outbound counts**. A message sent is a state change, and it
 is the transition most often lost, because sending feels like the end of the
 task.
+
+**It also names one owner per fact, because a five-file fan-out is five chances
+to write the same paragraph five times.** The files hold different SLICES of one
+event, not the same slice repeated: the role facts belong to the application
+record, the relationship facts to the contact record, and the fast-scanned state
+files get a line and a link rather than a story. **The test is one question —
+would deleting this sentence from here lose anything that cannot be recovered
+from its owner?** If not, it is a second competing source rather than a mirror,
+and the stale copy is the one that gets believed, because it lives in the file
+everyone opens first.
+
+The common hard case is a single communication that is both — a recruiter
+relaying a decline is news about a requisition and news about a person at the
+same time. **Split it rather than telling it twice**, and have each half link to
+the other. This was written after the author produced exactly that duplication
+on the day the rule was drafted, with the same decline narrative appearing in
+four files; three of them were trimmed to pointers afterwards.
 
 It also requires that anything left pending gets a **date, a condition, and a
 stated action if nothing arrives** — written where dated things are already read

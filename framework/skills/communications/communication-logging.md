@@ -39,6 +39,84 @@ record either stays true or starts drifting.
 **A row that disagrees with the tracker is worse than no row, because it gets
 believed.**
 
+## ONE OWNER PER FACT — the fan-out is slices, not copies
+
+**The table above lists five files. That is five chances to write the same
+paragraph five times, and a fact stored five times is a fact that will disagree
+with itself within a month.** The point of the fan-out is that each file holds a
+DIFFERENT SLICE of the same event, not the same slice repeated.
+
+| fact | lives in | everywhere else |
+|---|---|---|
+| the **reasoning trail** on a role — how it scored, what the apply pass found, what was decided and when | **the tracker row** | a pointer |
+| the **current structured state** of an APPLIED-TO role — status, comp, match and gap, talking points, interview notes | **the company brief's role block** | a pointer |
+| the person — what they did, said, offered; what they are owed | **the contact record's log** | a pointer |
+| what is open right now | **the open-items file** | one line and a link |
+| who owes whom | **`owed_by` plus the outreach queue** | — |
+| the narrative of the day | **the session log** | — |
+
+### The tracker and the company brief are not duplicates — they are read differently
+
+**Both hold role facts and that is correct.** The distinction is what each is
+for, and it matches how each file already behaves:
+
+- **The tracker row APPENDS.** It is the chronological reasoning trail, it is
+  long, and it is **machine-read** — the funnel, the backlog check and the
+  scoring all consume it. Nobody opens it before a phone call.
+- **The company brief FOLDS.** Its role block is the **current** structured
+  state — location, salary, the tracker's literal status token with a date,
+  tech fit, the Match and Gap lists split required/preferred, talking points,
+  interview notes. **It is what a human opens with ten minutes to go**, and old
+  states are folded away rather than stacked up.
+
+**So a role under discussion needs BOTH, and neither is the other's mirror.**
+What the brief must not become is a retelling of the tracker's narrative — it
+carries the state, not the history of how that state was reached.
+
+**THE BOUNDARY IS ALREADY SET BY `framework/templates/company_brief.md` AND IT
+IS A REAL ONE: only roles that have actually been APPLIED TO enter a brief, and
+a role arrives in the same edit that sets its tracker status to applied.**
+Before that it is a tracker row, its score lives in the stack-rank file, and its
+reasoning lives in the session log. **A brief full of roles nobody applied to is
+a brief nobody can read under time pressure**, which defeats the only thing it
+is for.
+
+**THE TEST, and it is one question: would deleting this sentence from HERE lose
+anything that cannot be recovered from its owner?** If the answer is no, delete
+it and link instead. **A mirror that duplicates its source does not stay a
+mirror; it becomes a second, competing source.**
+
+### When one communication is both a role event and a relationship event
+
+**This is the common case and it is where the duplication happens.** A recruiter
+relaying a decline is simultaneously news about a requisition and news about a
+person.
+
+**Split it rather than telling it twice:**
+
+- **Role facts → the tracker row.** The decline, the stated reasons, what it
+  implies about level or comp, any future window.
+- **Relationship facts → the contact's log.** That they chased it rather than
+  letting it go quiet, how they said it, what they are owed now.
+- **Each links to the other.** Neither retells the other's half.
+
+**Worked example.** A recruiter relays that a role went to someone else and
+mentions a possible different role in two months. The tracker row carries the
+decline, the level read, the comp arithmetic and the future date. The contact
+log carries one entry: he chased the hiring manager for a real answer, came back
+candid rather than silent, Corey replied the same day, **nothing owed**. **The
+contact log does not re-explain the comp arithmetic, and the tracker row does
+not re-explain that he is a reliable correspondent.** Both are complete; neither
+is redundant.
+
+### The state files get a LINE, not a story
+
+**The open-items file and the outreach queue are read first and scanned fast.**
+Their job is to say that a thing exists and where to look, not to contain it. A
+paragraph there is a paragraph that will be stale in a week while the owner
+moves on without it — **and the stale copy is the one that gets believed,
+because it is the one in the file everyone opens.**
+
 ## ASK THE DIRECTION QUESTION OUT LOUD: who owes what, now?
 
 **This is the single highest-value line in this file.** After every
