@@ -291,7 +291,7 @@ fan-out above already governs them: the log and the block move together.
 
 **`framework/scripts/build_contact_index.py` parses these blocks at every
 session start** — from `data/contacts/*.md` and `data/companies/*.md` alike —
-and renders `private/temp/calendar.md`: overdue first, then this week, then
+and renders `private/data/calendar.md`: overdue first, then this week, then
 upcoming, then the undated-but-sequenced stages. **A line that does not match
 the grammar is printed under `DIDN'T PARSE` rather than dropped**, which is the
 property the frontmatter cannot offer: a malformed entry there becomes a key

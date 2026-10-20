@@ -67,7 +67,8 @@ interview belong under that role's Interview Notes, below.
 
 <!-- LIVE COMMITMENTS AND DEADLINES ONLY, one line each. PARSED — the grammar
      is a contract. `framework/scripts/build_contact_index.py` reads this block
-     at every session start and renders private/temp/calendar.md.
+     at every session start and renders private/data/calendar.md -- COMMITTED, so
+     it is readable from a phone when the machine is off.
 
        - <WHEN> | <KIND> | <WHO> | <NOTE>
 

@@ -6,6 +6,35 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-20 — A view that exists only on the machine that rendered it
+
+The calendar was written to the instance's `temp/` directory, alongside the
+other generated views, because that is where generated views had always gone.
+`temp/` is gitignored. **So the one view built to answer "what is coming" was
+the one view that could not be read anywhere except the machine that produced
+it** — and the search it serves is checked from a phone, through a web view of
+the repository, in the evening when that machine is off.
+
+The precedent for the fix was already in the instance: the generated
+application history is rendered from the tracker, carries a do-not-hand-edit
+header, and is COMMITTED. The calendar now sits beside it in the data layer. It
+changes on every render — the stamp moves, the overdue counts increment — which
+produces a diff a day, and that is the intended behaviour for a dated snapshot
+rather than noise to suppress.
+
+**The move broke every internal link, and in the quietest possible way.** The
+links were written as `../data/companies/<name>.md`, correct from `temp/` and
+wrong from `data/`. A broken relative link does not fail — it renders as a link
+that goes nowhere, which is worse in a web view than in a terminal because the
+reader is one tap away and gets a 404 instead of a brief. Links are now computed
+relative to the output file's own directory, and all nine were verified to
+resolve before the move was committed.
+
+**The general rule this exposes: where a generated file is WRITTEN is part of
+its contract, not an implementation detail.** A view's location determines who
+can read it, and "put it with the other generated files" is a decision about
+audience disguised as a decision about tidiness.
+
 ## 2026-10-20 — A tool's chore is not a person's task, and the calendar conflated them
 
 The calendar's first real render flagged a conflict between a 10:30 call and
