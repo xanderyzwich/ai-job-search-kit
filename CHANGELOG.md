@@ -6,6 +6,90 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-21 — A known human with no recorded employer is a referral you cannot see
+
+*(Entry backfilled 2026-10-22 with the contract row it documents, which was
+committed without one.)*
+
+The contact records hold people the search is actively working. They are
+expensive per person, so everyone else — the wider network, the people a
+candidate simply knows — had no home at all, and the employer field that makes a
+referral findable went unrecorded for all of them.
+
+The gap showed up as soon as anyone tried to use it. Cross-referencing known
+people against open, un-applied roles ran on nine of twenty-one contacts and
+still surfaced one employer with roughly ten known humans against eight open
+roles, as the strongest referral position in the dataset. **Every unrecorded
+employer was a result that join could not return.**
+
+The contract now describes a roster file for exactly this: one row per person
+with no contact record yet, carrying current employer, title, prior employers
+with dates, and a relationship note the source platform cannot supply. It is
+**authored rather than generated**, and deliberately **not** under the contacts
+directory, because the index builder globs that directory and would render a
+roster row as a junk contact in both the index and the calendar. A row graduates
+to a real record when the person is actually engaged, and leaves the roster then,
+so a name never sits in both places.
+
+It is also the right home for the negative result. Someone job-seeking, between
+roles, or outside the candidate's field is recorded as such, so a later pass
+cannot mistake them for an unexplored door.
+
+## 2026-10-22 — The log scaled an obligation to the outcome instead of to what it cost them
+
+A contact forwarded a hiring post into the candidate's messages. The thread then
+produced a reply from a vice president inside a day, and the record wrote that
+result back into the favour, logging the outcome as owed to her on the reasoning
+that an unreported result teaches a referrer to stop referring.
+
+**That reasoning is correct and was applied to the wrong act.** It holds for
+someone who puts a referral through an employer's internal system, or spends
+public credibility vouching for you. A forwarded link costs the sender nothing.
+The candidate's own description: *"a quick 'I'll send this to him,' not any
+investment on her part."*
+
+**The tell was in the file already.** The entry said "she did a favour and is
+owed nothing" and then invented an obligation in the following clause. When a
+record contradicts itself in one breath, the hedge is usually the error.
+
+This is not a tidiness problem. **A manufactured obligation becomes a queued
+message and eventually an unnecessary touch on someone's inbox** — precisely the
+cost that referral etiquette exists to prevent, so inventing one is not the safe
+direction to err in. The skill now asks what the act cost the other person, not
+what it produced, and states that the candidate's own account of a favour
+outranks any inference drawn from how well it worked.
+
+## 2026-10-22 — A log that says "followed up" cannot say whether you can follow up again
+
+`communication-logging.md` required the date, the result, the direction of who
+owes what, and the next step. **It never required the CHANNEL**, and two threads
+broke on that in a single audit.
+
+One contact read 2nd degree on the professional network and so looked like a
+cold name on a referral list. He had asked for and received both resumes months
+earlier — **the whole relationship ran on email** and the network invite was
+never the channel at all. The degree was measuring something nobody used. A
+second, live recruiter thread had no email recorded and no messaging path,
+because she had arrived through an inbound credit-gated message; nothing in the
+record said so, so "wait for her reply" read as a choice when it was the only
+option available.
+
+**The channel is what says whether a thread can be picked up**, and the options
+are not interchangeable: a first-degree message is free and unlimited, a
+credit-gated one is rationed monthly, a connection request may never be
+accepted, and an email bypasses the platform entirely. The skill now requires
+one clause naming where each communication happened, and requires capturing the
+profile URL and the email address **at the moment they appear in a message
+header** rather than when someone finally needs them.
+
+**The rejected alternative was a connection-degree field**, which is what the
+audit originally proposed. It was turned down for the right reason: degree
+changes the instant an invite is accepted, so a stored copy is a mirror that
+rots, and **profile URL plus email plus a channel-bearing log answer every
+question degree was standing in for** without needing a re-check cadence. The
+kit already deletes mirrors on sight; this is that rule applied to a field that
+had not been written yet.
+
 ## 2026-10-20 — The leak scan failed on the two states every new user starts in
 
 Written and verified against a populated instance, the scan exited non-zero on a

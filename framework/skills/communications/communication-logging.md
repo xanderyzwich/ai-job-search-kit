@@ -175,6 +175,41 @@ paragraph there is a paragraph that will be stale in a week while the owner
 moves on without it — **and the stale copy is the one that gets believed,
 because it is the one in the file everyone opens.**
 
+## WHAT IS OWED SCALES TO THEIR COST, NEVER TO THE OUTCOME
+
+**Answer the direction question from what the other person actually spent, not
+from what their act produced.** These are different numbers and they diverge
+most exactly when a thread goes well.
+
+**Worked example, 2026-10-22.** A contact forwarded a hiring post into the
+candidate's DMs — in his own words, *"a quick 'I'll send this to him,' not any
+investment on her part."* The thread then produced a reply from a VP inside a
+day. **The log read that outcome backwards into the favour** and recorded the
+result as owed back to her, on the reasoning that an unreported outcome teaches
+a referrer to stop referring.
+
+**That reasoning is sound and was applied to the wrong act.** It is true of
+someone who put a referral through their employer's internal system, or spent
+public credibility vouching for you. **A forwarded link costs the sender
+nothing, so there is no goodwill to protect and nobody waiting on an answer.**
+
+**The tell: the file already held the right answer and overrode it.** The entry
+said *"She did a favour and is owed nothing"* — and then invented an obligation
+in the next clause. **"Owed nothing" is a complete answer.** When a record
+contradicts itself in one breath, the hedge is usually the error.
+
+**Why this matters beyond tidiness: a manufactured obligation spends real
+budget.** It becomes a queued message, a surfaced action item, and eventually an
+unnecessary touch against someone's inbox — the exact cost that referral
+etiquette rules exist to prevent. **Inventing an obligation is not the safe
+direction to err in.**
+
+**Ask instead: what did this cost them?** Nothing → `owed_by: nobody` and
+`next_action: NONE` with the reason. Real effort or reputation → the report-back
+is genuinely owed. **And when the candidate describes the act himself, his
+account outranks any inference from how well it worked** — the same rule that
+governs practice area and level.
+
 ## ASK THE DIRECTION QUESTION OUT LOUD: who owes what, now?
 
 **This is the single highest-value line in this file.** After every
@@ -356,6 +391,41 @@ himself, and came back with a candid answer, whose own stated etiquette is no
 follow-up push, and who has already been thanked. **The correct record is "at
 rest, nothing owed, do not surface as an action item" — and writing that is what
 protects the relationship from the system.**
+
+## EVERY LOG ENTRY NAMES ITS CHANNEL
+
+**Write WHERE the communication happened, not only that it happened.** Email,
+LinkedIn DM, LinkedIn InMail, connection-request note, text, phone, a relay
+through a third party, an ATS form. One clause, in the entry itself.
+
+**This is not bookkeeping. The channel is the only thing that says whether a
+thread can be picked up at all**, and the cost of each option is different: a
+1st-degree DM is free and unlimited, an InMail is one of five per month, a
+connection request may never be accepted, and an email bypasses all of it.
+**A record that says "followed up" without saying how cannot answer "can I
+reach this person today."**
+
+**Two failures on 2026-10-22, both from the same silence:**
+
+- **A contact read 2nd degree on LinkedIn and looked like a weak thread.** He
+  had in fact asked for and received both resumes — **the entire relationship
+  ran on email**, and the LinkedIn invite was never the channel. The degree was
+  measuring a channel nobody was using.
+- **A live recruiter thread had no email on file and no LinkedIn path**, because
+  she arrived by inbound InMail. Nothing in the record said so, so "wait for her
+  reply" looked like a free decision when it was actually the only option.
+
+**The corollary: capture the ADDRESS when you learn it.** A profile URL and an
+email address are what make a thread reachable later; a log entry that names a
+channel but no address records how you *once* reached someone. **Both belong in
+frontmatter** (`linkedin:`, `email:`) the moment they appear in a message
+header, not when someone finally needs them.
+
+**Do NOT add a connection-degree field.** Degree is a snapshot that changes the
+moment an invite is accepted, so a stored value becomes a stale mirror — and
+profile URL plus email plus a channel-bearing log already answer every question
+degree was being used to answer, without rotting. *(Decided by Corey 2026-10-22,
+after a one-off audit of all 22 contact records.)*
 
 ## OUTBOUND COUNTS
 
