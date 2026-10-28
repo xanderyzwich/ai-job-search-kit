@@ -41,6 +41,16 @@ MONEY = re.compile(r"\$\s?\d[\d,]{2,}")
 ALLOW = "leak-scan: allow"
 EXAMPLE_DOMAIN = re.compile(r"@example\.(com|org|net)\b", re.I)
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+")
+# US phone numbers, added 2026-10-28 when contact records gained a `phone:`
+# field. Universal like MONEY and EMAIL rather than derived, for the same
+# reason: a number can be typed into a framework file before any private
+# data exists to derive it from. Deliberately NARROW -- it requires the
+# punctuation a written phone number carries, so a bare ten-digit run (an
+# id, a timestamp, a row count) does not match. A number written without
+# any separator is the known blind spot and is accepted: widening it to
+# catch that costs false positives on every long integer in the repo, and
+# a scan nobody reads is the failure mode this file already documents.
+PHONE = re.compile(r"(?:\(\d{3}\)\s*|\b\d{3}[.\-\s])\d{3}[.\-\s]\d{4}\b")
 
 
 # A single word from a name is not a name. A hyphenated employer yields its
@@ -140,12 +150,18 @@ def self_test(pats):
     empty, which means derivation broke and the scan would cheerfully report a
     clean public half it never actually examined. That is a hard failure.
 
-    The money and address patterns are universal and are controlled either way,
-    because a hard-coded figure can be written into a framework file on day one,
-    before any private data exists at all.
+    The money, email and phone patterns are universal and are controlled either
+    way, because a hard-coded figure can be written into a framework file on day
+    one, before any private data exists at all.
     """
     if not MONEY.search("a probe figure of $123,456 not real"):  # leak-scan: allow
         return "control FAILED: money pattern did not match a known-positive"
+    if not EMAIL.search("a probe address nobody@probe-domain.invalid here"):  # leak-scan: allow
+        return "control FAILED: email pattern did not match a known-positive"
+    if not PHONE.search("a probe number of (555) 010-9999 not real"):  # leak-scan: allow
+        return "control FAILED: phone pattern did not match a known-positive"
+    if PHONE.search("a bare run of digits 5550109999 is not a phone"):  # leak-scan: allow
+        return "control FAILED: phone pattern matched an unpunctuated digit run"
     if pats:
         probe_key = sorted(pats)[0].split(":")[-1].replace("-", " ")
         if not pats[sorted(pats)[0]].search(f"a line mentioning {probe_key} here"):
@@ -189,7 +205,7 @@ def main():
         for i, line in enumerate(f.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
             if ALLOW in line or EXAMPLE_DOMAIN.search(line):
                 continue
-            for m in (MONEY.search(line), EMAIL.search(line)):
+            for m in (MONEY.search(line), EMAIL.search(line), PHONE.search(line)):
                 if m:
                     hits.append((rel, i, m.group(0)[:40]))
             for key, rx in pats.items():

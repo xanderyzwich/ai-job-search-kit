@@ -6,6 +6,38 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-28 — A channel the schema cannot store is a channel the record silently drops
+
+The logging skill already required every entry to name its channel, and already
+said the ADDRESS belongs in frontmatter so a thread stays reachable later. It
+named two fields for that: the profile URL and the email.
+
+Then a lead arrived **by text**, from a contact whose record had no number to
+text back. The entry could state the channel correctly and the file still could
+not reach the person through it — which is precisely the failure that section
+exists to prevent, arriving through the one channel it had no field for.
+
+Contact records now carry `phone:` alongside `linkedin:` and `email:`. Nothing
+parses it; it is there so the address has a home that is a field rather than a
+sentence buried in a log entry.
+
+**The control had to move with the schema, and that is the part worth copying.**
+The leak scan carried universal patterns for money and email addresses, and none
+for telephone numbers — so the new field would have introduced, on day one, a
+class of personal data the public-half scan could not see. The scan now carries
+a phone pattern, controlled in the same self-test as the others, and
+deliberately narrow: it requires the punctuation a written number carries, so a
+bare run of digits — an id, a timestamp, a row count — does not match. An
+unpunctuated number is a known blind spot and is accepted, because widening it
+would fire on every long integer in the repository, and a scan nobody reads is
+the same failure as no scan.
+
+**Adding a field that stores a new class of private data, without extending the
+check that keeps private data out of the public half, is how a control quietly
+stops covering what it is believed to cover.** The pattern was proved end to end
+against planted numbers before the result was trusted, not merely asserted by
+the regex matching its own probe.
+
 ## 2026-10-28 — A tool the framework names can become a company the search is working
 
 The daily-log tool's docstring named the specific git client its author pushes

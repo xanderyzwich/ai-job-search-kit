@@ -417,9 +417,15 @@ reach this person today."**
 
 **The corollary: capture the ADDRESS when you learn it.** A profile URL and an
 email address are what make a thread reachable later; a log entry that names a
-channel but no address records how you *once* reached someone. **Both belong in
-frontmatter** (`linkedin:`, `email:`) the moment they appear in a message
-header, not when someone finally needs them.
+channel but no address records how you *once* reached someone. **They belong in
+frontmatter** (`linkedin:`, `email:`, `phone:`) the moment they appear in a
+message header, not when someone finally needs them.
+
+**`phone:` was added 2026-10-28, after a lead arrived BY TEXT from a contact
+whose record held no number to text back.** The entry could name the channel
+and the file could not reach it — which is the precise failure this section
+already described, reached through the one channel it had no field for. **A
+channel the schema cannot store is a channel the record silently drops.**
 
 **Do NOT add a connection-degree field.** Degree is a snapshot that changes the
 moment an invite is accepted, so a stored value becomes a stale mirror — and

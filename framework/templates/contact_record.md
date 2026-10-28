@@ -9,6 +9,7 @@ next_action: One short line. Blank only when owed_by is nobody.
 acquired_via: How this contact entered the search
 linkedin:
 email:
+phone:
 note: One sentence a reader needs before opening the file.
 ---
 
@@ -57,6 +58,16 @@ FIELD NOTES, in the order that matters:
   next_action:
       One line. Leave blank ONLY when `owed_by: nobody`, and say why in the
       body. Deliberate inaction is a decision and gets recorded as one.
+
+  linkedin: / email: / phone:
+      THE ADDRESSES. Fill each the moment it appears in a message header, not
+      when someone finally needs it. **A contact reachable only through a
+      shared employer is not reachable** — that channel ends with the job, for
+      either party, and the record is what survives it.
+
+      `phone:` exists because TEXT is a channel and had no home: a log entry
+      could say a message arrived by text while the file held no number to
+      text back. Any readable format; nothing parses it.
 
 PACING IS NOT SET HERE AND MUST NOT BE. How long to wait is a fact about the
 relationship, not the category — see the communication-logging skill. This
