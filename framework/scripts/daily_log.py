@@ -52,7 +52,7 @@ Notes:
     commit carries the day's tracker edits and regenerated views together.
     The weekly-review commit is made first and stages only its own two
     artifacts (data/dashboard/funnel_report.md, data/rituals.yml) so it stays distinct.
-  - Remote pushes still happen through GitKraken; this script only makes
+  - Remote pushes still happen through your own git client; this script only makes
     local commits. Amending stops automatically once today's commit has
     been pushed (a pushed commit gets an addendum commit instead).
 

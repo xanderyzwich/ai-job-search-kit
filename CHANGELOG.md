@@ -6,6 +6,30 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-28 — A tool the framework names can become a company the search is working
+
+The daily-log tool's docstring named the specific git client its author pushes
+with. Harmless as documentation, and for months it was.
+
+Then the leak scan — which derives its patterns from the private half rather
+than from a typed list — started flagging it. Not because the sentence had
+changed, but because **the private half had: that client's maker had become an
+employer in the live search**, so its name was now a company name, and the
+scan correctly found one sitting in a public file.
+
+It was a false positive about the boundary and a true one about the writing.
+The sentence did not need the brand at all; a public framework has no business
+telling its readers which GUI someone else prefers. Generalizing it to "your own
+git client" removed the finding and improved the line.
+
+**The reusable part is the collision itself.** A leak scan derived from live
+private data has a vocabulary that grows, so a public file that was clean when
+written can start matching later without anyone touching it. That is the scan
+working, not misfiring — but it means a finding on an old, unchanged line
+deserves the question *what changed on the private side?* before it is dismissed
+as noise. Dismissing it is how a scan everyone has learned to ignore stops
+catching the real one.
+
 ## 2026-10-21 — A known human with no recorded employer is a referral you cannot see
 
 *(Entry backfilled 2026-10-22 with the contract row it documents, which was
