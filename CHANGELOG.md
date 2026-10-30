@@ -6,6 +6,43 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-10-30 — A load-bearing file the contract did not know existed
+
+The contract's job is to say what `private/` must contain. A registry of
+company → ATS → verified board token had been accumulating there for weeks,
+and the contract had no row for it.
+
+That is worse than a documentation gap, because of what the contract is FOR.
+It is the file a fresh instance is rebuilt from, and the file an audit reads to
+ask whether the private half still matches its own definition. A file that is
+absent from it is a file the rebuild drops and the audit cannot miss — so the
+thing most likely to be lost is whatever grew up after the contract was last
+read, which is exactly the thing worth keeping.
+
+**It had also become load-bearing while nobody was looking.** The registry is
+what turns "sweep that board" from a discovery exercise into a lookup: the
+token is already verified, so the work starts at the query instead of at the
+hunt. Every entry in it is a board that can be swept on demand and has not
+been, which makes a grown registry the densest reserve of unspent search an
+instance holds — and it was documented nowhere the contract could see.
+
+**Writing the row forced an ownership question that had been answered only by
+habit.** Both the registry and a board's skill file describe the same board,
+and that is the shape that quietly produces either two owners for one fact or
+one file holding two. The split now stated in the row is the one practice had
+already settled on: **the registry says where a board is, and
+`skills/boards/<name>.md` says what goes wrong with it.** A token is a lookup
+and belongs in a table that is appended to; a quirk is a lesson and belongs in
+the file you read before working that board. **A board earns a skill file by
+being worked, not by being found** — so a row here is cheap and a skill file is
+not, which is the property that keeps the registry worth appending to.
+
+**The general rule, which is the only part worth copying:** a file that becomes
+load-bearing between contract reads will not announce itself. Nothing fails, no
+check fires, and the omission is only visible to someone asking "what is in
+here that the contract does not mention?" — a question worth asking on the
+cadence the contract is actually read, not the cadence it is edited.
+
 ## 2026-10-28 — A channel the schema cannot store is a channel the record silently drops
 
 The logging skill already required every entry to name its channel, and already
