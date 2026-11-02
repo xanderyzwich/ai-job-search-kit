@@ -6,6 +6,31 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-02 — The completeness check could not reach the references nobody wrote down
+
+Closing a thread has always owed an update to every file that mentioned it, and
+the skill said so. What it did not say was how to find them.
+
+A thread closed and the obvious three files were updated: its own company
+brief, the tracker, and the open-threads queue. A `grep -rli` on the company
+name then found two more, and both were inside *other* companies' briefs. One
+justified how much effort a rival interview's assessment deserved on the
+grounds that it "serves both" — an argument that had just become false. The
+other ranked three threads by how far along each was, and the one that had died
+was the furthest along and the best paying.
+
+Neither is reachable by diligence. A checklist scoped to "this thread's files"
+will never open another thread's brief, because nothing structural connects
+them — the reference exists only inside somebody's reasoning about a different
+decision. The failure is silent in the worst way: both files still read as
+current, and both were load-bearing for a judgment call.
+
+So the check now names the command rather than the intention. `grep -rli` takes
+seconds, and it is the only step that finds a reference you did not write and
+cannot remember. The same technique, on the same day, found a withdrawn claim
+about a URL form sitting in a contact's record, where it would have told a
+future session to send that person a link that resolves to someone else's job.
+
 ## 2026-10-30 — A load-bearing file the contract did not know existed
 
 The contract's job is to say what `private/` must contain. A registry of

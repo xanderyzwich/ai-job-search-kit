@@ -457,6 +457,19 @@ Before calling it logged, confirm:
   session — this happened to two simultaneous live threads and went unnoticed
   until someone asked.
 - **If the status is now terminal, does every file that mentioned it say so?**
+  **GREP THE NAME. DO NOT RELY ON REMEMBERING WHERE IT APPEARS.**
+  `grep -rli '<company>' data/ skills/` takes seconds and is the only step that
+  finds the references you did not write. Measured: closing one thread updated
+  the obvious three — its own brief, the tracker, `open_threads.md` — and the
+  grep found **two more, inside OTHER companies' briefs**, where the closed
+  thread was load-bearing for a live decision. One said a rival thread's
+  assessment *"serves both"* interviews, which had just become false and
+  changed how much effort that assessment was worth. The other ranked three
+  threads by how far along they were, and the one that had just died was the
+  furthest along and best paying.
+  **A cross-reference inside another thread's reasoning is the failure mode
+  here**, because nothing structural connects the two files and no checklist
+  scoped to "this thread's files" will ever reach it.
 - **If a date was created, moved or killed, is the `## Scheduled` block right?**
   A new commitment is a line; a reschedule edits that one line; a cancellation
   REMOVES it and the reason goes in the log. Only a date belonging to no person
