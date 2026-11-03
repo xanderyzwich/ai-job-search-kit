@@ -6,6 +6,36 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — The first reader bent the rule that had just been written
+
+The backlog lister ranks everything still unapplied by its score. Migrating it
+to the two-dimension model was meant to be mechanical, and two things came out
+of it that the design had not anticipated.
+
+The first was a rule that could not be followed. The contract had just said
+that any reader sorting on a score must show that dimension's requirement list
+beside it. A requirement list does not fit on a summary line — four or five
+items, each a sentence fragment — and a rule that cannot be obeyed gets ignored
+instead. So the rule was softened the same day it met an implementation: show
+the count in the summary, make the list reachable behind a flag. That is what
+it was protecting anyway. Writing a rule and implementing it in the same change
+is how you find out which one was wrong.
+
+The second was the live output, which proved the previous change immediately.
+The migrated lister prints a THIN flag when a posting names two or fewer hard
+requirements, and an asterisk when a row holds a legacy count rather than a
+list. The first screen of results was one employer, nine rows deep, every row
+reading `2t*` and flagged THIN — the identical boilerplate requirement block
+that had taken a hundred and eighty-three postings to notice, now visible as a
+column of repeated digits before anything was read.
+
+The ranking itself is `min()` of the dimensions a row actually has, so a row
+short on one half cannot average its way up, and a row with only the original
+dimension ranks exactly as it always did. The flag that used to guess at
+vagueness — many requirements, few naming a technology — was dropped rather
+than ported: it was a heuristic standing in for information nobody stored, and
+the information is stored now.
+
 ## 2026-11-03 — The denominator was stored and the numerator was thrown away
 
 Every scored row carried how many hard requirements a posting named. The rule

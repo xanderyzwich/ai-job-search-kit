@@ -339,7 +339,12 @@ percentage is 100% board-wide and carries no information. A count cannot show
 that. A list shows it at a glance.
 
 **The count is derivable from the list, so it is no longer stored.** Any reader
-that sorts on a dimension score must show that dimension's list beside it.
+that sorts on a dimension score must show **the count** beside it and make
+**the list** reachable — a flag, a detail view, the row itself. *(Softened
+when the first reader was migrated: a full requirement list does not fit a
+summary line, and a rule that cannot be followed gets ignored rather than
+obeyed. The count in the summary and the list one keystroke away is what the
+rule was actually protecting.)*
 
 **Legacy rows hold a bare integer** where the list had not been adopted yet.
 A reader distinguishes them trivially and must not treat an integer as a

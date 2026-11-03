@@ -74,6 +74,43 @@ def row_date(r):
     return m.group(1) if m else ""
 
 
+def req_count(cell):
+    """How many requirements a cell describes, and whether it LISTS them.
+
+    The column holds a pipe-delimited list of requirements ("+Java | -Go").
+    Rows scored before that change hold a bare integer count instead; the
+    contract says to distinguish the two and never read an integer as a
+    one-item list. Returns (count, is_listed).
+    """
+    cell = (cell or "").strip()
+    if not cell:
+        return None, False
+    if "|" in cell or cell[:1] in "+-":
+        return len([x for x in cell.split("|") if x.strip()]), True
+    n = num(cell)
+    return (int(n), False) if n is not None else (None, False)
+
+
+def row_score(r):
+    """Rank a row by min() of the scoring dimensions it actually has.
+
+    Per the contract: the bar is per dimension and there is no composite, so a
+    row short on one half must not average its way up. A dimension the posting
+    does not ask about is N/A, not zero -- which is why this takes the minimum
+    over the dimensions PRESENT rather than over both. For a row with only
+    tech_fit that is tech_fit, so rows scored before the second dimension
+    existed rank exactly as they always did.
+    """
+    dims = {}
+    for key, short in (("tech_fit", "T"), ("mgmt_fit", "M")):
+        v = num(r.get(key))
+        if v is not None:
+            dims[short] = v
+    if not dims:
+        return None, {}
+    return min(dims.values()), dims
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -85,6 +122,8 @@ def main():
     p.add_argument("--all", action="store_true", help="include rows below the floor")
     p.add_argument("--unscored", action="store_true",
                    help="also list researching rows that were never scored")
+    p.add_argument("--reqs", action="store_true",
+                   help="print each row's requirement lists under it")
     p.add_argument("--stale-days", type=int, default=21,
                    help="flag rows older than this (default 21)")
     a = p.parse_args()
@@ -94,14 +133,14 @@ def main():
 
     hits, needs_rescore, unscored = [], [], []
     for r in research:
-        tf = num(r.get("tech_fit"))
-        if tf is None:
+        score, dims = row_score(r)
+        if score is None:
             (needs_rescore if SCORE_IN_NOTES.search(r.get("notes", "")) else unscored).append(r)
         else:
             no_pref = (r.get("nice_reqs", "").strip() == "0")
             floor = a.min - a.margin if no_pref else a.min
-            if a.all or tf >= floor:
-                hits.append((tf, r, no_pref))
+            if a.all or score >= floor:
+                hits.append((score, r, no_pref, dims))
 
     hits.sort(key=lambda x: (row_date(x[1]), x[0]), reverse=True)
     today = date.today()
@@ -109,14 +148,20 @@ def main():
     print(f"SCORED >= {a.min:.0f}, STATUS researching, NEVER APPLIED: {len(hits)}")
     print(f"{'score':>6}  {'reqs':>12}  {'found':10}  {'age':>4}  company / role")
     print("-" * 100)
-    for tf, r, no_pref in hits:
-        hr, tn = num(r.get("hard_reqs")), num(r.get("tech_named_reqs"))
-        reqs = f"{int(hr)} hard/{int(tn)} tech" if hr is not None and tn is not None else "--"
+    for score, r, no_pref, dims in hits:
+        n_hard, listed = req_count(r.get("hard_reqs"))
+        n_mgmt, _ = req_count(r.get("mgmt_reqs"))
+        parts = [f"{n_hard}t" if n_hard is not None else "?t"]
+        if n_mgmt:
+            parts.append(f"{n_mgmt}m")
+        reqs = "/".join(parts) + ("" if listed else "*")
         flags = []
+        if len(dims) > 1:
+            flags.append("+".join(f"{k}{v:.0f}" for k, v in dims.items()))
         if no_pref:
-            flags.append("NO-PREF")       # ceiling is 100; read tf as hard-match %
-        if hr is not None and tn is not None and hr >= 4 and tn <= 1:
-            flags.append("VAGUE?")
+            flags.append("NO-PREF")       # ceiling is 100; read the score as hard-match %
+        if n_hard is not None and n_hard <= 2:
+            flags.append("THIN")          # too few requirements for the score to mean much
         d = row_date(r)
         age = ""
         if d:
@@ -126,9 +171,14 @@ def main():
                     flags.append("STALE")
             except ValueError:
                 pass
-        print(f"{tf:6.1f}  {reqs:>12}  {d or '?':10}  {str(age):>4}  "
+        print(f"{score:6.1f}  {reqs:>12}  {d or '?':10}  {str(age):>4}  "
               f"{r['company'][:34]} - {r['role'][:40]}"
               + (f"   [{' '.join(flags)}]" if flags else ""))
+        if a.reqs:
+            for key, label in (("hard_reqs", "tech"), ("mgmt_reqs", "mgmt")):
+                cell = (r.get(key) or "").strip()
+                if cell and ("|" in cell or cell[:1] in "+-"):
+                    print(f"{'':>8}{label}: " + "  ".join(x.strip() for x in cell.split("|")))
 
     if needs_rescore:
         print(f"\nSCORE RECORDED IN NOTES BUT NOT TRUSTED: {len(needs_rescore)}")
