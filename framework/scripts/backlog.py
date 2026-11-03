@@ -119,6 +119,11 @@ def row_score(r):
     return min(dims.values()), dims
 
 
+def floor_of(a):
+    """The plain floor, for flagging a row that clears on one dimension only."""
+    return a.min
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -147,7 +152,12 @@ def main():
         else:
             no_pref = (r.get("nice_reqs", "").strip() == "0")
             floor = a.min - a.margin if no_pref else a.min
-            if a.all or score >= floor:
+            # THE SCORE RANKS, IT DOES NOT GATE. A row whose min() falls under the
+            # floor only because ONE dimension is short must still surface -- the
+            # floor was calibrated for a single dimension, and letting it hide a
+            # split row would turn the ranking rule into the score-gate the
+            # contract forbids. It ranks low and carries SPLIT.
+            if a.all or score >= floor or max(dims.values()) >= floor:
                 hits.append((score, r, no_pref, dims))
 
     hits.sort(key=lambda x: (row_date(x[1]), x[0]), reverse=True)
@@ -168,8 +178,13 @@ def main():
             flags.append("+".join(f"{k}{v:.0f}" for k, v in dims.items()))
         if no_pref:
             flags.append("NO-PREF")       # ceiling is 100; read the score as hard-match %
-        if n_hard is not None and n_hard <= 2:
+        # THIN counts requirements ACROSS dimensions: 2 technical plus 3 management
+        # is a five-requirement posting, not a thin one.
+        total_reqs = sum(x for x in (n_hard, n_mgmt) if x)
+        if (n_hard is not None or n_mgmt is not None) and total_reqs <= 2:
             flags.append("THIN")          # too few requirements for the score to mean much
+        if len(dims) > 1 and min(dims.values()) < floor_of(a) <= max(dims.values()):
+            flags.append("SPLIT")         # one dimension clears, the other does not
         d = row_date(r)
         age = ""
         if d:

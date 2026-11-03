@@ -168,7 +168,13 @@ posting short on one requirement set cannot average its way up.
 **Read the requirements, not just the score** — see the warning below about
 vague postings. The list marks a row `THIN` when a posting names two or fewer
 hard requirements, because those are exactly the rows a raw score sort floats
-to the top, and `--reqs` prints the requirements themselves.
+to the top.
+
+**`--reqs` prints each row's requirement lists under it.** Use it the moment a
+score looks wrong for the role — the summary line carries the count, which says
+whether to be suspicious; the lists say what the posting actually asked for.
+**`--unscored` and `--all` widen the set; `--stale-days` moves the liveness
+flag.**
 
 **Do not discount a thin list.** A one-item preferred list that matches, or a
 two-item requirements list fully met, produces an extreme percentage

@@ -6,6 +6,43 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — The ranking rule became a gate the moment a real row met it
+
+Two commits had established that a scoring dimension ranks and never gates.
+Gates are a separate register — requirements that are historical facts, the
+location constraint, the comp floor — and a score was explicitly not allowed to
+join it.
+
+Then a synthetic row was fed through the backlog lister: strong on one
+dimension, short on the other. It did not rank low. **It disappeared.**
+
+The lister takes a floor argument and shows what clears it. That floor was set
+when there was one dimension, and a row now ranks on the minimum of the
+dimensions it has — so a posting scoring 140 technical and 80 management ranks
+at 80, falls under a floor of 100, and is filtered out entirely. The rule said
+the score ranks; the implementation gated on it, through a threshold written
+before the rule existed and never revisited.
+
+That is the whole lesson. **A policy about how a number is used lives in every
+place the number is compared, not in the place it is defined.** Nothing in the
+diff looked wrong — the ranking function was correct, the floor was unchanged,
+and the interaction only appears when a row exercises both.
+
+A row whose minimum falls under the floor now still surfaces if any single
+dimension clears it, flagged SPLIT. It ranks at its weak dimension, which is
+honest, and it stays visible, which is the rule. A row short on every dimension
+is still excluded, because that is the floor doing its actual job.
+
+The same pass found a second defect in the same function: the THIN flag, which
+marks a posting naming too few requirements to trust its score, counted only
+the technical set. A posting with two technical and three management
+requirements is a five-requirement posting and was being flagged as thin.
+
+Neither was found by reading. Both came from running five rows through the path
+that actually runs, including one control that should NOT fire each flag —
+which is the only way a flag's silence can be distinguished from a flag that
+cannot fire at all.
+
 ## 2026-11-03 — A column that proxied for missing information, after the information arrived
 
 `tech_named_reqs` counted how many of a posting's hard requirements named a
