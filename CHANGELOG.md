@@ -6,6 +6,35 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — The schema counted the lanes, and the count was incidental
+
+A search that runs two tracks — individual contributor and people leadership —
+produced a contract that said so. The tracker's `lane` field was documented as
+"`ic` or `pc` in the two-lane pattern," and the profile schema listed exactly
+two keys by name.
+
+Neither of those was a decision. They were a description of one instance,
+written down as though it were structure.
+
+The cost shows up the first time a search opens a third track. Here it was
+first-line engineering management, which is neither of the existing two: it
+carries management requirements the IC lane never scores, and a scope ceiling
+the people-leadership lane does not have. Every file that enumerated the two
+values became wrong on the same day, and nothing in the contract suggested the
+list was meant to grow.
+
+So `lanes` is now open-ended, keyed by whatever the instance names, with
+optional room for a lane to declare its own ceiling, its own internal ordering,
+and which resume it sends. The `lane` column is documented as taking whatever
+`profile.yml` defines, with a warning attached: a reader that enumerates the
+values instead of deriving them will go stale the next time this happens.
+
+The general shape is worth naming, because a framework extracted from one
+working instance is especially prone to it. **A count that comes from the
+instance is not part of the contract.** Two lanes, four boards, three resume
+variants — each of those is a fact about one search, and writing it into the
+schema turns a description into a constraint nobody chose.
+
 ## 2026-11-03 — A warning about a missing value outlived the value arriving
 
 The contract described work authorization with two booleans: authorized to work,

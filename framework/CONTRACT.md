@@ -184,9 +184,16 @@ role_criteria:
   domain: string
   title_is_secondary_to: [string]
 
-lanes:
-  pc: { label: string, org_size: string, titles: [string] }
-  ic: { label: string, org_size: string, titles: [string] }
+lanes:                              # OPEN-ENDED. Name the lanes this search
+                                    # actually runs; two is not a fixed number.
+  <lane_key>:
+    label: string
+    org_size: string
+    titles: [string]
+    ceiling: string                 # optional: the scope boundary this lane
+                                    # will not cross, and why
+    ordering: string                # optional: how roles rank INSIDE the lane
+    resume: string                  # optional: which resume lane is sent
 
 linkedin_open_to_work_titles: [string]
 ```
@@ -218,7 +225,11 @@ discovery point: the board listing URL where the role was first seen (which
 may differ from `job_url` when the JD lives on the company's ATS), a search
 query, a newsletter, or a person's name for referrals. URL preferred, short
 text allowed, blank when it would only repeat `source`. **`lane`** is which
-lane the application ran in (`ic` or `pc` in the two-lane pattern).
+lane the application ran in. **The values are whatever `profile.yml` `lanes`
+names** — an instance running IC and people-leadership lanes uses `ic`/`pc`; one
+that also pursues first-line engineering management adds `em`. **The schema does
+not fix the count**, and a reader that enumerates lane values rather than
+deriving them from `profile.yml` will go stale the first time a lane is added.
 **`resume_version`** identifies which resume build was submitted (a filename
 or a date tag, e.g. `ic_2026-07-01`). These exist for funnel analysis:
 response rate by source, discovery point, lane, and resume version is the
