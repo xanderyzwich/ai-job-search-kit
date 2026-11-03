@@ -65,7 +65,17 @@ COPIES = [  # (source relative to framework/, destination relative to private/)
     ("scripts/daily_log.py", "scripts/daily_log.py"),
     ("scripts/sweep.py", "scripts/sweep.py"),
     ("scripts/backlog.py", "scripts/backlog.py"),
+    ("scripts/funnel_report.py", "scripts/funnel_report.py"),
+    ("scripts/fetch_jds.py", "scripts/fetch_jds.py"),
 ]
+
+# KEEP THIS LIST IN STEP WITH framework/scripts/. A script that three skills
+# reference and bootstrap never copies is a dangling reference on every fresh
+# instance and on none of the developed ones -- which is why `funnel_report.py`
+# sat missing here while working fine in the instance it was written in. The
+# check that finds it is comparing this list against the directory, and it is
+# worth running whenever a script is added.
+
 
 SEEDS = {
     "data/session_log.md":

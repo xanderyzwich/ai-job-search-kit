@@ -6,6 +6,30 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — A script three skills referenced and the installer never copied
+
+Adding a fetcher prompted a check nobody had run: compare what `bootstrap.py`
+copies into a fresh instance against what is actually in `framework/scripts/`.
+
+The new script was missing from the list, which was expected — it had just been
+written. What was not expected is that `funnel_report.py` was missing too, and
+has been. **Three skills reference it by name.** It works perfectly in the
+instance it was written in, because it was created there directly and never
+needed installing.
+
+That is the shape worth recording. **A framework extracted from a living
+instance cannot test its own installer by using it** — every gap of this kind
+is invisible precisely where the work happens, and visible only on a machine
+nobody is sitting at. The developed instance has the file; the fresh one gets a
+skill pointing at nothing.
+
+Both are now in the copy list, with a comment beside it saying to keep the list
+in step with the directory and naming this failure as the reason.
+
+Verified the way the gap should have been found in the first place: bootstrap
+run into an empty throwaway instance, then assert both scripts are present.
+That takes seconds and had never been done.
+
 ## 2026-11-03 — A partial harvest is not a small harvest
 
 An ad-hoc loop fetched 339 job postings. 213 of them failed. It printed the
