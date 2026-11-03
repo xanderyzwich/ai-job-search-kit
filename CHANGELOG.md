@@ -6,6 +6,41 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — The denominator was stored and the numerator was thrown away
+
+Every scored row carried how many hard requirements a posting named. The rule
+was sound and already written down: a score without its denominator is not
+readable, because a vague posting scores high precisely by asking for little
+that can be missed.
+
+The count did that job and no more. It could say a score came from two
+requirements. It could never say *which two*, and that is the part that decides
+whether a score means anything.
+
+What exposed it was an employer whose every posting shares one identical
+boilerplate required block — degree, years, a language list. Every row read
+`hard_reqs=2`, every hard-match percentage came out at 100%, and the scores
+were therefore all equal and all meaningless. Noticing that took reading a
+hundred and eighty-three postings. The lists would have shown it on the first
+two rows, side by side, identical.
+
+So the column now holds the requirements themselves, pipe-delimited, each one
+prefixed matched or missed, one list per scoring dimension. The count is
+derivable from the list, so it is no longer stored separately, and the column
+that counted how many requirements named a specific technology is deprecated —
+the list shows that directly.
+
+Rows scored before the change keep their bare integer. They were deliberately
+not backfilled: the requirements of a posting scored months ago are not
+recoverable from a count, and reconstructing them would produce rows that look
+informative and are not. A reader distinguishes an integer from a list
+trivially and is told not to treat one as the other.
+
+The general shape, which is the reason to write this down at all: **storing a
+summary statistic and discarding what it summarised is a lossy decision made
+once and paid for repeatedly.** The count was cheap and it was never the
+expensive thing — the postings were already being read in full to produce it.
+
 ## 2026-11-03 — One score could not describe a role that asks for two different things
 
 The tracker carried a single match score, `tech_fit`, computed as

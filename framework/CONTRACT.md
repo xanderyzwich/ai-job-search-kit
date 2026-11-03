@@ -208,8 +208,8 @@ number, add a key to this schema instead.
 date_applied, response_date, company, role, salary_range, location, remote,
 job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
 hiring_manager, source, lane, resume_version, notes, found_via,
-sweep_id, tech_fit, mgmt_fit, hard_reqs, tech_named_reqs, nice_reqs,
-peak_stage
+sweep_id, tech_fit, mgmt_fit, hard_reqs, mgmt_reqs, tech_named_reqs,
+nice_reqs, peak_stage
 ```
 
 **`response_date`** is when the company responded (rejection, screen invite,
@@ -322,13 +322,33 @@ plainly, not an exclusion. **Do not let a dimension score become a gate**: it
 would be the only score-gate in the system, and it would fire hardest on the
 dimension with the thinnest data.
 
-**`hard_reqs`** / **`tech_named_reqs`** are the requirement count that
-qualifies the score — how many hard requirements the posting names, and how
-many of those name a specific technology. **A score without this denominator
-is not readable.** A vague posting scores HIGH precisely because it asks for
-little that can be missed, so the two columns travel together or the score
-ranks artifacts to the top. Any reader that sorts on `tech_fit` must show
-these beside it.
+**`hard_reqs`** and **`mgmt_reqs`** are the requirements THEMSELVES, one list
+per dimension — pipe-delimited, each item prefixed `+` matched or `-` missed:
+
+```
++BS/CS or equivalent | +6 yrs engineering | +Java named | -applied cryptography
+```
+
+**A score without its requirements is not readable**, and a count was never
+enough to make it readable. A vague posting scores HIGH precisely because it
+asks for little that can be missed — the count tells you a score came from two
+requirements, but only the list tells you *which two*, and that is what decides
+whether the score means anything. The case that forced this: an employer whose
+every posting shares one identical boilerplate required block, so the hard-match
+percentage is 100% board-wide and carries no information. A count cannot show
+that. A list shows it at a glance.
+
+**The count is derivable from the list, so it is no longer stored.** Any reader
+that sorts on a dimension score must show that dimension's list beside it.
+
+**Legacy rows hold a bare integer** where the list had not been adopted yet.
+A reader distinguishes them trivially and must not treat an integer as a
+one-item list. They were not backfilled: the requirements of a posting scored
+months ago are not recoverable from a count, and inventing them would be worse
+than leaving the row honest about what it knows.
+
+**`tech_named_reqs` is DEPRECATED** — it counted how many hard requirements
+named a specific technology, which the list now shows directly.
 
 **`nice_reqs`** is how many preferred/nice-to-have items the posting named,
 and **0 is a meaningful value, not a blank.** Where the composite weights
