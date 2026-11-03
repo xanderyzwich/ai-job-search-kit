@@ -208,7 +208,8 @@ number, add a key to this schema instead.
 date_applied, response_date, company, role, salary_range, location, remote,
 job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
 hiring_manager, source, lane, resume_version, notes, found_via,
-sweep_id, tech_fit, hard_reqs, tech_named_reqs, nice_reqs, peak_stage
+sweep_id, tech_fit, mgmt_fit, hard_reqs, tech_named_reqs, nice_reqs,
+peak_stage
 ```
 
 **`response_date`** is when the company responded (rejection, screen invite,
@@ -284,11 +285,42 @@ sweep is not — rows that predate the ledger, or a sweep nobody opened. It is
 a label, never a sweep: readers must exclude it from per-sweep rates, since
 counting it would attribute rows to a sweep that has no screened count.
 
-**`tech_fit`** is the combined match score defined in the instance's scoring
-skill — `hard_match_pct + 0.5 × nice_match_pct`, uncapped. It lives in a
-column rather than only in prose so the tracker can answer "what cleared the
-bar and never got applied to", which is the single most common way a good
-role is lost: a stack rank gets worked top-down and the day ends.
+**`tech_fit`** and **`mgmt_fit`** are the per-dimension match scores. **Both
+use one formula** — `hard_match_pct + 0.5 × nice_match_pct`, uncapped — applied
+to two independent requirement sets: the technical one (stack, systems,
+architecture, scale) and the management one (hiring, performance and career
+development, cross-functional partnership, standards ownership, span of
+control). They live in columns rather than only in prose so the tracker can
+answer "what cleared the bar and never got applied to", which is the single
+most common way a good role is lost: a stack rank gets worked top-down and the
+day ends.
+
+**The 0.5 is an exchange rate and it should be stated as one:** matching 10% of
+preferred exactly offsets missing 5% of required. Full match on the required
+set alone scores 100, which is the bar.
+
+**A dimension the posting does not ask about is `N/A`, never `0`** — the same
+rule the preferred list already uses. A posting with no management requirements
+has a blank `mgmt_fit`, and that is not a failing score.
+
+**THE BAR IS PER DIMENSION. THERE IS NO COMPOSITE.** *Full match on the
+requirements is viable* is a claim about one requirement set, so two sets need
+two readings. Averaging them hides the shortfall that matters: a role scoring
+122 technical and 80 management is not "101 and viable", it is strong on one
+half and short on the other, and the short half is the one that decides it.
+
+**Rank by `min()` of the dimensions present.** Selection, not blending — both
+numbers stay visible, nothing is averaged away, and no weighting constant gets
+invented. For a posting with no management requirements `min()` is just
+`tech_fit`, so a history scored before the second dimension existed stays
+comparable and needs no rescoring.
+
+**THE SCORE RANKS. IT DOES NOT GATE.** Gates are a separate register —
+requirements that are historical facts a candidate cannot acquire, location,
+and the comp floor. A low score on either dimension is a named gap to be stated
+plainly, not an exclusion. **Do not let a dimension score become a gate**: it
+would be the only score-gate in the system, and it would fire hardest on the
+dimension with the thinnest data.
 
 **`hard_reqs`** / **`tech_named_reqs`** are the requirement count that
 qualifies the score — how many hard requirements the posting names, and how

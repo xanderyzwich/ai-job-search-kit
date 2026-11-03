@@ -6,6 +6,57 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — One score could not describe a role that asks for two different things
+
+The tracker carried a single match score, `tech_fit`, computed as
+`hard_match_pct + 0.5 × nice_match_pct` over a posting's requirements. It
+worked for three months because every posting being scored was an individual
+contributor role, where the requirements are one kind of thing.
+
+Opening a management lane broke it immediately, and not in the way expected.
+The assumption had been that management postings would need a different
+scorer. They do not. **63% of the engineering-manager postings measured name
+hands-on coding**, and most name a stack — a management posting is not
+"management instead of technical", it is both at once. The same is true in
+reverse: individual-contributor postings routinely ask for mentoring,
+standards-setting and cross-team influence.
+
+So the problem was never two scorers. It was one score being asked to describe
+two independent requirement sets, with no way to say which half was short.
+
+The first design proposed per-lane weights — blend the two dimensions, weight
+by lane. Three things were wrong with it, and all three are worth recording
+because each is a tempting mistake:
+
+- **The weights were invented.** A constant with nothing behind it, silently
+  deciding rankings.
+- **It made the score depend on how the posting was found.** A posting
+  reachable from two different searches would hold two different scores, which
+  is incoherent — the posting does not know which query surfaced it.
+- **It averaged away the information the dimensions existed to expose.** A
+  role strong on one half and short on the other came out looking moderate on
+  both.
+
+The fix was not a better weight. It was noticing that "full match on the
+requirements is viable" is a claim about *a requirement set* — so two sets need
+two readings. One formula, applied twice. The bar applies to each dimension
+independently. Ranking is `min()` of the dimensions present, which is selection
+rather than blending: both numbers stay visible and no constant is invented.
+
+Two rules travel with it. **A dimension the posting does not ask about is N/A,
+not zero** — so a history scored before the second dimension existed stays
+comparable and needs no rescoring, because `min()` over one dimension is that
+dimension. And **the score ranks, it never gates.** Gates are a separate
+register: requirements that are historical facts a candidate cannot acquire,
+location, the comp floor. A score-gate was drafted and cut — it would have been
+the only one in the system, and it would have fired hardest on the dimension
+with the thinnest data, since the management requirement set is stated far less
+completely than the technical one.
+
+The general shape: **a scoring dimension is a property of what is being
+measured, not of how you went looking for it.** The moment the measurement
+depends on the search, the same object can hold two values.
+
 ## 2026-11-03 — The schema counted the lanes, and the count was incidental
 
 A search that runs two tracks — individual contributor and people leadership —
