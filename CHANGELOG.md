@@ -6,6 +6,35 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — A warning about a missing value outlived the value arriving
+
+The contract described work authorization with two booleans: authorized to work,
+and requires sponsorship. An application form does not ask either of those. It
+asks for a status from a dropdown, and both booleans are consistent with several
+of the options at once, so neither one answers it.
+
+An assistant filling such a form has two bad choices. Guess a legal attestation
+on someone's behalf, or leave a required field blank and ask. The instance
+behind this framework chose to ask, which was right, and wrote a careful note
+explaining that the profile recorded authorization *without naming a type*, so
+inferring one would be an unverified guess.
+
+The key was added to that profile the next day. The note was not.
+
+Five more applications left the field blank and asked again, across seven weeks,
+because each session inherited the warning rather than re-reading the file it
+described. The warning was accurate for one day and then became a description of
+a gap that no longer existed — and nothing about it looked stale, because a
+caution against guessing reads as timeless even when its premise has expired.
+
+So: `work_authorization_type` is contracted, with the reasoning attached to the
+key rather than left in a session note. And the general shape is worth naming,
+because this framework is built almost entirely out of written-down warnings. **A
+warning that something is absent is a claim about current state, not a
+principle.** It has a shelf life, it expires silently when the absence is filled,
+and the file it points at is the only thing that can retire it. Re-read, then
+repeat it.
+
 ## 2026-11-02 — The completeness check could not reach the references nobody wrote down
 
 Closing a thread has always owed an update to every file that mentioned it, and

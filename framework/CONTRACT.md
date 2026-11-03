@@ -157,6 +157,14 @@ identity:
 application_defaults:
   authorized_to_work_us: boolean
   requires_sponsorship: boolean
+  work_authorization_type: string    # the exact option to pick from an ATS dropdown
+                                     # (e.g. "US Citizen", "Permanent Resident", "H1B").
+                                     # authorized_to_work_us and requires_sponsorship are
+                                     # consistent with SEVERAL dropdown options, so neither
+                                     # answers the question a form actually asks. Without
+                                     # this key a session must either guess a legal
+                                     # attestation or leave the field blank; the instance
+                                     # that added it had left it blank five times first.
   desired_salary_usd: number         # what to type in a "desired salary" field
   eeo_policy: string                 # the standing instruction for demographic questions
   reasons_for_leaving:               # per employer, the stated reason if asked
