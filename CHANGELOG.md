@@ -6,6 +6,51 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — A partial harvest is not a small harvest
+
+An ad-hoc loop fetched 339 job postings. 213 of them failed. It printed the
+count and moved on, and the 126 that survived were analysed as though they were
+the corpus.
+
+They were 37% of it. Worse, the loop walked insertion order, so the survivors
+clustered in whatever was fetched first — one search query's results — and the
+frequency analysis built on them under-represented three whole title families.
+Nothing in the output said any of this. The numbers looked like numbers.
+
+**The gaps in a partial fetch are not random**, which is the entire problem. A
+sample that is missing a third of its population at random is a smaller sample;
+one that is missing a third correlated with how it was collected is a different
+population wearing the first one's name.
+
+Two defects produced it, and the second is worse.
+
+The first was no retry. A bare `except` counted the failure and continued, so a
+transient blip meant permanent loss for that URL. Re-probing six of the failures
+an hour later returned 200 with full content in under a second each — the URLs
+were fine the whole time.
+
+The second was that the same bare `except` discarded the status code and the
+exception type. So the cause was a guess, "rate limiting," and the guess then
+shaped the proposed fix: exponential backoff, which is the remedy for a server
+asking you to slow down, designed before anything had been measured. **The
+label was dropped when the probe contradicted it and the solution was kept
+anyway** — which is how a remedy outlives the diagnosis that justified it.
+
+So the fetcher now retries plainly and briefly, because transient is what was
+actually measured, and there is deliberately no backoff curve. It records what
+each attempt did to a failures file, and the documentation says to read that
+file before changing the retry strategy rather than reaching for a reflex.
+
+And it has a completion gate: below a required fetch rate it prints NOT
+COMPLETE and exits non-zero, so a partial corpus cannot be handed downstream
+looking whole. That is deliberately an exit code and not a warning. A warning
+in a successful-looking run is a line nobody reads twice.
+
+The general shape: **a process that can partially fail must report completeness
+as a first-class result, not as a count the caller is trusted to check.** The
+count was there the first time. It was `126` next to `213`, and it was read as
+progress.
+
 ## 2026-11-03 — The ranking rule became a gate the moment a real row met it
 
 Two commits had established that a scoring dimension ranks and never gates.

@@ -151,6 +151,33 @@ prose cannot be queried, which means the one question that matters after a
 stack rank — *what cleared the bar and never got applied to?* — can only be
 answered by a human re-reading the file, and so it mostly does not get asked.
 
+### Fetching the JDs — triage first, and never score what the fetcher refuses to certify
+
+**`scripts/fetch_jds.py` pulls postings into a cache and exits non-zero below
+`--require-rate`.** Two rules travel with it, both bought by the same failure.
+
+**TRIAGE BEFORE YOU FETCH. Do not hand it the whole harvest.** Card data —
+title, url, snippet — is enough to drop obvious misses, and fetching several
+hundred detail pages to score eighty is waste regardless of whether anything
+throttles. A previous Built In pass recorded it plainly: *143 distinct from 8
+queries, 51 survive lane/level triage.*
+
+**>>> A PARTIAL HARVEST IS NOT A SMALL HARVEST. <<<** On 2026-11-03 an ad-hoc
+loop fetched 339 postings, lost 213, reported the count, and the surviving 126
+were analysed as the corpus. **They were 37% of it, and because the loop walked
+insertion order they skewed toward the first query** — so the frequency
+analysis under-represented three title families and nothing in the output said
+so. **The gaps in a partial fetch are not random**, which is why the gate exits
+non-zero rather than printing a warning: a warning gets read past.
+
+**READ `--failures` BEFORE CHANGING THE RETRY STRATEGY.** The original loop
+caught a bare exception and discarded the status code, so the cause was guessed
+("rate limiting") and the guess then shaped the proposed fix. Re-probing six of
+the failures an hour later returned 200 with full content in under a second
+each — **transient, and the real defect was having no retry at all.** The
+fetcher now records what each attempt actually did. **Let that file decide
+whether backoff is ever needed; do not add it on reflex.**
+
 ### The bottom of a stack rank is where good roles die
 
 Not from rejection. A rank gets worked top-down, the day ends, and whatever
