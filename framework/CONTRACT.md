@@ -208,8 +208,7 @@ number, add a key to this schema instead.
 date_applied, response_date, company, role, salary_range, location, remote,
 job_url, application_status, cover_letter_sent, linkedin_dm_sent, dm_recipient,
 hiring_manager, source, lane, resume_version, notes, found_via,
-sweep_id, tech_fit, mgmt_fit, hard_reqs, mgmt_reqs, tech_named_reqs,
-nice_reqs, peak_stage
+sweep_id, tech_fit, mgmt_fit, hard_reqs, mgmt_reqs, nice_reqs, peak_stage
 ```
 
 **`response_date`** is when the company responded (rejection, screen invite,
@@ -352,8 +351,11 @@ one-item list. They were not backfilled: the requirements of a posting scored
 months ago are not recoverable from a count, and inventing them would be worse
 than leaving the row honest about what it knows.
 
-**`tech_named_reqs` is DEPRECATED** — it counted how many hard requirements
-named a specific technology, which the list now shows directly.
+*(A `tech_named_reqs` column counted how many hard requirements named a
+specific technology. It was removed once the lists replaced it — the list shows
+that directly, and a heuristic standing in for information nobody stored stops
+earning its column the moment the information is stored. An instance still
+carrying the column in historical rows can leave it; nothing reads it.)*
 
 **`nice_reqs`** is how many preferred/nice-to-have items the posting named,
 and **0 is a meaningful value, not a blank.** Where the composite weights

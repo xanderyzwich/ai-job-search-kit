@@ -146,7 +146,7 @@ see why a score landed where it did without a narrator having to remember to
 flag it.
 
 **Write the score into the tracker, not only into the note.** `tech_fit`,
-`hard_reqs` and `tech_named_reqs` are columns. A score that lives only in
+`mgmt_fit`, `hard_reqs` and `mgmt_reqs` are columns. A score that lives only in
 prose cannot be queried, which means the one question that matters after a
 stack rank — *what cleared the bar and never got applied to?* — can only be
 answered by a human re-reading the file, and so it mostly does not get asked.

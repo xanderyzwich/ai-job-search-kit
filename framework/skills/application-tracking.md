@@ -36,8 +36,11 @@ They cost seconds to record and are unrecoverable weeks later. Four more columns
 carry the same property:
 
 `sweep_id` ties the row to the search effort that produced it (written by
-`sweep.py`); `tech_fit` is the combined match score; `hard_reqs` and
-`tech_named_reqs` are the requirement count that makes the score readable.
+`sweep.py`); `tech_fit` and `mgmt_fit` are the per-dimension match scores; and
+`hard_reqs` / `mgmt_reqs` hold the requirements themselves, which is what makes
+a score readable. **A score without its requirements is a number with no
+denominator** — a vague posting scores high precisely by asking for little that
+can be missed.
 
 **The score belongs in a column, not only in a note.** Scores written into
 prose cannot be queried, so the question *what cleared the bar and never got

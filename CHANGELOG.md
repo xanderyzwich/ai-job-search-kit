@@ -6,6 +6,34 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-03 — A column that proxied for missing information, after the information arrived
+
+`tech_named_reqs` counted how many of a posting's hard requirements named a
+specific technology. It existed to answer a question the stored data could not:
+is this score real, or is it high because the posting asks for almost nothing?
+A requirement count alone could not tell those apart, so a second count stood
+in — many requirements but few naming a technology meant words without
+substance.
+
+It was a good proxy. It is now a worse version of something stored directly.
+Once the requirements themselves are in the row, "do these name technologies"
+is a question you answer by looking, and the column measures one property of a
+list that is sitting right there.
+
+So it is removed from the schema, from the template, and from the two skills
+that told writers to fill it. Nothing read it after the backlog lister was
+migrated, which is the condition this was waiting on — the previous commit
+dropped its one consumer, this one drops the column. An instance whose
+historical rows still carry the values can leave them; nothing looks.
+
+Worth separating the two halves, because only one of them was a mistake. The
+proxy was the right call when it was made: it answered a real question with the
+data available, and the alternative was leaving the question unanswerable. What
+would have been wrong is keeping it afterward. **A proxy earns its place by the
+absence it covers, and stops earning it the moment that absence is filled** —
+which is easy to miss, because a column that has been correct for months does
+not announce the day it becomes redundant.
+
 ## 2026-11-03 — The first reader bent the rule that had just been written
 
 The backlog lister ranks everything still unapplied by its score. Migrating it
