@@ -7,19 +7,27 @@ against them -- they just ran out of daylight. They stay `researching`
 forever, and the only way they have ever surfaced is someone deciding to
 comb back through the tracker by hand. Rows do not raise their own hands.
 
-    backlog.py [--min 100] [--all] [--unscored] [--stale-days N]
+    backlog.py [--min 100] [--all] [--unscored] [--reqs] [--stale-days N]
 
-Lists `researching` rows whose tech_fit clears the bar, newest first,
-with the two things that decide whether the number can be trusted.
+Lists `researching` rows whose score clears the bar, newest first, with the
+two things that decide whether the number can be trusted.
 
-READ THE REQUIREMENT COUNT, NOT JUST THE SCORE. match_gap_scoring.md
-promoted `N hard (M tech-named)` to a required field on 2026-09-15 because
-a 22-JD pass found that EVERY batch put a vagueness artifact in its top two
-and the requirement count predicted it every time -- an entry-level req
-scored 150 while the most trustworthy row in the pass scored 77. A score
-computed against few, non-technology-named requirements is inflated. This
-script prints the count and marks a row VAGUE? when a JD names several hard
-requirements and almost none of them name a technology.
+RANKED ON THE WEAKEST DIMENSION, NOT THE ONLY ONE. A row carries a score per
+requirement set -- `tech_fit` and `mgmt_fit` -- and ranks on min() of the ones
+it has. A posting strong on one half and short on the other must not average
+its way up, and a dimension the posting never asked about is N/A rather than
+zero, so a row with only `tech_fit` ranks exactly as it always did. The
+dimensions are printed beside the score when a row has more than one.
+
+READ THE REQUIREMENTS, NOT JUST THE SCORE. A 22-JD pass on 2026-09-15 found
+EVERY batch put a vagueness artifact in its top two, and the requirement count
+predicted it every time -- an entry-level req scored 150 while the most
+trustworthy row in the pass scored 77. A score computed against few
+requirements is inflated. The `reqs` column shows how many each dimension
+names (`3t/2m`); `--reqs` prints the requirements themselves. THIN marks two or
+fewer hard requirements. A trailing `*` marks a legacy row storing a bare count
+rather than a list -- the contract says never read that integer as a one-item
+list.
 
 AGE IS A LIVENESS QUESTION. A role scored seven weeks ago is probably no
 longer posted. Old rows are listed last and flagged, not hidden -- the

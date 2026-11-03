@@ -49,7 +49,7 @@ roles are actually lost — not to rejection, but to a stack rank that got
 worked top-down until the day ended. `backlog.py` answers it; the daily-log
 tool prints its count at `open` so the answer arrives unprompted.
 
-**Never show `tech_fit` without its requirement count.** A vague posting
+**Never show a dimension score without its requirements.** A vague posting
 scores HIGH precisely because it asks for little that can be missed. Sorting
 on the raw number floats those artifacts to the top of every list, and a
 reader who cannot see the denominator cannot see the artifact.

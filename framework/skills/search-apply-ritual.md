@@ -159,15 +159,16 @@ ever raised its hand about those rows; they surfaced only when someone chose
 to comb back through the tracker by hand.
 
 `scripts/backlog.py` is that check, and `daily_log.py open` prints its count
-so it is seen without being asked for. It lists `researching` rows whose
-`tech_fit` clears the bar, newest first, with the requirement count beside
-each score and a STALE flag on anything old enough to need a liveness
-re-check before it is worth touching.
+so it is seen without being asked for. It lists `researching` rows whose score
+clears the bar, newest first, with the requirement count beside each score and
+a STALE flag on anything old enough to need a liveness re-check before it is
+worth touching. **It ranks on `min()` of the dimensions a row has**, so a
+posting short on one requirement set cannot average its way up.
 
-**Read the requirement count, not just the score** — see the warning below
-about vague postings. The backlog list marks a row `VAGUE?` when a posting
-names several hard requirements and almost none of them name a technology,
-because those are exactly the rows a raw `tech_fit` sort floats to the top.
+**Read the requirements, not just the score** — see the warning below about
+vague postings. The list marks a row `THIN` when a posting names two or fewer
+hard requirements, because those are exactly the rows a raw score sort floats
+to the top, and `--reqs` prints the requirements themselves.
 
 **Do not discount a thin list.** A one-item preferred list that matches, or a
 two-item requirements list fully met, produces an extreme percentage
