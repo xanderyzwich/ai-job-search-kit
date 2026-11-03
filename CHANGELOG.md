@@ -215,7 +215,10 @@ contributor role, where the requirements are one kind of thing.
 Opening a management lane broke it immediately, and not in the way expected.
 The assumption had been that management postings would need a different
 scorer. They do not. **63% of the engineering-manager postings measured name
-hands-on coding**, and most name a stack — a management posting is not
+hands-on coding** *(refined to **59%** later the same day when the corpus was
+completed — 126 postings had been analysed because 213 fetches silently failed;
+the figure moved, the conclusion did not)*, and most name a stack — a
+management posting is not
 "management instead of technical", it is both at once. The same is true in
 reverse: individual-contributor postings routinely ask for mentoring,
 standards-setting and cross-team influence.
