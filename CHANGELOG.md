@@ -6,6 +6,41 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-04 — Anything above the fold point was invisible to the tool that writes the log
+
+The daily-log tool folds each day's working notes into the session log by
+inserting before the first `## Session Notes` header, and archives old days by
+scanning for that same header. Both operations start from the first conforming
+heading and work down.
+
+Nothing looks above it. A heading that does not match the pattern, sitting
+higher in the file, is outside the reach of the folder and the archiver alike —
+permanently, and with no error anywhere.
+
+Two blocks were found sitting in that dead zone. One was a 97-line day's entry,
+stranded for three weeks by a heading written in a near-miss format. The other
+was 540 lines across eleven sections, dropped there while a correctly-placed
+version of the same day already existed further down the file. Both were
+recovered and verified by comparing line multisets before and after, so nothing
+was lost, duplicated or invented in the repair.
+
+Neither was written by the tool. Both were written by hand, which is why no
+amount of care inside the folding code would have caught them, and why the
+check has to look at the file rather than at the writer.
+
+So: a warning at open and at close when any `## ` heading appears above the
+first `## Session Notes`, naming each one. It is deliberately placed beside the
+existing warning for a day's notes written to the wrong directory — the same
+class of failure, where work lands somewhere nothing reads and the absence of
+an error reads as success.
+
+It would have fired every day for three weeks.
+
+The general shape: **a tool that processes a file from an anchor cannot see what
+sits above the anchor, and will never say so.** Every "insert before the first
+X" has a region above X that is silently out of scope, and the only way that
+region reports itself is a check written specifically to look there.
+
 ## 2026-11-03 — A script three skills referenced and the installer never copied
 
 Adding a fetcher prompted a check nobody had run: compare what `bootstrap.py`

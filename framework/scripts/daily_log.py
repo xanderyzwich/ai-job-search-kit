@@ -365,6 +365,50 @@ def warn_decoy():
           f" work will be missing from the log.")
 
 
+
+def warn_stranded_log_entries():
+    """Report any `## ` heading above the log's first `## Session Notes`.
+
+    THE SILENT LOSS THIS EXISTS FOR, measured 2026-11-04. `fold_today()` inserts
+    before the first `^## Session Notes` and `archive_old()` scans the same
+    HEADER_RE, so ANYTHING ABOVE THAT FIRST CONFORMING HEADER IS INVISIBLE TO
+    BOTH -- permanently, and with no error anywhere. Two blocks had been sitting
+    in that dead zone: a 97-line entry stranded for three weeks by a
+    non-conforming `## 2026-10-13 - ...` heading, and 540 lines of content across
+    eleven sections dropped there while a correctly-placed version of the same
+    day existed further down.
+
+    Both were written BY HAND, not by `fold_today()` -- which is why no amount of
+    care inside the folding path would have caught them, and why the check has to
+    look at the file rather than at the writer.
+
+    Same class as the repo-root `temp/today.md` decoy warning: work lands
+    somewhere nothing reads, and the absence of an error reads as success. This
+    one would have fired every day for three weeks.
+    """
+    if not LOG.exists():
+        return
+    text = LOG.read_text(encoding="utf-8")
+    first = re.search(r"^## Session Notes", text, re.M)
+    head = text[:first.start()] if first else text
+    stranded = [m.group(0).strip()
+                for m in re.finditer(r"^## .*$", head, re.M)]
+    if not stranded:
+        return
+    where = "above the first `## Session Notes`" if first else (
+        "in a log with NO `## Session Notes` header at all")
+    print(f"WARNING: {len(stranded)} heading(s) {where} in"
+          f" {LOG.relative_to(ROOT.parent)} — UNREACHABLE.")
+    for h in stranded[:5]:
+        print(f"         {h[:88]}")
+    if len(stranded) > 5:
+        print(f"         ... and {len(stranded) - 5} more")
+    print("         Neither the folder nor the archiver can see them, so that")
+    print("         content is silently excluded from every session and from")
+    print("         archiving. Move it under a conforming")
+    print("         `## Session Notes (Mon D YYYY)` header, or into data/archive/.")
+
+
 HANDOFF = ROOT / "data" / "handoff.md"
 
 
@@ -702,6 +746,7 @@ def cmd_open():
     refresh_context_map()
     refresh_contact_index()  # always refresh, even on re-open
     warn_decoy()
+    warn_stranded_log_entries()
     # Printed rather than left to session_init.md because Cowork takes its init
     # from a PROJECT-LOADED copy of that file, which drifts from the repo. The
     # tool output reaches both harnesses; the skill file does not.
@@ -839,6 +884,7 @@ def run_leak_scan():
 
 def cmd_close(mid_day=False):
     warn_decoy()  # before folding — this is the last moment to rescue it
+    warn_stranded_log_entries()  # same moment, same class of silent loss
     # Closing a sweep happens after applying, when moving to another board, or
     # at the end of the day — and the end of the day is the one that gets
     # forgotten, so both sweep checks run here as well as at open.
