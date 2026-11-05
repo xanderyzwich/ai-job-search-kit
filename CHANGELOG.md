@@ -6,6 +6,42 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-05 — Half the network was a different asset, managed as if it were the same one
+
+The contact records carried an employer and a relationship note, which is
+enough to answer "who do I know" and not enough to answer "who can refer me,
+and is that offer still available."
+
+Reading thirty-two of them against that second question turned up a split
+nobody had named. Some contacts are employees who can file an internal referral
+at one employer — a one-shot favour, spent the moment it is used, and worth
+nothing if that employer has no suitable opening. Others are agency recruiters
+carrying a book of requisitions across many clients. Those are not spent at
+all; they are activated, and they keep working in the background.
+
+**More than half the network was the second kind**, and the files treated both
+identically.
+
+The distinction has teeth. A sweep of one agency's public board the day before
+had found seven requisitions within two hundred miles and no software among
+them — while a recruiter at that same agency's local office had described a
+live role with a salary attached. **The inventory that mattered was not on the
+board.** For an internal referral the employer's public listings are the whole
+opportunity; for an agency they are close to irrelevant.
+
+So the contact schema gains three keys: what kind of help the person can give,
+whether the offer is untouched, live, already spent, or dead because their
+employer has nothing to point it at, and what using it costs them.
+
+One thing is deliberately NOT in the schema: whether that employer has anything
+open right now. It rots in days, and a stale answer that looks authoritative is
+worse than no answer. That join belongs to a generated view, computed when
+read.
+
+The general shape: **a field that records what someone IS belongs in the
+record; a field that records what their employer is DOING TODAY does not.**
+Durability, not subject matter, decides where a fact lives.
+
 ## 2026-11-04 — Anything above the fold point was invisible to the tool that writes the log
 
 The daily-log tool folds each day's working notes into the session log by
