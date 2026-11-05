@@ -359,6 +359,89 @@ def render_calendar(today, cal_out, contacts=()):
           % (cal_out.relative_to(ROOT), len(dated), len(undated), len(bad)))
 
 
+TYPE_ORDER = {"internal": 0, "agency": 1, "peer": 2, "own_employer": 3, "none": 4}
+STATE_ORDER = {"live": 0, "never_offered": 1, "spent": 2, "dead": 3}
+TYPE_LABEL = {
+    "internal": ("INTERNAL — a one-shot favour at ONE employer",
+                 "Spent when used, and worth nothing if that employer has nothing "
+                 "suitable open — so **check the employer before spending the offer.** "
+                 "A vouch aimed at no role is the recorded mistake."),
+    "agency": ("AGENCY — a book of reqs, ACTIVATED rather than spent",
+               "These are not used up. Their inventory is frequently **not on any "
+               "public board**, so the question is never about their listings — it is "
+               "*what are you working that isn't posted.*"),
+    "peer": ("PEER — advice and market reads, not access", ""),
+    "own_employer": ("OWN EMPLOYER — references, never referrals", ""),
+}
+
+
+def render_referral_map(cs, out):
+    """Who can open a door, where, and is the offer still there.
+
+    THE QUESTION THE INDEX DOES NOT ANSWER. The index says who is going cold.
+    Reconstructing "who can refer me and is it still available" meant reading
+    every record, so it mostly did not happen. The funnel is why it should:
+    warm submissions respond at roughly 58% against 45% cold, and only about
+    4% of all submissions ever reach a conversation.
+
+    RENDERED HERE, NOT IN ITS OWN SCRIPT, for the reason this module's other
+    docstring already gives: two scripts reading one schema is a mirror waiting
+    to disagree. A third parser of contact frontmatter would be worse.
+
+    WHAT IS DELIBERATELY ABSENT: whether each employer has anything open right
+    now. It rots in days, and a stale answer that looks authoritative is worse
+    than none. The employer is named so the lookup is one step away; this view
+    does not pretend to have done it.
+    """
+    rt = lambda c: c["fields"].get("referral_type", "")
+    rs = lambda c: c["fields"].get("referral_state", "")
+    rows = [c for c in cs if rt(c)]
+    missing = [c["name"] for c in cs if not rt(c)]
+    rows.sort(key=lambda c: (TYPE_ORDER.get(rt(c), 9),
+                             STATE_ORDER.get(rs(c), 9),
+                             c["name"]))
+    L = ["# Referral Map", "",
+         "> **READ BY: the assistant AND the candidate.** Answers *who can open a",
+         "> door, where, and is the offer still there* — which the contact index",
+         "> does not.",
+         ">",
+         "> GENERATED alongside the contact index from the same contact",
+         "> frontmatter. Do NOT edit — fix the record and regenerate.",
+         ">",
+         "> **WHAT IS OPEN AT EACH EMPLOYER IS NOT HERE, ON PURPOSE.** It rots in",
+         "> days. The employer is named so the lookup is one step away.",
+         ""]
+    types = sorted({rt(c) for c in rows}, key=lambda t: TYPE_ORDER.get(t, 9))
+    states = {}
+    for c in rows:
+        states[rs(c)] = states.get(rs(c), 0) + 1
+    L += ["**Shape:** " + " · ".join(
+        f"`{t}` {sum(1 for c in rows if rt(c) == t)}" for t in types)]
+    L += ["**Offer state:** " + " · ".join(
+        f"`{s}` {states[s]}" for s in sorted(states, key=lambda x: STATE_ORDER.get(x, 9))), ""]
+    for t in types:
+        head, note = TYPE_LABEL.get(t, (t.upper(), ""))
+        L += [f"## {head}", ""]
+        if note:
+            L += [note, ""]
+        L += ["| state | who | employer | what it costs them |", "|---|---|---|---|"]
+        for c in [x for x in rows if rt(x) == t]:
+            st = rs(c)
+            L.append("| %s | [%s](../contacts/%s) | %s | %s |" % (
+                "**live**" if st == "live" else st, c["name"], c["file"],
+                c["fields"].get("company", "")[:38],
+                c["fields"].get("referral_cost", "")[:86]))
+        L.append("")
+    if missing:
+        L += ["## Not classified — invisible to this view", "",
+              "Add `referral_type` to each record.", ""]
+        L += ["- " + m for m in missing] + [""]
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("\n".join(L) + "\n", encoding="utf-8")
+    return len(rows), len(missing), states.get("live", 0)
+
+
+
 def main():
     out = Path(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else DEFAULT_OUT
     cal = Path(sys.argv[sys.argv.index("--cal-out") + 1]) if "--cal-out" in sys.argv else DEFAULT_CAL
@@ -476,6 +559,11 @@ def main():
     out.write_text("\n".join(L) + "\n", encoding="utf-8")
     print("Wrote %s: %d contacts, %d needing a decision, %d referral hub(s)."
           % (out.relative_to(ROOT), len(cs), len(owed) + len(due), len(brought)))
+
+    ref_out = out.parent / "referral_map.md"
+    n, miss, live = render_referral_map(cs, ref_out)
+    print("Wrote %s: %d classified, %d unclassified, %d LIVE offers."
+          % (ref_out.relative_to(ROOT), n, miss, live))
     return 0
 
 
