@@ -23,6 +23,13 @@ applies, and the coordinator logs the resume and salary the human reports. The
 old material stays for anyone who still wants browser-assisted filling, and
 browser delegation for reading (harvest, fetch, liveness) is untouched.
 
+The same session settled a rule that the long files had been breaking: a skill
+holds what the task needs plus guards against tangents, learnings included, and
+nothing else. State and history, meaning dated counts, probe logs and the story
+of how a rule was found, belong in data files. The maintenance skill now states
+the rule with a delete-it test, and treats a file growing past the size warning
+as suspected of carrying history before the limit is questioned.
+
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
 the referral and channel fields every live record carries, and the contract had

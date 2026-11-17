@@ -106,6 +106,24 @@ that name.
 and durable. Research about one employer is loaded once, by one reader — in a
 skill it charges everyone else, and nobody updates it when that process changes.
 
+## A skill holds what the task needs, not what happened
+
+A skill file contains only what the assistant needs to complete the task it is
+loaded for, plus the guards that keep it off unwanted tangents. **Learnings
+belong in a skill. State and history do not.** Counts as of a date, probe logs,
+queue contents, "this claim was withdrawn" narratives and the story of how a
+rule was found are records, and records live in dated data files with an as-of
+header.
+
+**The test:** if this paragraph were deleted, would an agent doing the task get
+it wrong? If not, it is history or state and belongs in data. A learning is the
+rule stated in the present tense with the one-line reason it exists; the
+account of the day it was discovered goes elsewhere.
+
+**Why it matters:** every agent that loads a skill pays for all of it. A file
+that is growing past the size warning should be suspected of carrying history
+before anyone proposes raising the limit.
+
 ## The header contract (skill routing in one call)
 
 Every skill file must deliver its complete routing information — the
