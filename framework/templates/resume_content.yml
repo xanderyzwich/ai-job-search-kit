@@ -16,7 +16,13 @@
 
 identity:
   name: ""
-  contact_line: ""            # e.g. "(555) 555-5555  ·  you@example.com  ·  linkedin.com/in/you"
+  contact_line: ""            # plain-text fallback, e.g. "(555) 555-5555  ·  you@example.com  ·  linkedin.com/in/you"
+  # Optional, preferred: render phone, email and LinkedIn as live links on the
+  # name line (right-aligned). When `email` is set, contact_line is ignored.
+  # phone: "555 0100"                 # 10-digit => tel:+1...; a leading + keeps its own country code
+  # email: you@example.com
+  # linkedin: linkedin.com/in/you      # the visible text
+  # linkedin_url: https://www.linkedin.com/in/you
   footer: ""                  # page-two continuity, e.g. "Your Name  ·  you@example.com"
 
 education: ""                 # e.g. "B.S. Computer Science  ·  University  ·  Year"
@@ -49,6 +55,11 @@ skills:
 context_ledger: []
 
 community: []                 # optional: volunteer work, talks, writing — one bullet per entry
+                              # an entry may be a string, or a linked form (same form works
+                              # for employer bullets): the link_text substring becomes a hyperlink
+                              #   - text: "Spoke at an example meetup on topic X"
+                              #     link_text: "example meetup"
+                              #     url: https://example.com/talk
 
 employers:
   - key: employer_one         # short id, referenced by lane orders below
@@ -68,6 +79,27 @@ lanes:
     title_line: ""            # the headline under your name
     tagline: ""               # bold pipe-separated positioning line
     summary: ""               # the dense opening paragraph — lead with impact, not tenure
+                              #   (optional: omit the key and the paragraph is not rendered)
     competencies: ""          # bold pipe-separated Core Competencies line
+                              #   (optional: omit the key and the whole section is dropped)
     orders: {}                # per-employer override of bullet selection/order,
                               #   e.g. {employer_one: [strongest_bullet, second, ...]}
+  # --- Optional lane keys -------------------------------------------------
+  # dormant: true             # skip this lane on a bare build; it still builds when named
+  #
+  # A plain-text paste export (LinkedIn, application forms): dash bullets, no
+  # markup. It borrows another lane's bullet orders so the two cannot drift,
+  # and the build prints each employer's character count against LinkedIn's
+  # 2000-character per-role cap.
+  # paste:
+  #   format: text
+  #   inherit: ic              # use lane ic's orders and context lines
+  #   output: experience.txt
+  #
+  # Any other `format` (e.g. a static-site page) is produced only by an
+  # optional resume/site_extension.py that defines
+  #   write_site(content, lane_key, content_path)
+  # beside build_resume.py. It is called once per lane after the normal
+  # outputs and may return the Path it wrote. With no such file, such lanes
+  # are skipped with a notice. Put any site-specific keys on the lane and
+  # read them inside that file; build_resume.py itself never changes.

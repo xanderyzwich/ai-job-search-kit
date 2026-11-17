@@ -30,6 +30,17 @@ of how a rule was found, belong in data files. The maintenance skill now states
 the rule with a delete-it test, and treats a file growing past the size warning
 as suspected of carrying history before the limit is questioned.
 
+The resume builder is the other half of that story. The instance had been
+improving its installed copy for months, hyperlinks, a margin that derives the
+tab stop instead of hardcoding it, optional sections, and the framework copy had
+fallen 247 diff lines behind, so a fresh install would have received the older
+renderer. The drift check never saw it: it compared `scripts/` to `scripts/`,
+and this file installs under `resume/`. The generic improvements are now in the
+framework builder; website output, which targets one person's static site
+generator, stays in the instance behind a small optional hook, a
+`site_extension.py` the builder calls per lane if it exists. The drift check now
+covers the builder's install path too.
+
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
 the referral and channel fields every live record carries, and the contract had

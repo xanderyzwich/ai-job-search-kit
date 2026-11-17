@@ -130,6 +130,13 @@ def check_installed_copies():
     if not fw.is_dir() or not priv.is_dir():
         return []
     bad = []
+    # The resume builder is installed under resume/, not scripts/, so the glob
+    # below never saw it: its instance copy drifted by 247 lines unnoticed.
+    rb_src, rb_dst = fw / "build_resume.py", ROOT / "private" / "resume" / "build_resume.py"
+    if rb_src.exists() and rb_dst.exists() and rb_src.read_bytes() != rb_dst.read_bytes():
+        bad.append("private/resume/build_resume.py has DRIFTED from the canonical"
+                   " framework/scripts/build_resume.py — the installed copy is the"
+                   " one that runs; re-copy it")
     for src in sorted(fw.glob("*.py")):
         dst = priv / src.name
         if not dst.exists():
