@@ -12,9 +12,13 @@
 
 identity:
   name: ""
+  middle_name: ""                   # optional, for forms with a separate middle-name field
+  legal_name: ""                    # optional, full legal name for forms that require it
   email: ""
   linkedin: ""                      # e.g. linkedin.com/in/yourname
+  github: ""                        # optional, profile URL for forms that ask   # leak-scan: allow (schema key name, not a person)
   website: ""                       # optional, leave "" if none
+  resume_url: ""                    # optional, where the resume or portfolio is hosted
   phone: ""
   location: ""                      # city, state, zip — used for "where are you based" fields
   address: ""                       # optional, only fill in if a form actually needs a street address
@@ -22,11 +26,17 @@ identity:
 application_defaults:
   authorized_to_work_us: true
   requires_sponsorship: false
+  work_authorization_type: "example" # exact ATS dropdown option, e.g. "US Citizen"
   desired_salary_usd: 0              # what to type into a "desired salary" field, if asked
+  salary_ask_rule: ""                # optional: how to derive the salary-ask number from a posted range
+  salary_ask_divergence: ""          # optional: what to record when the number entered differs from the rule
+  current_salary_usd: 0              # optional: for forms that ask for current compensation
+  gpa_claimed: ""                    # optional: answer for GPA fields; note if verified
   eeo_policy: "always select the opt-out option ('I don't wish to answer' or
     equivalent) on every demographic question, including gender, race/ethnicity,
     sexual orientation, transgender status, disability, and veteran status.
     Never fill in an identifying answer."
+  submission_review_required: "never submit an application before the owner has reviewed it"
   reasons_for_leaving:
     # one key per employer, keyed however makes sense to you; the value is
     # what to say if asked in an application or a screen
@@ -35,7 +45,16 @@ application_defaults:
 
 constraints:
   remote: "fully remote only"       # or "hybrid ok," "open to relocation," etc — say what's actually true
+  relocation: ""                    # optional: relocation policy in prose, including exceptions
   base_salary_floor_usd: 0
+  target_salary_band_usd: ""        # optional: preferred band above the floor, "low-high"
+  housing_consequence_threshold_usd: 0  # optional: comp below this has a household consequence worth flagging
+  comp_priority_threshold_usd: 0    # optional: roles whose range reaches this rank ahead of equal roles
+  comp_range_rule: ""               # optional: how a posted range is judged against the floor
+  floor_review: ""                  # optional: when and why the floor is revisited
+  comp_flex_tier: ""                # optional: how sub-floor roles are handled, if at all
+  contract_tier: ""                 # optional: how contract/hourly offers become an annual figure
+  accept_and_continue: ""           # optional: whether accepting an offer ends the search
   lateral_ok: true                  # would you take a lateral move for the right role?
   no_relocation_to: []              # list of states/regions you won't move to, if any — leave [] if none
   relocation_reason: ""             # why, if it matters (purchasing power, family, etc)
@@ -59,5 +78,7 @@ lanes:
     label: ""                      # e.g. "large-org IC / platform bridge"
     org_size: ""
     titles: []
+    # Optional per-lane keys: ceiling, ordering, resume, boundary (see CONTRACT.md).
+    # boundary: ""                  # the hard edge of what this lane covers
 
 linkedin_open_to_work_titles: []    # the exact titles you've set (or plan to set) on LinkedIn

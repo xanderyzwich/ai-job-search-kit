@@ -41,6 +41,18 @@ generator, stays in the instance behind a small optional hook, a
 `site_extension.py` the builder calls per lane if it exists. The drift check now
 covers the builder's install path too.
 
+Four more gaps from the same review are closed. The profile schema documented
+about twenty fewer keys than the live profile used, so a new user would have met
+those fields only by reading someone else's file; they are now in the contract and
+the template with generic descriptions. The apply-agent notices spread from three
+framework skills to every instance skill and reference doc that still describes
+form-filling, and to the old apply-queue files, which are kept as history rather
+than deleted. A new `data/probe_logs/` directory holds the dated probe history
+that skills no longer carry. And the dead-reference check now scans the root docs
+as well, because the instance README had been pointing at a skill dissolved weeks
+earlier and nothing looked there. The contract also says the tracker, not a
+per-sweep rank file, is the durable record of a sweep.
+
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
 the referral and channel fields every live record carries, and the contract had

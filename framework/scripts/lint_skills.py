@@ -55,6 +55,11 @@ SKILL_DIRS = [ROOT / "framework" / "skills", ROOT / "private" / "skills"]
 # directory reorganisation is exactly when references break, and data files hold
 # as many as skills do.
 DATA_DIRS = [ROOT / "private" / "data"]
+# The root-level docs are where a renamed skill goes unnoticed longest: nothing else
+# scans them, and private/README.md kept pointing at a skill dissolved weeks earlier.
+# CHANGELOG.md is deliberately NOT here: it is a dated record of what was true then.
+ROOT_DOCS = ["README.md", "ARCHITECTURE.md", "QUICKSTART.md", "SESSION_INIT.md",
+             "framework/README.md", "private/README.md"]
 # Chronological records are EXEMPT. A dated log entry naming a path is a claim
 # about what was true that day; rewriting it to satisfy a checker makes the log
 # lie about its own history. Where such an entry should still be navigable, the
@@ -258,6 +263,12 @@ def main():
                 fails += 1
             for w in warns:
                 out.append(f"  warn   {rel}: {w}")
+    for rel_doc in ROOT_DOCS:
+        doc = ROOT / rel_doc
+        if doc.is_file():
+            for e in check_refs(doc, ROOT, index):
+                out.append(f"  ERROR  {rel_doc}: {e}")
+                fails += 1
     if out:
         print("\n".join(out))
     print(f"lint_skills: {n} skills checked, {fails} error(s)"
