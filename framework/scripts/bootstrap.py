@@ -67,6 +67,7 @@ COPIES = [  # (source relative to framework/, destination relative to private/)
     ("scripts/backlog.py", "scripts/backlog.py"),
     ("scripts/funnel_report.py", "scripts/funnel_report.py"),
     ("scripts/fetch_jds.py", "scripts/fetch_jds.py"),
+    ("scripts/build_contact_index.py", "scripts/build_contact_index.py"),
 ]
 
 # KEEP THIS LIST IN STEP WITH framework/scripts/. A script that three skills

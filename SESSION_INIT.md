@@ -56,7 +56,9 @@ ai-job-search-kit/
 ├── SESSION_INIT.md        — this file (generic, public)
 ├── QUICKSTART.md          — step-by-step setup for a fresh clone
 ├── LICENSE                — MIT
-├── .gitignore             — excludes private/, output/, temp/
+├── .gitignore             — excludes private/ (which holds private/temp/, the scratch
+│                           directory) and output/; a repo-ROOT temp/ is deliberately
+│                           NOT ignored, so a misplaced scratch file shows in git status
 │
 ├── framework/             — the reusable system (tracked in git, no personal data)
 │   ├── README.md            the public half's index — routes to skills,
@@ -89,10 +91,11 @@ ai-job-search-kit/
 │   │                                  the search reads with the machine off
 │   ├── scripts/                       installed tooling (see the context map)
 │   ├── feedback/                      external input received along the way
-│   └── resume/                        generated resumes and their build scripts
+│   ├── resume/                        generated resumes and their build scripts
+│   └── temp/                          scratch and the generated context map; gitignored
+│                                      by the private repo, never kept long term
 │
-├── output/                — generated deliverables (GITIGNORED)
-└── temp/                  — scratch (GITIGNORED)
+└── output/                — generated deliverables (GITIGNORED)
 ```
 
 ---

@@ -4,6 +4,18 @@
 the agent prompt that will return to you. Both the coordinator and the agent
 read this file.
 
+> **DEPRECATED AS THE DEFAULT, 2026-11-16: the apply agent (the `apply` contract below).** The owner ran
+> the delegated fill-and-stop flow in real use and found it significantly slower
+> than applying by hand, and it costs more: a browser-driving agent's time and
+> tokens, plus a review pass on the live form, to do what a person does faster
+> from the posting. **The default is now human applying.** The coordinator
+> presents each role with company, role, comp range and apply link; the human
+> applies and reports the resume version and the salary entered; the
+> coordinator logs them and never prepares or fills a form. The material below
+> stays for an owner who still wants browser-assisted filling, and the rule that
+> an agent fills and STOPS, never submits, still holds there. Browser
+> delegation for READING (harvest, JD fetch, liveness) is unaffected.
+
 **Pairs with:** the delegation section of `search-apply-ritual.md`, which says
 WHY browser work is delegated; this file says what crosses the boundary.
 

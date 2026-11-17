@@ -10,6 +10,10 @@ acquired_via: How this contact entered the search
 linkedin:
 email:
 phone:
+channel: How the last real exchange travelled — LinkedIn DM, email, phone (inbound), a shared Slack
+referral_type: internal | agency | peer | own_employer | none
+referral_state: never_offered | live | spent | dead
+referral_cost: What using this offer costs THEM, one line
 note: One sentence a reader needs before opening the file.
 ---
 
@@ -68,6 +72,35 @@ FIELD NOTES, in the order that matters:
       `phone:` exists because TEXT is a channel and had no home: a log entry
       could say a message arrived by text while the file held no number to
       text back. Any readable format; nothing parses it.
+
+  channel:
+      Free text, unparsed: the channel the last real exchange actually used,
+      because that is the channel a reply should use. Blank is allowed; the
+      value `unrecorded — capture it on the next exchange` is better than a
+      guess. See the channel rule in `framework/skills/communications/
+      communication-logging.md`.
+
+  referral_type:
+      WHAT KIND of help this person can give; the kinds have different
+      economics and were being managed identically. `internal` = an employee
+      who can file a referral at ONE employer, a one-shot favour that is spent
+      when used. `agency` = a recruiter with a book of reqs across many
+      clients: not spent but ACTIVATED, and their inventory is often not on any
+      public board. `peer` = advice and market reads, no placement power.
+      `own_employer` = inside the company being left: a reference, never a
+      referral. `none`. A record with no `referral_type` is invisible to the
+      referral map and is listed there as unclassified.
+
+  referral_state:
+      `never_offered` | `live` | `spent` | `dead`. An offer that was made and
+      never used is different from one already cashed and from one whose
+      employer has nothing to point it at.
+
+  referral_cost:
+      What using the offer costs THEM, per the cost-not-outcome rule: the lens
+      that decides whether a favour is worth spending and when it must be
+      repaid. One line. What the employer has open right now is deliberately
+      NOT a field: it rots in days, and the referral map computes that join.
 
 PACING IS NOT SET HERE AND MUST NOT BE. How long to wait is a fact about the
 relationship, not the category — see the communication-logging skill. This

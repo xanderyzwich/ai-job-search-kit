@@ -49,7 +49,9 @@ ai-job-search-kit/
 ├── SESSION_INIT.md        — entry point; checks for and loads the private
 │                           session-init skill if one exists
 ├── LICENSE                — MIT
-├── .gitignore              — excludes private/, output/, temp/
+├── .gitignore              — excludes private/ (which holds private/temp/, the scratch
+│                            directory) and output/; a repo-ROOT temp/ is deliberately
+│                            NOT ignored, so a misplaced scratch file shows in git status
 │
 ├── framework/              — the reusable system (tracked in git, no personal data)
 │   ├── README.md             the public half's index — read at session start;

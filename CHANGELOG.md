@@ -6,6 +6,33 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-17 — The apply agent lost a measured race against the person it was built to help
+
+The apply flow delegated form-filling to a browser agent that filled and
+stopped, with the human reviewing on the live form. It was designed on the
+assumption that the agent would be faster than a person typing. In real use the
+owner found the opposite: delegated filling was significantly slower than
+applying by hand, and it cost more, an agent's time and tokens plus a review
+pass, to produce what a person does from the posting in a fraction of the time.
+The owner now applies personally.
+
+Three framework skills still taught the agent as the default. Each now opens
+with a deprecation note stating the measurement and the new default: the
+coordinator presents company, role, comp range and apply link, the human
+applies, and the coordinator logs the resume and salary the human reports. The
+old material stays for anyone who still wants browser-assisted filling, and
+browser delegation for reading (harvest, fetch, liveness) is untouched.
+
+A consistency, ripple and dogfood review of the whole repo found the same kind
+of drift in smaller places, fixed in this change: the contact template lacked
+the referral and channel fields every live record carries, and the contract had
+no row for the generated referral map; the contact-index script was in use but
+missing from the bootstrap copy list; the two root docs claimed a root `temp/`
+was ignored when the scratch directory lives under `private/` and a root-level
+one is deliberately left visible so a misplaced file shows up; and one
+personal first name had reached a public skill, which the leak scan cannot
+catch because it skips given names that are also plain words.
+
 ## 2026-11-05 — Half the network was a different asset, managed as if it were the same one
 
 The contact records carried an employer and a relationship note, which is
