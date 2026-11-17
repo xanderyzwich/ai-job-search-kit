@@ -53,6 +53,14 @@ as well, because the instance README had been pointing at a skill dissolved week
 earlier and nothing looked there. The contract also says the tracker, not a
 per-sweep rank file, is the durable record of a sweep.
 
+The maintenance skill itself had grown to 468 lines and drew the size warning, and
+the instinct was to purge history from it. It held almost none, five dated
+sentences. Its bulk was the 184-line ripple table, which is consulted after a
+change, is generated verbatim into the context map every session, and needs to be
+read in full only when someone edits it. It is now its own skill, and the
+maintenance skill keeps the rules for where things belong, at 288 lines with a
+pointer to the new file. The context-map generator reads the table from there.
+
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
 the referral and channel fields every live record carries, and the contract had

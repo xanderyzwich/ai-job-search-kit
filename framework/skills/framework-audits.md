@@ -3,7 +3,7 @@
 **Load when:** closing out a maintenance batch, or auditing whether the docs
 still match reality — after any split, move or rename.
 
-**Depends on:** `framework-maintenance.md` (the ripple map says what a change
+**Depends on:** `framework-maintenance.md` and `framework-ripple-map.md` (the ripple map says what a change
 owes; this says how to check the batch actually paid it).
 
 ---
