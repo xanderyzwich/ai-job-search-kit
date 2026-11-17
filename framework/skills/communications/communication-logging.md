@@ -430,7 +430,7 @@ channel the schema cannot store is a channel the record silently drops.**
 **Do NOT add a connection-degree field.** Degree is a snapshot that changes the
 moment an invite is accepted, so a stored value becomes a stale mirror — and
 profile URL plus email plus a channel-bearing log already answer every question
-degree was being used to answer, without rotting. *(Decided by Corey 2026-10-22,
+degree was being used to answer, without rotting. *(Decided by the owner 2026-10-22,
 after a one-off audit of all 22 contact records.)*
 
 ## OUTBOUND COUNTS
