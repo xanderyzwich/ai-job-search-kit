@@ -63,6 +63,9 @@ def scan_load_when(*skill_dirs):
             head = "\n".join(path.read_text(encoding="utf-8").splitlines()[:8])
             m = re.search(r"\*\*Load when:\*\*\s*(.+?)(?:\n\n|\Z)", head, re.S)
             lw = " ".join(m.group(1).split()) if m else "(!! no Load-when header)"
+            mb = re.search(r"\*\*Size budget:\*\*\s*(\d+)", head)
+            if mb:
+                lw += f" [declared size budget {mb.group(1)} lines]"
             entries.append((path.relative_to(ROOT).as_posix(), lw))
     for key, names in sorted(collapsed.items()):
         entries.append((

@@ -80,6 +80,7 @@ EVENT = re.compile(
     r"\s*(?:\|\s*(?P<note>.*?))?\s*$")
 # open-items hard dates stay PROSE on purpose -- only a leading bold date is
 # read, and anything else in that section is simply not an event.
+THREAD_START = re.compile(r"^\s*-\s+\*\*~?\d{4}-\d{2}-\d{2}")
 THREAD_DATE = re.compile(r"^\s*-\s+\*\*~?(\d{4}-\d{2}-\d{2})(?P<inbold>[^*]*)\*\*\s*(?P<rest>.*)$")
 
 FM = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.S)
@@ -185,11 +186,33 @@ def thread_dates():
     rest = text[m.end():]
     end = re.search(r"^##\s+\S", rest, re.M)
     out = []
+    # A hard-date bullet whose bold run wraps onto a second line has an odd number
+    # of `**` on its first line: join continuation lines until the run closes, or
+    # the date is silently dropped from the calendar.
+    joined, pending = [], None
     for line in (rest[: end.start()] if end else rest).splitlines():
+        if pending is not None:
+            pending += " " + line.strip()
+            if pending.count("**") % 2 == 0:
+                joined.append(pending)
+                pending = None
+            continue
+        if THREAD_START.match(line) and line.count("**") % 2 == 1:
+            pending = line
+            continue
+        joined.append(line)
+    if pending is not None:
+        joined.append(pending)
+    for line in joined:
         d = THREAD_DATE.match(line)
         if not d:
             continue
-        label = (d.group("rest") or d.group("inbold") or "").strip(" —-,.")
+        # keep BOTH halves: the bold run usually names the date and the event, the
+        # text after it the detail. Taking only one lost the event name whenever
+        # the bold run carried it.
+        bold = (d.group("inbold") or "").strip(" —-,.")
+        tail = (d.group("rest") or "").strip(" —-,.")
+        label = f"{bold}: {tail}" if bold and tail else (tail or bold)
         out.append(dict(iso=d.group(1), due=False, time="", kind="NOTE",
                         who="", note=strip_md(label, 72),
                         src="open threads §3", path=None))

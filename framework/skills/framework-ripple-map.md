@@ -190,4 +190,11 @@
 - **Anything public-visible** → a CHANGELOG entry, tied to the failure or
   need that motivated it.
 
+- **A new check or annotation in `framework/scripts/lint_skills.py`** → its docstring
+  list · the header-contract section of `framework-maintenance.md` (the annotations
+  are part of the authoring contract) · `build_context_map.py` if it changes what a
+  skill's routing line should show · a CHANGELOG entry.
+- **`framework/scripts/build_contact_index.py`** → the installed copy in
+  `private/scripts/` (the drift check errors until it is re-copied) · the calendar
+  it renders · the hard-dates format in the instance's open-items file.
 - **This file itself** → `framework/scripts/build_context_map.py` extracts the `## The ripple map` section of this file by that exact heading; renaming the heading empties the generated copy. Keep the heading, and keep the table here and nowhere else.

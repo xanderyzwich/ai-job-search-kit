@@ -76,6 +76,21 @@ applied-only boundary for company briefs now points at the template that owns it
 Every rule, field definition and parsed grammar stayed, and the scheduled-block
 section was left untouched on purpose.
 
+The skill linter gained four things, each traced to something that went wrong in a
+single day. An `absent-refs` annotation lets a skill say a file is deliberately
+missing, with the same guard as the moved-refs one: it errors the moment the file
+exists. Five of the morning's eight lint errors had been exactly that kind of true
+statement. A skill may declare its own size budget and reason, so a large skill warns
+at its own number and prompts a conversation instead of growing past a global
+limit nobody believes in. Board and ATS capability tables now warn at 60 days,
+because two were months stale while the skills said to re-probe every sweep. And a
+`--report` view prints dated-marker density without ever warning, since a date on
+a learning is legitimate and a raw count would be noise.
+
+The calendar renderer also stopped dropping hard dates it could not read: a bullet
+whose bold run wraps onto a second line is now joined, and the bold and trailing
+halves are both kept in the label.
+
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
 the referral and channel fields every live record carries, and the contract had

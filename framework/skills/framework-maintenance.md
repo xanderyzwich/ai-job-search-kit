@@ -155,6 +155,22 @@ forced churn across fifteen files for two things that were not problems — an
 instance may title its skills in its own house style, and a fourth line is
 usually a disambiguation clause worth keeping.
 
+**Three annotations let a skill say something true that a check would otherwise
+flag**, and each is itself checked so it cannot go stale:
+- `<!-- absent-refs` + one path per line + `-->` declares a path as DELIBERATELY
+  missing ("there is no Phenom skill yet"). The lint errors once that file exists.
+  The mirror of `moved-refs`, which declares a path that moved.
+- `**Size budget:** N lines — reason` in the header declares a legitimately large
+  skill's own limit. The lint warns when it passes THAT number, which is the
+  prompt to ask the owner whether to trim it or raise the budget; the global 450
+  still applies to everything else. A budget without a reason is an error.
+- A board or ATS skill's `## Capability — as of <date>` table warns once it is
+  over 60 days old, because the skills say to re-probe once per sweep and nothing
+  enforced it.
+
+`lint_skills.py --report` prints dated-marker density by skill. It never warns:
+a date on a learning is allowed, so the count is a prompt to look, not a verdict.
+
 ## The context map (generated at session start — read it first)
 
 `daily_log.py open` runs `build_context_map.py`, which materializes the

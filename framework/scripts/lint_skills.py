@@ -12,8 +12,17 @@ Checks, in order of how much damage they prevent:
   ERROR   no title line, or no `**Load when:**` block
   ERROR   the Load-when does not start within the first 8 lines
   WARN    the Load-when itself runs longer than 3 lines
-  WARN    the file is longer than SIZE_WARN lines
-  ERROR   a backticked file reference that resolves to nothing
+  WARN    the file is longer than SIZE_WARN lines, or than its own DECLARED budget
+  ERROR   a size budget declared without a reason
+  WARN    a board or ATS skill's `Capability — as of <date>` table is over
+          CAP_STALE_DAYS old (the skills say to re-probe once per sweep)
+  ERROR   a backticked file reference that resolves to nothing, unless an
+          `absent-refs` annotation says it is deliberately missing
+  ERROR   an `absent-refs` annotation naming a file that now exists
+
+`python3 framework/scripts/lint_skills.py --report` prints a history-density view
+(dated markers per 100 lines, by skill). It never warns and never changes the exit
+code: a date on a learning is allowed, so a raw count is a prompt to look, not a verdict.
 
 The reference check exists because a file MOVE breaks links silently and in a
 way no reader notices until they follow one. Splitting an oversized skill into
@@ -100,6 +109,28 @@ def moved_refs(text, root):
                        f" which does not exist — the annotation has rotted")
     return resolved, bad
 
+# ABSENT-REFS ANNOTATION. A file that says a path does NOT exist ("there is no
+# Phenom skill yet") is a true statement the reference check cannot tell from a
+# broken link. Declare it:
+#
+#   <!-- absent-refs
+#     skills/ats/phenom.md (not written yet; the ATS is JS-rendered)
+#   -->
+#
+# The mirror image of moved-refs, with the same guard: the annotation is itself
+# checked, and ERRORS once the file exists, so it cannot go stale and keep hiding
+# a reference that is now real.
+ABSENT = re.compile(r"<!--\s*absent-refs\s*\n(.*?)-->", re.S)
+ABSENT_LINE = re.compile(r"^\s*(\S+)\s*(?:\((.*?)\))?\s*$", re.M)
+
+# SIZE BUDGET. A skill that is legitimately large declares its own budget and the
+# reason in its header, so the warning fires when it passes THAT number instead of
+# the global one, and the owner is asked rather than the file silently growing:
+#   **Size budget:** 520 lines — one concern, parsed grammar that cannot be split
+SIZE_BUDGET = re.compile(r"^\*\*Size budget:\*\*\s*(\d+)\s+lines?\s*(?:[—-]+\s*(.+))?$", re.M)
+CAP_DATE = re.compile(r"^## Capability — as of (\d{4}-\d{2}-\d{2})", re.M)
+CAP_STALE_DAYS = 60
+
 HEADER_BUDGET = 8      # Load-when must START within this many lines
 LOADWHEN_MAX = 3       # ...and SHOULD run no longer than this (warning)
 SIZE_WARN = 450        # advisory only
@@ -114,6 +145,20 @@ REF = re.compile(r"`([A-Za-z0-9_\-./]+\.(?:md|py|csv|yml|json))`")
 # `today.md` is the same file as temp/today.md named without its directory.
 TRANSIENT = ("temp/today.md", "temp/context_map.md", "today.md",
              "sweep_open.json")
+
+
+def absent_refs(text, root):
+    """-> (declared_absent_paths, [error]) from a file's absent-refs annotation."""
+    declared, bad = set(), []
+    m = ABSENT.search(text)
+    if not m:
+        return declared, bad
+    for path, _note in ABSENT_LINE.findall(m.group(1)):
+        declared.add(path)
+        if (root / path).exists() or (root / "private" / path).exists():
+            bad.append(f"absent-refs annotation says `{path}` is absent, but it exists"
+                       " — the annotation has rotted; delete it and let the reference check cover the path")
+    return declared, bad
 
 
 def check_installed_copies():
@@ -178,6 +223,9 @@ def check_refs(path, root, index):
     text = path.read_text(encoding="utf-8", errors="replace")
     annotated, ann_errors = moved_refs(text, root)
     bad += ann_errors
+    absent, abs_errors = absent_refs(text, root)
+    bad += abs_errors
+    annotated = annotated | absent
     # `[`old/path.md`](new/path.md)` -- the backticked text is DISPLAY, showing
     # where a file used to live; only the target is a reference. Matching the
     # text would flag every deliberately-preserved historical pointer.
@@ -229,13 +277,56 @@ def check(path: Path):
             warns.append(f"Load-when runs {span} lines, over the {LOADWHEN_MAX}-line"
                          " guide — check it is one concern and not two")
 
-    if len(lines) > SIZE_WARN:
-        warns.append(f"{len(lines)} lines (>{SIZE_WARN}) — every agent that loads this"
-                     " pays for all of it; consider splitting by surface or concern")
+    limit, budget, reason = SIZE_WARN, None, ""
+    mb = SIZE_BUDGET.search("\n".join(lines[:14]))
+    if mb:
+        budget, reason = int(mb.group(1)), (mb.group(2) or "").strip()
+        if not reason:
+            errors.append("**Size budget:** declared without a reason — say why this file is large")
+        elif budget <= SIZE_WARN:
+            warns.append(f"size budget {budget} is not above the global {SIZE_WARN}; remove the declaration")
+        else:
+            limit = budget
+    if len(lines) > limit:
+        if budget and limit == budget:
+            warns.append(f"{len(lines)} lines exceeds its declared size budget of {budget}"
+                         f" ({reason}) — ask the owner whether to trim it or raise the budget")
+        else:
+            warns.append(f"{len(lines)} lines (>{SIZE_WARN}) — every agent that loads this"
+                         " pays for all of it; consider splitting by surface or concern")
+    if {"boards", "ats"} & set(path.parts):
+        mc = CAP_DATE.search("\n".join(lines))
+        if mc:
+            import datetime as _dt
+            age = (_dt.date.today() - _dt.date.fromisoformat(mc.group(1))).days
+            if age > CAP_STALE_DAYS:
+                warns.append(f"capability table is dated {mc.group(1)}, {age} days old"
+                             f" (>{CAP_STALE_DAYS}) — re-probe at the next sweep of this surface")
     return errors, warns
 
 
+def history_report():
+    """Print dated-marker density by skill. Never warns; see the module docstring."""
+    stamp = re.compile(r"\b20\d\d-\d\d-\d\d\b")
+    rows = []
+    for d in SKILL_DIRS:
+        if not d.is_dir():
+            continue
+        for path in sorted(d.rglob("*.md")):
+            text = path.read_text(encoding="utf-8", errors="replace")
+            n = len(text.splitlines())
+            c = len(stamp.findall(text))
+            rows.append((c * 100.0 / max(n, 1), c, n, path.relative_to(ROOT).as_posix()))
+    rows.sort(reverse=True)
+    print("dated markers per 100 lines (a prompt to look, not a verdict):")
+    for dens, c, n, rel in rows[:15]:
+        print(f"  {dens:5.1f}  {c:4d} dates in {n:4d} lines  {rel}")
+    return 0
+
+
 def main():
+    if "--report" in sys.argv:
+        return history_report()
     n = fails = 0
     out = []
     index = _index(ROOT)
