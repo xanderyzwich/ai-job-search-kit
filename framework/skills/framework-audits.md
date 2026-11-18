@@ -1,10 +1,42 @@
 # Skill: Framework Audits
 
-**Load when:** closing out a maintenance batch, or auditing whether the docs
+**Load when:** closing out ANY change to the framework, a skill, or how a data
+file is used (dispatch the three review agents), or auditing whether the docs
 still match reality — after any split, move or rename.
 
 **Depends on:** `framework-maintenance.md` and `framework-ripple-map.md` (the ripple map says what a change
 owes; this says how to check the batch actually paid it).
+
+---
+
+## The post-change review — three agents, every time
+
+**After any change to the framework, to any skill, or to how a data file is
+used, run three read-only review agents IN PARALLEL before calling the batch
+done.** The owner calls for these after every such change; they are standing
+practice, not a favour.
+
+| agent | skill it reads (exact path) | asks |
+|---|---|---|
+| standards | `framework/skills/reviews/standards.md` | does the change obey the project's declared rules (CLAUDE.md files, CONTRACT, header contract, public/private boundary, changelog)? |
+| ripple | `framework/skills/reviews/ripple.md` | did the change pay everything the ripple map says it owes, and what else does it touch that the map does not know? |
+| dogfood | `framework/skills/reviews/dogfood.md` | does the instance still follow its own rules, and do any two files now contradict each other? |
+
+**Dispatch.** One agent per row, each given: (1) the exact path of its skill,
+(2) the scope as a git range or an explicit file list (public AND private
+repos), (3) the report path `private/temp/review-<date>/<name>.md`. Name files,
+not directories. The agents run in isolation, so the skill must be enough; do
+not paraphrase it into the prompt.
+
+**Then the coordinator:** verifies each finding against the file before acting
+(agents are wrong sometimes), fixes in the same batch, queues deliberate
+deferrals in `private/data/open_threads.md` with a reason, and re-runs
+`lint_skills.py`, `leak_scan.py` and the changelog check. Hand-backs are not
+the owner's authority; a finding that changes a rule goes to the owner.
+
+The three closing audits below are folded into these agents (docs match
+reality and wiring: ripple; reader trace: dogfood). Run them by hand only for a
+split, move or rename.
 
 ---
 

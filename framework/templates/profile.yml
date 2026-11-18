@@ -16,7 +16,7 @@ identity:
   legal_name: ""                    # optional, full legal name for forms that require it
   email: ""
   linkedin: ""                      # e.g. linkedin.com/in/yourname
-  github: ""                        # optional, profile URL for forms that ask   # leak-scan: allow (schema key name, not a person)
+  github: ""                        # optional, profile URL for forms that ask
   website: ""                       # optional, leave "" if none
   resume_url: ""                    # optional, where the resume or portfolio is hosted
   phone: ""
@@ -62,6 +62,7 @@ constraints:
 
 role_criteria:
   seniority: []                     # e.g. ["Senior", "Staff", "Principal"]
+  level_avoid: ""                   # optional: level words in a title the owner will not submit to; harvest drops them before scoring
   scope: ""                         # e.g. "hands-on with architectural influence, IC or PC, not pure management"
   domain: ""                        # e.g. "backend / platform / distributed systems"
   title_is_secondary_to: []         # what actually matters more than the title — e.g. ["compensation", "scope"]

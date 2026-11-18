@@ -294,8 +294,7 @@ produces a wall of thin entries that look like records.
 
 ## Closing a batch — the audits live next door
 
-**Every maintenance batch ends with the three closing audits**, and they are in
-`framework-audits.md` rather than here. They are a different moment: this file
+**Every batch ends with the post-change review: three parallel agents (standards, ripple, dogfood), dispatched as `framework-audits.md` describes**, with the three closing audits there as well. They are a different moment: this file
 is read WHILE changing something, the audits are read AFTER, and carrying both
 made every mid-edit lookup pay for seventy-seven lines it would not use.
 

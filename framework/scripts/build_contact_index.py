@@ -383,7 +383,8 @@ def render_calendar(today, cal_out, contacts=()):
 
 
 TYPE_ORDER = {"internal": 0, "agency": 1, "peer": 2, "own_employer": 3, "none": 4}
-STATE_ORDER = {"live": 0, "never_offered": 1, "spent": 2, "dead": 3}
+STATE_ORDER = {"live": 0, "informal_lead": 1, "listed_on_application": 1,
+               "never_offered": 2, "spent": 3, "dead": 4}
 TYPE_LABEL = {
     "internal": ("INTERNAL — a one-shot favour at ONE employer",
                  "Spent when used, and worth nothing if that employer has nothing "

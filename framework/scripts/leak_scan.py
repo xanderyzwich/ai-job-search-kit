@@ -64,7 +64,7 @@ PHONE = re.compile(r"(?:\(\d{3}\)\s*|\b\d{3}[.\-\s])\d{3}[.\-\s]\d{4}\b")
 STOP = {"health", "software", "group", "technologies", "systems", "labs",
         "solutions", "services", "digital", "data", "cloud", "global",
         "interactive", "media", "partners", "capital", "works", "studio",
-        "ahead"}
+        "ahead", "github"}
 
 
 def _phrase(words):

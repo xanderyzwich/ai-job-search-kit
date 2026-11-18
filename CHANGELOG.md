@@ -6,13 +6,25 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-18 — Post-change review is now a codified step
+
+Three review skills (`skills/reviews/standards.md`, `ripple.md`, `dogfood.md`)
+let a fresh agent check a change in isolation: against the declared rules,
+against the ripple map, and against the instance's own conventions. The audits
+skill is the dispatcher (three agents in parallel, coordinator verifies and
+fixes in the same batch), the maintenance skill's closing section points to it,
+and `reviews` is a collapsed directory in the context map.
+
 ## 2026-11-18 — The linter learned to say true things, and a plain word broke the leak scan
+
+New instances now also get `data/probe_logs/` from the installer, which the contract
+row alone did not give them. <!-- covers: ae7b389 · backfilled 2026-11-18 -->
 
 The leak scan broke the day after a batch of new company files landed. It derives
 its patterns from the private company briefs, and two of the new names defeated its
-generic-word guard: one employer whose entire name is the plain English word
-"ahead", and one whose name starts with a token containing a digit, which the
-alphabetic-only filter dropped, leaving the lone word "solutions" as a pattern. Four
+generic-word guard: one employer whose entire name is a plain English word, and one whose name
+starts with a token containing a digit, which the alphabetic-only filter dropped,
+leaving a lone generic word as a pattern. Four
 false hits in public files, and a scan that cries wolf on every close is a scan
 nobody reads. Name parts with a digit now count, and a pattern that reduces to one
 generic word is skipped.
@@ -38,7 +50,7 @@ The calendar renderer also stopped dropping hard dates it could not read: a bull
 whose bold run wraps onto a second line is now joined, and the bold and trailing
 halves are both kept in the label.
 
-## 2026-11-17 — The apply agent lost a measured race against the person it was built to help
+## 2026-11-17 — The apply agent lost a race against the person it was built to help
 
 The apply flow delegated form-filling to a browser agent that filled and
 stopped, with the human reviewing on the live form. It was designed on the
@@ -46,10 +58,11 @@ assumption that the agent would be faster than a person typing. In real use the
 owner found the opposite: delegated filling was significantly slower than
 applying by hand, and it cost more, an agent's time and tokens plus a review
 pass, to produce what a person does from the posting in a fraction of the time.
-The owner now applies personally.
+No timings were taken; the judgment is the owner's, from doing both. The owner
+now applies personally.
 
 Three framework skills still taught the agent as the default. Each now opens
-with a deprecation note stating the measurement and the new default: the
+with a deprecation note stating the finding and the new default: the
 coordinator presents company, role, comp range and apply link, the human
 applies, and the coordinator logs the resume and salary the human reports. The
 old material stays for anyone who still wants browser-assisted filling, and
@@ -95,7 +108,7 @@ pointer to the new file. The context-map generator reads the table from there.
 
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
-the referral and channel fields every live record carries, and the contract had
+the referral fields all 49 live records carry, and the channel field that 16 carry, and the contract had
 no row for the generated referral map; the contact-index script was in use but
 missing from the bootstrap copy list; the two root docs claimed a root `temp/`
 was ignored when the scratch directory lives under `private/` and a root-level

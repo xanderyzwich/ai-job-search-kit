@@ -42,7 +42,7 @@ RIPPLE_HEADING = "## The ripple map"
 # line. `skills/communications/` is deliberately NOT here: those files are chosen
 # by trigger like any other skill. The directory itself is the inventory --
 # `ls skills/boards/` answers "which boards have files".
-COLLAPSED_DIRS = {"boards", "ats"}
+COLLAPSED_DIRS = {"boards", "ats", "reviews"}
 
 
 def scan_load_when(*skill_dirs):

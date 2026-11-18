@@ -12,7 +12,7 @@ email:
 phone:
 channel: How the last real exchange travelled — LinkedIn DM, email, phone (inbound), a shared Slack
 referral_type: internal | agency | peer | own_employer | none
-referral_state: never_offered | live | spent | dead
+referral_state: never_offered | live | informal_lead | listed_on_application | spent | dead
 referral_cost: What using this offer costs THEM, one line
 note: One sentence a reader needs before opening the file.
 ---
@@ -92,9 +92,11 @@ FIELD NOTES, in the order that matters:
       referral map and is listed there as unclassified.
 
   referral_state:
-      `never_offered` | `live` | `spent` | `dead`. An offer that was made and
-      never used is different from one already cashed and from one whose
-      employer has nothing to point it at.
+      `never_offered` | `live` | `informal_lead` | `listed_on_application` | `spent` | `dead`.
+      An offer that was made and never used is different from one already cashed and
+      from one whose employer has nothing to point it at; `informal_lead` is a
+      pointer without a formal offer, and `listed_on_application` is a contact
+      named on the application form.
 
   referral_cost:
       What using the offer costs THEM, per the cost-not-outcome rule: the lens
