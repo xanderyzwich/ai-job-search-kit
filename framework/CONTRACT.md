@@ -32,15 +32,21 @@ private/
 ├── skills/                  filled-in methodology, one file per concern, plus
 │                            CONVENTIONED SUBDIRECTORIES whose files are
 │                            addressed by name rather than by routing (one per
-│                            job board, one per ATS vendor) —
+│                            job board, one per ATS vendor). The MECHANICS of
+│                            each surface ship in framework/skills/boards and
+│                            /ats; a private file of the same name is an
+│                            OVERLAY holding only this search's filters,
+│                            results and decisions, and its header points at
+│                            the framework file —
 │                            resume/lane strategy, search criteria, outreach and
 │                            screen-call patterns (a communications/ subdirectory
 │                            is a reasonable grouping), any domain-specific
 │                            positioning notes. Methodology only: nothing in
 │                            skills/ carries dated state or snapshots. Mirrors
 │                            framework/skills/ in concern (small, focused, loaded
-│                            on demand) but contains real content, not the
-│                            generic pattern. One exception to on-demand loading:
+│                            on demand) but contains this search's real content, not the
+│                            generic pattern (for boards and ATS vendors,
+│                            only the overlay). One exception to on-demand loading:
 │                            session_init.md always loads first, unconditionally —
 │                            see framework/skills/session-continuity.md for why.
 │

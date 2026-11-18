@@ -21,7 +21,7 @@ The dispatcher gives you a scope: a git range or a file list. Review that, not t
 
 ## What to check
 
-1. **Boundary.** Nothing under `framework/` or the root docs may hold a real dollar figure, a search employer, a person, a contact or an email. Derive the sets you scan for from the private half (company file names, the tracker's company column, contact names) into a variable and never print them; run `python3 framework/scripts/leak_scan.py` and explain every hit. **Prove the scan can fire** before you trust a zero (plant a probe in a scratch file, see `framework-audits.md`).
+1. **Boundary.** (A hit from `leak_scan.py` is triaged by `leak-triage.md`; report it, do not decide it.) Nothing under `framework/` or the root docs may hold a real dollar figure, a search employer, a person, a contact or an email. Derive the sets you scan for from the private half (company file names, the tracker's company column, contact names) into a variable and never print them; run `python3 framework/scripts/leak_scan.py` and explain every hit. **Prove the scan can fire** before you trust a zero (plant a probe in a scratch file, see `framework-audits.md`).
 2. **Contract versus reality.** Every file, directory, key and field the CONTRACT declares against the live files: `profile.yml` key PATHS (never values), the `private/data` tree, the templates. Report anything declared but absent, or present but undeclared.
 3. **Templates.** New or changed instance files against their template's own rules.
 4. **Header contract.** Each skill created or edited has a title, a `**Load when:**` within 8 lines, at most 3 lines long; run `python3 framework/scripts/lint_skills.py` and explain errors. Check any annotation uses the documented format.

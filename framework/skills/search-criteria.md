@@ -3,6 +3,8 @@
 **Load when:** running a job search on any board, deciding whether a posting
 clears the hard constraints, or refining search queries.
 
+**See also:** `match-gap-scoring.md` (pay tier and scoring), `sweep-pipeline.md`.
+
 **Depends on:** `private/profile.yml` for the actual constraints, lane titles,
 and floor to search against.
 
@@ -57,6 +59,10 @@ some roles; combine title search with org-size signals and JD-body language.
 - Cross-query frequency is a real signal: if the same posting surfaces across
   several differently-worded searches, that convergence itself indicates
   strong relevance, independent of any single query's rank.
+
+## Converting an hourly or contract rate to a salary comparison
+
+Compare a rate to `base_salary_floor_usd` with one translation: **hourly rate x about 2,000 hours a year**, straight against the floor. For W2 contract, add no automatic benefits padding unless the candidate has a real quote; an unverified estimate does not belong in a quick rate check. For 1099 or corp-to-corp the translation is not enough: self-employment-side taxes are real costs and are not optional, so subtract them before comparing. A recruiter's or client's stated rate cap often has room above it for the right match; treat a stated maximum as the opening of the conversation, not necessarily the ceiling. Any provisional floors derived this way live in the candidate's `profile.yml` `contract_tier`, with the reasoning dated.
 
 ## Per-board filter mechanics
 

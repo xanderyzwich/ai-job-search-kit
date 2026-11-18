@@ -3,8 +3,8 @@
 **Load when:** a new job board is being considered, or an existing one is being
 re-judged on whether it still earns a place in the rotation.
 
-**Pairs with:** `search-apply-ritual.md`, which runs the sweep once a board has
-earned its place. This is the rarer, separate question of whether it should.
+**Pairs with:** `sweep-pipeline.md`, which runs the sweep once a board has
+earned its place (`search-apply-ritual.md` is its deprecated predecessor). This is the rarer, separate question of whether it should.
 
 ---
 

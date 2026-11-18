@@ -4,9 +4,16 @@
 board, or applying through this vendor. One or two lines, never more than
 three.>
 
-**Addressed BY NAME** (`skills/<boards|ats>/<slug>.md`), not by routing. Shared
-rules live in `../board-strategy.md` (discovery) or `../form-filling.md`
-(application); this file carries only what is specific to this surface.
+**Addressed BY NAME** (`skills/<boards|ats>/<slug>.md`), not by routing.
+
+> **Two files, one name.** If `framework/skills/<boards|ats>/<slug>.md` exists,
+> THAT file holds the mechanics (endpoints, data shapes, how listings lie, what
+> is verifiable without a browser) and this private file is an OVERLAY: title,
+> `**Load when:**`, the line `Mechanics: framework/skills/<boards|ats>/<slug>.md
+> — read that first.`, then ONLY what is specific to this search (filters,
+> queries, results, decisions, dated history). If it does not exist yet, write
+> the mechanics here and promote them later. Shared rules live in the
+> instance's board-strategy skill, if it has one.
 
 ---
 

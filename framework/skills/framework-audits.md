@@ -34,6 +34,8 @@ deferrals in `private/data/open_threads.md` with a reason, and re-runs
 `lint_skills.py`, `leak_scan.py` and the changelog check. Hand-backs are not
 the owner's authority; a finding that changes a rule goes to the owner.
 
+**If `leak_scan.py` reports hits, dispatch a fourth read-only agent** that reads `framework/skills/reviews/leak-triage.md` and writes `private/temp/review-<date>/leak-triage.md`. It classifies each hit (common word, technology or vendor, real mention, count without a name, cannot tell) and recommends a change; it never edits, never adds an allow marker and never touches the `STOP` set. The coordinator decides and applies. A vendor that is also an employer gets a line-level marker, never a `STOP` entry.
+
 The three closing audits below are folded into these agents (docs match
 reality and wiring: ripple; reader trace: dogfood). Run them by hand only for a
 split, move or rename.

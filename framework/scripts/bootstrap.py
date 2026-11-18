@@ -23,9 +23,12 @@ FRAMEWORK = REPO / "framework"
 PRIVATE = REPO / "private"
 
 DIRS = [
-    # skills/boards and skills/ats start EMPTY on purpose: their files are
-    # created on demand, one per surface, from templates/skill_surface.md. The
-    # directories exist so the shape is visible before the first one is written.
+    # private skills/boards and skills/ats start EMPTY on purpose: the
+    # MECHANICS of each surface ship in framework/skills/boards and /ats, and a
+    # private file of the same name is created on demand, from
+    # templates/skill_surface.md, only when the search has something of its own
+    # to say about that surface (an OVERLAY). The directories exist so the shape
+    # is visible before the first one is written.
     "skills/communications", "skills/boards", "skills/ats",
     # data/contacts and data/assessments start EMPTY for the same reason as
     # boards/ and ats/: one file per person, one per assessment platform,

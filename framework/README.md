@@ -9,7 +9,7 @@ discoverable. Read it at session start — it's small on purpose.
 No personal data lives anywhere in `framework/`.
 
 - **`skills/`** — generic methodology, one file per concern (including
-  `communications/`, and `reviews/` — the three post-change review-agent skills). Routing lives in each file's first 8 lines
+  `communications/`, `boards/` and `ats/` — mechanics of reading each job board or ATS, addressed by name — `sweep-pipeline.md`, `match-gap-scoring.md`, `stack-rank-presentation.md` (the sweep method), and `reviews/` — the three post-change review-agent skills). Routing lives in each file's first 8 lines
   (`**Load when:**` — see the header contract in
   `skills/framework-maintenance.md`). Scan alongside the private
   instance's `skills/` at task time:

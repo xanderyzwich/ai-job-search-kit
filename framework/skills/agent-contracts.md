@@ -4,6 +4,8 @@
 the agent prompt that will return to you. Both the coordinator and the agent
 read this file.
 
+**See also:** `sweep-pipeline.md` (the flow these contracts serve), `match-gap-scoring.md` (what a scoring agent returns) and `stack-rank-presentation.md`.
+
 > **DEPRECATED AS THE DEFAULT, 2026-11-16: the apply agent (the `apply` contract below).** The owner ran
 > the delegated fill-and-stop flow in real use and found it significantly slower
 > than applying by hand, and it costs more: a browser-driving agent's time and

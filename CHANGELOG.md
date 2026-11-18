@@ -6,6 +6,18 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-18 — Board and ATS mechanics promoted; the sweep method written down
+
+The mechanics of reading each job board and ATS (endpoints, data shapes, how
+listings lie, what cannot be verified without a browser) now live in
+`skills/boards/` and `skills/ats/`; an instance's same-named file is an overlay
+holding only its own filters, results and decisions. Three method skills are new:
+`sweep-pipeline.md`, `match-gap-scoring.md` (including the pay-tier early stop)
+and `stack-rank-presentation.md`; `search-criteria.md` gained the rule for
+converting an hourly rate to a salary comparison. The contract, bootstrap comment,
+surface template and ripple map describe the overlay shape. A fourth review skill, `reviews/leak-triage.md`, is dispatched read-only when the leak scan reports hits; it classifies each as a common word, a technology or vendor, a real mention or an unnamed count and reports to the coordinator, who alone adds markers or stop words. Three single-employer
+careers sites and the deprecated apply-form ATS skills were deliberately not promoted.
+
 ## 2026-11-18 — Post-change review is now a codified step
 
 Three review skills (`skills/reviews/standards.md`, `ripple.md`, `dogfood.md`)
