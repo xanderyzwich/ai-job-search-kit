@@ -63,7 +63,8 @@ PHONE = re.compile(r"(?:\(\d{3}\)\s*|\b\d{3}[.\-\s])\d{3}[.\-\s]\d{4}\b")
 # as not having one. So: WHOLE names, as phrases, with flexible separators.
 STOP = {"health", "software", "group", "technologies", "systems", "labs",
         "solutions", "services", "digital", "data", "cloud", "global",
-        "interactive", "media", "partners", "capital", "works", "studio"}
+        "interactive", "media", "partners", "capital", "works", "studio",
+        "ahead"}
 
 
 def _phrase(words):
@@ -77,8 +78,13 @@ def derived_patterns():
     comp = PRIVATE / "data" / "companies"
     if comp.is_dir():
         for p in comp.glob("*.md"):
-            words = [w for w in re.split(r"[-_]+", p.stem) if w.isalpha()]
+            # keep a token with any letter in it ("a1m" is a name part; a bare
+            # number is not). Dropping "a1m" left the lone generic word that
+            # followed it, and a name that is one generic word is not a name.
+            words = [w for w in re.split(r"[-_]+", p.stem) if any(c.isalpha() for c in w)]
             if not words:
+                continue
+            if len(words) == 1 and words[0].lower() in STOP:
                 continue
             # the full name always; a single distinctive word only if it is
             # long, not a generic industry suffix, and not a plain dictionary

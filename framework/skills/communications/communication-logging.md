@@ -14,10 +14,8 @@ what happens to the RECORD once a communication exists.**
 ## Why this is its own skill
 
 **"I have some comms to log" is one of the most frequent things a search
-session starts with, and it had no procedure.** Each one was handled ad hoc,
-which is how two expensive failures happened in a single week — both of them
-cases where the tracker was updated correctly and a file that mirrors it was
-not.
+session starts with, and handled ad hoc it fails the same way every time: the
+tracker is updated correctly and a file that mirrors it is not.**
 
 A communication is the **only** thing that changes the state of a thread.
 Applications do not advance on their own. So this is the moment the whole
@@ -42,26 +40,20 @@ doing anything with the message.
 log tells you why**, and you need that whenever the message is ambiguous, cold,
 or surprising.
 
-### The three failures this prevents, all observed in a single day
+### The three failures this prevents
 
-**1. Answering a question nobody asked.** A contact offered roles on *her own
-project*, unposted. The reply discussed a *posted* role found on the company
-site. She corrected it politely and re-offered — and the re-offer then sat
-unanswered for six days. **Re-reading her actual message before replying would
-have cost ten seconds.**
+**1. Answering a question nobody asked.** Re-read the person's actual message
+before replying; a re-offer that goes unanswered is the cost, and the re-read
+takes ten seconds.
 
-**2. "Correcting" a record that was already right.** An existing entry recorded
-a contact's employer accurately. A new session researched him from scratch,
-found stale third-party profiles, and overwrote the correct entry with a wrong
-one — then had to be corrected back by the person who knew. **The existing file
-was the better source and was never opened.**
+**2. "Correcting" a record that was already right.** Never overwrite an
+existing entry from fresh research — stale third-party profiles are the usual
+trap. **The existing file is the better source; open it first.**
 
-**3. Nearly inventing an obligation.** A thread had just been closed by someone
-who had already been thanked and whose stated etiquette is no follow-up push.
-Without reading his record first, the instinct was to log an action owed to him.
-**That is the mirror image of the failure that cost a six-month contract** — one
-direction invents a wait, the other invents a debt, and both come from writing
-without reading.
+**3. Inventing an obligation.** A thread closed by someone already thanked,
+whose stated etiquette is no follow-up push, owes nothing — do not log an
+action owed to them. One direction invents a wait, the other invents a debt,
+and both come from writing without reading.
 
 ### Writing in light of what is there
 
@@ -131,18 +123,18 @@ for, and it matches how each file already behaves:
 What the brief must not become is a retelling of the tracker's narrative — it
 carries the state, not the history of how that state was reached.
 
-**THE BOUNDARY IS ALREADY SET BY `framework/templates/company_brief.md` AND IT
-IS A REAL ONE: only roles that have actually been APPLIED TO enter a brief, and
-a role arrives in the same edit that sets its tracker status to applied.**
-Before that it is a tracker row, its score lives in the stack-rank file, and its
-reasoning lives in the session log. **A brief full of roles nobody applied to is
-a brief nobody can read under time pressure**, which defeats the only thing it
-is for.
+**THE BOUNDARY IS SET BY `framework/templates/company_brief.md`: only roles
+actually APPLIED TO enter a brief, in the same edit that sets the tracker status
+to applied.** Before that it is a tracker row. **A brief full of roles nobody
+applied to is a brief nobody can read under time pressure**, which defeats the
+only thing it is for.
 
 **THE TEST, and it is one question: would deleting this sentence from HERE lose
 anything that cannot be recovered from its owner?** If the answer is no, delete
 it and link instead. **A mirror that duplicates its source does not stay a
-mirror; it becomes a second, competing source.**
+mirror; it becomes a second, competing source.** The tracker note carries the
+reasoning, the quotes and the numbers and is allowed to be long; the mirrors
+carry only what a reader needs to act. See `../framework-maintenance.md`.
 
 ### When one communication is both a role event and a relationship event
 
@@ -158,14 +150,10 @@ person.
   letting it go quiet, how they said it, what they are owed now.
 - **Each links to the other.** Neither retells the other's half.
 
-**Worked example.** A recruiter relays that a role went to someone else and
-mentions a possible different role in two months. The tracker row carries the
-decline, the level read, the comp arithmetic and the future date. The contact
-log carries one entry: he chased the hiring manager for a real answer, came back
-candid rather than silent, the candidate replied the same day, **nothing owed**. **The
-contact log does not re-explain the comp arithmetic, and the tracker row does
-not re-explain that he is a reliable correspondent.** Both are complete; neither
-is redundant.
+**Worked example.** A recruiter relays a decline. The tracker row carries the
+decline, the level read, the comp arithmetic and any future date; the contact
+log carries one entry (they chased it, came back candid, **nothing owed**) and
+does not re-explain the arithmetic.
 
 ### The state files get a LINE, not a story
 
@@ -181,28 +169,17 @@ because it is the one in the file everyone opens.**
 from what their act produced.** These are different numbers and they diverge
 most exactly when a thread goes well.
 
-**Worked example, 2026-10-22.** A contact forwarded a hiring post into the
-candidate's DMs — in his own words, *"a quick 'I'll send this to him,' not any
-investment on her part."* The thread then produced a reply from a VP inside a
-day. **The log read that outcome backwards into the favour** and recorded the
-result as owed back to her, on the reasoning that an unreported outcome teaches
-a referrer to stop referring.
+**A forwarded hiring link costs the sender nothing**, so there is no goodwill to
+protect and nobody waiting on an answer, however well the thread then went. A
+report-back is owed to someone who put a referral through their employer's
+internal system, or spent public credibility vouching for you. Reading a good
+outcome backwards into a favour is the error.
 
-**That reasoning is sound and was applied to the wrong act.** It is true of
-someone who put a referral through their employer's internal system, or spent
-public credibility vouching for you. **A forwarded link costs the sender
-nothing, so there is no goodwill to protect and nobody waiting on an answer.**
-
-**The tell: the file already held the right answer and overrode it.** The entry
-said *"She did a favour and is owed nothing"* — and then invented an obligation
-in the next clause. **"Owed nothing" is a complete answer.** When a record
-contradicts itself in one breath, the hedge is usually the error.
-
-**Why this matters beyond tidiness: a manufactured obligation spends real
-budget.** It becomes a queued message, a surfaced action item, and eventually an
-unnecessary touch against someone's inbox — the exact cost that referral
-etiquette rules exist to prevent. **Inventing an obligation is not the safe
-direction to err in.**
+**"Owed nothing" is a complete answer.** When a record contradicts itself in
+one breath, the hedge is usually the error. **A manufactured obligation spends
+real budget** — a queued message, a surfaced action item, an unnecessary touch
+against someone's inbox. **Inventing an obligation is not the safe direction to
+err in.**
 
 **Ask instead: what did this cost them?** Nothing → `owed_by: nobody` and
 `next_action: NONE` with the reason. Real effort or reputation → the report-back
@@ -223,13 +200,10 @@ communication, state explicitly which of three things is true:
 **Case 3 must be written down.** A thread at rest that is not recorded as at
 rest will be read as waiting on the other party forever.
 
-**The failure that bought this rule:** a recruiter answered every outstanding
-question in a single message — rate, benefits, contract length — which moved the
-ball squarely back to the candidate. `pending_outreach.md` still read *"awaiting
-his answer. Nothing owed, nothing to invest until the band comes back."* It
-stayed that way for three weeks. **Every review that consulted the file saw a
-thread correctly waiting on someone else, and the role was filled before anyone
-looked again.**
+**The failure that bought this rule:** the other party answered everything
+outstanding, which moved the ball back to the candidate, and the file still read
+*"awaiting his answer"* — for three weeks, while every review saw a thread
+correctly waiting on someone else and the role was filled.
 
 **And the inverse error is just as real:** do not invent an obligation. A
 contact who brought a lead unprompted, chased it, and reported back candidly is
@@ -386,11 +360,10 @@ that it be made a particular way.**
 down as one**, with the reason — otherwise a later session reads the silence as
 an oversight and sets a date nobody wanted.
 
-The case that proves it: a recruiter who brought a lead unprompted, chased it
-himself, and came back with a candid answer, whose own stated etiquette is no
-follow-up push, and who has already been thanked. **The correct record is "at
-rest, nothing owed, do not surface as an action item" — and writing that is what
-protects the relationship from the system.**
+The case that proves it is a contact who brought a lead, chased it, answered
+candidly, asks for no follow-up push and has been thanked. **The correct record
+is "at rest, nothing owed, do not surface as an action item" — and writing that
+is what protects the relationship from the system.**
 
 ## EVERY LOG ENTRY NAMES ITS CHANNEL
 
@@ -405,15 +378,10 @@ connection request may never be accepted, and an email bypasses all of it.
 **A record that says "followed up" without saying how cannot answer "can I
 reach this person today."**
 
-**Two failures on 2026-10-22, both from the same silence:**
-
-- **A contact read 2nd degree on LinkedIn and looked like a weak thread.** He
-  had in fact asked for and received both resumes — **the entire relationship
-  ran on email**, and the LinkedIn invite was never the channel. The degree was
-  measuring a channel nobody was using.
-- **A live recruiter thread had no email on file and no LinkedIn path**, because
-  she arrived by inbound InMail. Nothing in the record said so, so "wait for her
-  reply" looked like a free decision when it was actually the only option.
+**The same silence misleads two ways.** A contact who reads 2nd degree on
+LinkedIn can look like a weak thread when the whole relationship runs on email;
+a recruiter who arrived by inbound InMail may have no other path at all, so
+"wait for her reply" looks free when it is the only option.
 
 **The corollary: capture the ADDRESS when you learn it.** A profile URL and an
 email address are what make a thread reachable later; a log entry that names a
@@ -421,17 +389,13 @@ channel but no address records how you *once* reached someone. **They belong in
 frontmatter** (`linkedin:`, `email:`, `phone:`) the moment they appear in a
 message header, not when someone finally needs them.
 
-**`phone:` was added 2026-10-28, after a lead arrived BY TEXT from a contact
-whose record held no number to text back.** The entry could name the channel
-and the file could not reach it — which is the precise failure this section
-already described, reached through the one channel it had no field for. **A
-channel the schema cannot store is a channel the record silently drops.**
+**A channel the schema cannot store is a channel the record silently drops** —
+which is why `phone:` exists (text is a channel).
 
 **Do NOT add a connection-degree field.** Degree is a snapshot that changes the
 moment an invite is accepted, so a stored value becomes a stale mirror — and
 profile URL plus email plus a channel-bearing log already answer every question
-degree was being used to answer, without rotting. *(Decided by the owner 2026-10-22,
-after a one-off audit of all 22 contact records.)*
+degree was being used to answer. *(Owner's decision, 2026-10-22.)*
 
 ## OUTBOUND COUNTS
 
@@ -454,19 +418,15 @@ Before calling it logged, confirm:
 - **If the status is now live** (`phone_screen` / `interview` / `offer`), **is
   the thread named in `open_threads.md` §1?** A live thread that exists only in
   tracker notes and a company brief is invisible to the file read first at every
-  session — this happened to two simultaneous live threads and went unnoticed
-  until someone asked.
+  session.
 - **If the status is now terminal, does every file that mentioned it say so?**
   **GREP THE NAME. DO NOT RELY ON REMEMBERING WHERE IT APPEARS.**
   `grep -rli '<company>' data/ skills/` takes seconds and is the only step that
-  finds the references you did not write. Measured: closing one thread updated
-  the obvious three — its own brief, the tracker, `open_threads.md` — and the
-  grep found **two more, inside OTHER companies' briefs**, where the closed
-  thread was load-bearing for a live decision. One said a rival thread's
-  assessment *"serves both"* interviews, which had just become false and
-  changed how much effort that assessment was worth. The other ranked three
-  threads by how far along they were, and the one that had just died was the
-  furthest along and best paying.
+  finds the references you did not write. The grep finds what
+  the obvious files (its own brief, the tracker, `open_threads.md`) do not:
+  references inside **OTHER companies' briefs**, where the closed thread was
+  load-bearing for a live decision (a rival thread's assessment *"serves both"*
+  interviews; a ranking of threads by how far along they were).
   **A cross-reference inside another thread's reasoning is the failure mode
   here**, because nothing structural connects the two files and no checklist
   scoped to "this thread's files" will ever reach it.
@@ -475,10 +435,3 @@ Before calling it logged, confirm:
   REMOVES it and the reason goes in the log. Only a date belonging to no person
   and no company belongs in §3.
 - **Does `pending_outreach.md` now say the true direction?**
-
-## What belongs in the tracker note and what does not
-
-The tracker note carries the reasoning, the quotes, and the numbers — it is the
-durable record and it is allowed to be long. **The mirrors carry only what a
-reader needs to act.** Point at the brief; do not restate it. See
-`../framework-maintenance.md` for why a mirror that duplicates a source rots.

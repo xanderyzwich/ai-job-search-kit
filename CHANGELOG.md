@@ -61,6 +61,21 @@ read in full only when someone edits it. It is now its own skill, and the
 maintenance skill keeps the rules for where things belong, at 288 lines with a
 pointer to the new file. The context-map generator reads the table from there.
 
+The leak scan broke the day after a batch of new company files landed. It derives
+its patterns from the private company briefs, and two of the new names defeated its
+generic-word guard: one employer whose entire name is the plain English word
+"ahead", and one whose name starts with a token containing a digit, which the
+alphabetic-only filter dropped, leaving the lone word "solutions" as a pattern. Four
+false hits in public files, and a scan that cries wolf on every close is a scan
+nobody reads. Name parts with a digit now count, and a pattern that reduces to one
+generic word is skipped.
+
+The communication-logging skill was trimmed from 484 to 437 lines: dated anecdotes,
+post-mortems and measured counts moved to a private history file, and the
+applied-only boundary for company briefs now points at the template that owns it.
+Every rule, field definition and parsed grammar stayed, and the scheduled-block
+section was left untouched on purpose.
+
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
 the referral and channel fields every live record carries, and the contract had
