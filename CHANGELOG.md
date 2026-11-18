@@ -13,7 +13,7 @@ let a fresh agent check a change in isolation: against the declared rules,
 against the ripple map, and against the instance's own conventions. The audits
 skill is the dispatcher (three agents in parallel, coordinator verifies and
 fixes in the same batch), the maintenance skill's closing section points to it,
-and `reviews` is a collapsed directory in the context map.
+and `reviews` is a collapsed directory in the context map. Each reviewer writes its own report file, since the three run concurrently.
 
 ## 2026-11-18 — The linter learned to say true things, and a plain word broke the leak scan
 

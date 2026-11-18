@@ -24,7 +24,7 @@ practice, not a favour.
 
 **Dispatch.** One agent per row, each given: (1) the exact path of its skill,
 (2) the scope as a git range or an explicit file list (public AND private
-repos), (3) the report path `private/temp/review-<date>/<name>.md`. Name files,
+repos), (3) its OWN report file, `private/temp/review-<date>/standards.md`, `ripple.md` or `dogfood.md` respectively. **No two agents ever write the same file**; the agents run concurrently and a shared file would be overwritten or interleaved. Name files,
 not directories. The agents run in isolation, so the skill must be enough; do
 not paraphrase it into the prompt.
 

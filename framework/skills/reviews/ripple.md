@@ -2,7 +2,7 @@
 
 **Load when:** you are a REVIEW AGENT dispatched by `framework-audits.md` to check that every file a change was supposed to touch WAS touched. Not for making changes.
 
-**Your constraints:** read-only. No edits, no staging, no commits, no git writes, no network. Write ONLY the report file the dispatcher names. Never copy a person's name, an employer, a dollar figure or an address into the report; cite `file:line`.
+**Your constraints:** read-only. No edits, no staging, no commits, no git writes, no network. Write ONLY the report file the dispatcher names for you (yours alone — two other reviewers are writing their own files at the same time; never touch theirs). Never copy a person's name, an employer, a dollar figure or an address into the report; cite `file:line`.
 
 ---
 
