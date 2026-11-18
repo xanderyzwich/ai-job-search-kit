@@ -19,8 +19,8 @@
   (endpoints, data shapes, how listings lie, what is verifiable browserless) and
   nothing about one search; the instance's same-named file is the OVERLAY
   (its filters, results, decisions) and its header points at the framework file.
-  A mechanics change goes to the framework file; a result or filter goes to the
-  overlay. Run the leak scan: employer names and figures belong in the overlay.
+  A mechanics change goes to the framework file; a filter or verdict goes to the
+  overlay; a dated measurement or sweep result goes to `data/probe_logs/<name>.md`. Run the leak scan: employer names and figures belong in the overlay.
 - **A script added or changed** → the task-time skill that governs its
   moment (a script referenced only from setup docs is invisible when it
   matters) · `bootstrap.py`'s COPIES if it installs into `private/` ·

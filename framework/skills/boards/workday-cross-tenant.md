@@ -29,8 +29,6 @@ once: `site:myworkdayjobs.com "Fully Remote" "<title or stack term>"` with
 it filters well. Google returns 10 per query; run several terms. **Run it in the
 browser (google.com), not a WebSearch tool, which ignores `site:`.** Then read
 each JD from the tenant's own JSON API instead of the JS-rendered page.
-A first run yielded about 25 unique results from 4 queries, one of them posted
-the same day.
 
 ## The tenant CXS API works without a browser (verified 2026-11-17)
 

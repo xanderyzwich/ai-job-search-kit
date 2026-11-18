@@ -31,4 +31,4 @@ https://www.indeed.com/jobs?q=<title+words>&l=Remote&fromage=7&sort=date
 
 ## Query behaviour
 
-Qualifying the title with a seniority word returned essentially the same recycled pool as the bare title on the same day (several of the same employers surfaced in both; confirmed 2026-09-08) — the qualifier narrows the net without improving signal. Noise is medium-to-high either way; screen on comp and domain by hand rather than trying to filter it out via title wording.
+Qualifying the title with a seniority word returned essentially the same recycled pool as the bare title on the same day — the qualifier narrows the net without improving signal. Noise is medium-to-high either way; screen on comp and domain by hand rather than trying to filter it out via title wording.

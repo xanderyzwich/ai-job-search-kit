@@ -19,7 +19,7 @@ curl -sS "https://api.ashbyhq.com/posting-api/job-board/<org>?includeCompensatio
      -H 'accept: application/json'
 ```
 
-`<org>` is the slug in the board URL — `jobs.ashbyhq.com/<org>/<uuid>` gives `<org>`. Verified working 2026-10-23: HTTP 200, ~60KB, 5 jobs.
+`<org>` is the slug in the board URL — `jobs.ashbyhq.com/<org>/<uuid>` gives `<org>`. Verified working 2026-10-23: HTTP 200.
 
 **Per job:** `title`, `location`, `jobUrl`, `applyUrl`, `descriptionHtml` (the FULL posting — strip tags and score it), plus `compensation` when the org publishes bands and `includeCompensation=true` is passed.
 
@@ -33,7 +33,7 @@ for j in jobs:
     print(j["title"], "|", j.get("location"), "|", j.get("jobUrl"))
 ```
 
-**One link is never the board.** A lead that arrives as a single posting URL from a contact may sit on a board with several roles, one at a materially better level than the one sent (a five-role board in the observed case). Whenever a contact forwards an Ashby link, pull the whole board — one request, and the forwarder saw only what they happened to notice.
+**One link is never the board.** A lead that arrives as a single posting URL from a contact may sit on a board with several roles, one at a materially better level than the one sent (a multi-role board in the observed case). Whenever a contact forwards an Ashby link, pull the whole board — one request, and the forwarder saw only what they happened to notice.
 
 **This makes Ashby a SEARCH surface, not just an apply surface**, which is the test that matters: an ATS is only a place to find work if it can be read across or enumerated without a browser. Ashby passes per-org.
 

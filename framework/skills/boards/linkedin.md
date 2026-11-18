@@ -9,16 +9,11 @@
 ---
 
 > **LINKEDIN HAS NO EMPTY STATE. ITS COUNTS MEASURE NOTHING.**
-> Measured 2026-11-03 with pure-nonsense controls on the guest search API.
+> Measured 2026-11-03 with pure-nonsense controls on the guest search API:
+> every control query, nonsense or not, returned a full page of unrelated roles.
 >
-> | query | results | what came back |
-> |---|---|---|
-> | a nonsense two-word string | **10** | unrelated operator / technician roles |
-> | a single repeated-letter string | **10** | unrelated engineering, recruiting, community roles |
-> | `accordion tuner` | **10** | music-theory and instrument-technician roles |
->
-> **The keyword IS applied** (`accordion tuner` genuinely returns music jobs)
-> **but the result set never empties.** Every query fills the page and
+> **The keyword IS applied** (a control about musical instruments genuinely
+> returned music jobs) **but the result set never empties.** Every query fills the page and
 > pagination fills more. **A LinkedIn count measures how many pages you
 > requested, not inventory.** Never compare two queries by their counts, and
 > never report "N results on LinkedIn" as a finding.
@@ -51,7 +46,7 @@ Listings need the API or JS, never a text read. Parallel browser fetches 429.
 ## Capability — PROFILE reads, probed 2026-10-21 (signed in, in-app browser)
 
 **A profile is a different surface from a listing and behaves differently.**
-Probed across 43 page loads in one sitting; no authwall, no 429, session held.
+Probed in one sitting; no authwall, no 429, session held.
 
 | | |
 |---|---|
@@ -64,8 +59,8 @@ reads return text. Delegation is still worth it on page-text VOLUME alone (the
 experience endpoint carries every role's full description), with the agent
 returning structured rows rather than pages.
 
-**Known gap: a long history ends in an unexpanded "Load more".** Seen on 2 of
-22 profiles (roles older than ~10 years truncated). Clicking it is a page
+**Known gap: a long history ends in an unexpanded "Load more".** Seen on a
+minority of profiles (roles older than ~10 years truncated). Clicking it is a page
 interaction, not a read — out of scope for a read-only pass; record it as
 `partial` rather than silently dropping it.
 
@@ -184,8 +179,8 @@ market (see metro sweeps).
   generic titles that no title-scoped search shows.
 - **Always run the fully bare title term too.** Confirmed 2026-09-08 in a
   same-session test (same remote / comp / window / geo): a two-word qualified
-  query returned 328 results; the bare two-word title returned 552; a bare
-  sibling title returned 593 — and the bare runs surfaced genuinely new in-scope
+  query returned fewer results than the bare two-word title or a bare
+  sibling title — and the bare runs surfaced genuinely new in-scope
   candidates the qualified run never showed. Adding ANY qualifier word excludes
   real candidates. Run the bare passes in addition to (not instead of) any
   topic-qualified pass. Expect heavier noise in bare results (the title word
@@ -200,8 +195,8 @@ market (see metro sweeps).
   contributor searches — it is too restrictive and misses roles labelled at the
   wrong seniority. For management-leaning searches, `f_E=5,6` tags roles by
   LinkedIn's internal seniority classification independent of title text, which
-  gives a dramatically cleaner pool than title alone (observed: ~8 relevant vs
-  100+ noisy without it) and can surface IC-sounding titles LinkedIn tags as
+  gives a dramatically cleaner pool than title alone (observed on one run: a handful of relevant
+  rows vs a hundred or more noisy ones without it) and can surface IC-sounding titles LinkedIn tags as
   Director-equivalent. Caveat: it cannot fix a keyword that is ambiguous across
   domains (a physical-infrastructure role matched a software-sounding keyword
   and the seniority filter) — read every hit's actual domain.
@@ -223,7 +218,7 @@ market (see metro sweeps).
 - The safety layer BLOCKS JS results containing broad regex captures or long
   tokens; sanitize to short prose slices (strip URLs and 40+ char strings) or
   fall back to screenshots.
-- **Login wall:** non-premium accounts get JD-body-blocked on ~60% of promoted
+- **Login wall:** non-premium accounts get JD-body-blocked on a large share of promoted
   listings. Hiring-manager-posted (non-promoted) and Easy Apply listings usually
   load fully; otherwise go to the company careers site directly.
 
@@ -232,9 +227,8 @@ market (see metro sweeps).
 **`f_JIYN=true` ("In your network")** is a blended signal: it fires if *either*
 a 1st-degree connection works at the company *or* a school alumnus does — not
 degree-specific, and cannot be split in the URL. It is not limited to fresh
-postings (a hit carried a "Reposted 1 week ago" label). A sanity check with a
-tight title + comp + remote combination returned a handful of results all from
-the one company with a known contact — a good sign the filter is real. Layer it
+postings (reposts carry it). A tight title + comp + remote combination is a
+quick sanity check that the filter is real. Layer it
 onto a normal title sweep as a fast pass.
 
 **Caveat:** a "connections/alumni work here" hit does not always mean a real
@@ -268,9 +262,9 @@ Treat it as a skim-only discovery feed; its one otherwise-unavailable signal is
 
 **"Actively hiring" People Search filter (`activelyHiringForJobTitles`) — not
 actually Premium-gated.** The gold Premium icon is an upsell nudge, not an
-access gate. Controlled comparison: a bare `keywords=recruiter` returned 100+
-results across 10 pages; adding `activelyHiringForJobTitles=["-100"]` dropped it
-to exactly 2, both current recruiters. Layer it onto the company-first lookup:
+access gate. Controlled comparison: a bare `keywords=recruiter` returned many
+pages of results; adding `activelyHiringForJobTitles=["-100"]` dropped it
+to a handful, all current recruiters. Layer it onto the company-first lookup:
 `currentCompany=["ID"]&network=["F","S"]&activelyHiringForJobTitles=["-100"]`.
 `-100` is the "any job title" code; a specific title appears to need an
 autocomplete-selected value from LinkedIn's internal title taxonomy rather than
@@ -309,8 +303,8 @@ way found yet to skip the per-profile check.
 
 Both generalize to any metro.
 
-**1. NEVER comp-gate a metro sweep.** On a metro query, `f_SB2=6` cut 73 results
-to 4, and all 4 survivors were staffing agencies quoting hourly rates, because
+**1. NEVER comp-gate a metro sweep.** On a metro query, `f_SB2=6` cut the results
+to a handful, and all the survivors were staffing agencies quoting hourly rates, because
 agencies disclose and direct employers in that metro often do not. `f_SB2`
 filters on disclosure, not comp, and disclosure correlates with state
 pay-transparency law and with remote-tech hiring. On a national REMOTE search the
@@ -319,7 +313,7 @@ Harvest un-gated, then chase comp per employer.
 
 **2. The guest API beats DOM harvesting for volume, and needs no auth.** The
 authenticated results list is virtualized and the scroll-to-render loop is slow
-and unreliable (two `Runtime.evaluate` timeouts on a frozen renderer). This
+and unreliable (`Runtime.evaluate` timeouts on a frozen renderer). This
 endpoint, fetched from a tab already on `linkedin.com`, returns plain
 server-rendered cards:
 
@@ -339,8 +333,8 @@ server-rendered cards:
   company name sits after a ~330-char anchor tag, so a 300-char cap matches the
   title and silently returns empty companies.
 - **Limitations:** the guest endpoint does not honor `f_WT`, so workplace type
-  is absent and must be read per req; and it returned 151 unique where the
-  authenticated UI claimed 73, so treat its count as a superset needing its own
+  is absent and must be read per req; and it returned more unique results than the
+  authenticated UI claimed, so treat its count as a superset needing its own
   filtering, not a corrected total.
 
 **3. Re-verify classic search at the start of each sweep** (filters echo back as

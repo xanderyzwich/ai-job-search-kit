@@ -34,22 +34,23 @@ which is why it works with no browser. The same parameters work on the human
 path `/home?<filters>`. Rows carry **Job Title · Industry · Location** and a
 detail link `https://jobs.vaco.com/job/<id>/<slug>/en`.
 
-**Board size: 1,420 reported.** A full page-by-page census harvested **1,267**
-across 57 pages. **The 153-row gap is UNEXPLAINED** — paging drift, or rows the
-listing does not return. Do not quote 1,420 as a harvested figure.
+**The reported board size is not the harvestable size.** A full page-by-page
+census harvested fewer rows than the header reported. **The gap is
+UNEXPLAINED** — paging drift, or rows the listing does not return. Do not quote
+the reported total as a harvested figure.
 
 ### Parameters
 
 | parameter | values | works |
 |---|---|---|
-| `keywords` | free text | **YES** — a two-word title phrase returned 158 |
+| `keywords` | free text | **YES** — a two-word title phrase narrows the set |
 | `job_type` | `direct hire` · `contractor` · `c2h` · `consulting` | **YES** |
 | `location_center` + `lng` + `lat` + `location_distance` | place string, coords, miles | **YES** |
-| `category_id` | integer | **YES** — e.g. 6 → 33 |
+| `category_id` | integer | **YES** |
 | `on_site` | `Hybrid` · `On-Site` · `Remote` | **FILTERS, RETURNS ZERO ON ALL THREE** |
 
-**`job_type` partitions the board exactly — 837 + 390 + 188 + 5 = 1,420.** That
-sum is how you prove a filter is real. Run it when adding one.
+**`job_type` partitions the board exactly — its four values sum to the reported
+total.** That sum is how you prove a filter is real. Run it when adding one.
 
 **An UNRECOGNISED parameter is ignored harmlessly** (`bogus_param=xyz` left a
 keyword search unchanged). Only parameters the server knows can hurt you.
@@ -66,7 +67,7 @@ evidently populated on no requisition at all.
 **A search matching nothing returns, in ONE response, in this order:**
 
 1. *"Sorry, no jobs found for that search."* + search suggestions — **TRUE**
-2. `Results : (1–25 of 1420)` — **FALSE**
+2. `Results : (1–25 of N)` — **FALSE**
 3. a table of 25 job rows — **FALSE**, and not the unfiltered page 1 either
 
 **The only trustworthy signal is the string `no jobs found`:**
@@ -77,7 +78,7 @@ curl -s "$API&$FILTER" | grep -qi "no jobs found" && echo "ZERO RESULTS"
 
 It cost two wrong findings on 2026-11-04, one per reader, in opposite directions:
 
-- **The machine trusted the COUNT.** `1420` came back for every `on_site`
+- **The machine trusted the COUNT.** the same total `N` came back for every `on_site`
   value, reported first as "the parameter is ignored" and then as "it poisons
   the query." Both wrong — it filters, and returns zero.
 - **The human trusted the ROWS.** A zero-result query's fallback table still
@@ -94,19 +95,14 @@ easiest to misread, because the admission is prose and the lie is data.
 
 ## Tested and rejected: bare `US` as a remote marker
 
-Some rows render a location of just `US` instead of `City, ST, US` — **78 of
-1,267 harvested (6%)**, small and consistent enough to look like a deliberate
-marker for national/remote. **It is missing data.** Sampled bodies:
-
-| sample | bodies mentioning remote |
-|---|---|
-| bare `US` rows | **2 of 8** |
-| city-location controls | 1 of 6 |
-
-25% against 17% on samples that size is noise. Six of the eight bare-`US`
-bodies explicitly say on-site or hybrid, and the titles are local work. **Blank
-is just blank.** (Two of the eight were the SAME posting under two ids with an
-identical title — this board carries duplicate requisitions, like Built In.)
+Some rows render a location of just `US` instead of `City, ST, US` — a small,
+consistent minority, enough to look like a deliberate marker for
+national/remote. **It is missing data.** Bodies sampled from bare-`US` rows
+mentioned remote no more often than city-located controls, most explicitly said
+on-site or hybrid, and the titles were local work; samples that small are noise.
+**Blank is just blank.** (Two sampled rows were the SAME posting under two ids
+with an identical title — this board carries duplicate requisitions, like
+Built In.)
 
 **Consequence: the board has no remote signal at all.** `on_site` returns zero,
 and location distinguishes cities from missing cities. The only way to know is

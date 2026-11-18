@@ -29,21 +29,21 @@ https://builtin.com/jobs/remote/dev-engineering?search=<QUERY>
 
 - Comp bands are shown inline on cards, the pool is senior-heavy, staffing-firm noise is low. A logged-in account can save job alerts.
 - The listing's `ld+json` is entity-encoded (`ld&#x2B;json`) under `@graph`, an `ItemList` of 25 cards per page. Job pages carry a full `JobPosting` block (`baseSalary`, `datePosted`, `validThrough`, body).
-- `currency` lives inside `baseSalary` as `currency`, not `salaryCurrency`. A regex for the wrong key left the field blank on over half of one sweep's records. **A blank currency is a gap, not a USD** — a non-USD band can pass a naive floor check.
+- `currency` lives inside `baseSalary` as `currency`, not `salaryCurrency`. A regex for the wrong key left the field blank on most of one sweep's records. **A blank currency is a gap, not a USD** — a non-USD band can pass a naive floor check.
 
 ## Depth
 
-The board is far deeper than "roughly 8 pages". One broad query returned 1,000+ distinct postings across 40+ pages and had not ended. Eight strings run to exhaustion produced 2,367 distinct postings. Title strings outside the recorded title family (for example `manager`, `lead`) contributed 649 postings on their own.
+The board is far deeper than "roughly 8 pages". One broad query ran past 40 pages without ending, and multiple strings run to exhaustion produced thousands of distinct postings. Title strings outside the recorded title family (for example `manager`, `lead`) contributed a large share on their own.
 
-Marginal yield, however, sits in the tail, not the top: a shallow page 1-2 re-sweep eleven weeks after a full sweep found mostly already-tracked rows (18 of 26 companies). **Dedup before fetching any JD**, or most of the acquisition cost is spent on rows already in the tracker.
+Marginal yield, however, sits in the tail, not the top: a shallow page 1-2 re-sweep long after a full sweep found mostly already-tracked rows. **Dedup before fetching any JD**, or most of the acquisition cost is spent on rows already in the tracker.
 
 ## Title vocabulary — measured behaviour of the search
 
-A nonsense-string control returned 0, so the counts below are real; queries were paginated to exhaustion.
+A nonsense-string control returned 0, so counts from these queries are real; queries were paginated to exhaustion.
 
 - **Built In collapses word order, the comma form and the Sr/Senior abbreviation.** `software engineering manager` = `manager, software engineering` = `manager of software engineering`, and `senior manager software engineering` = `sr manager software engineering` return identical sets. Run one of each collapsed group, never both. `engineer` and `developer` are likewise synonym-mapped.
 - Different head nouns do NOT collapse (`engineering manager` vs `software development manager` vs `engineering lead`), and each contributes unique postings. Rank candidate strings by marginal contribution, not by raw count.
-- **Never compare a capped query with an exhausted one.** A "two queries cover 92%" claim was produced exactly that way (full-depth against 3-page-capped) and was wrong; re-measured at equal depth the lane was larger and the best supplementary strings had been buried.
+- **Never compare a capped query with an exhausted one.** A "two queries cover nearly everything" claim was produced exactly that way (full-depth against 3-page-capped) and was wrong; re-measured at equal depth the lane was larger and the best supplementary strings had been buried.
 - **Count the titles you get back** (a title census). That is how you find strings you did not think to ask for.
 
 ## Liveness: `validThrough` is NOT a death signal
@@ -60,10 +60,10 @@ A lapsed `validThrough` is consistent with a dead posting but does not imply one
 
 **Never accept a response on its status, its size, an exact string match, or an empty parse. Validate on STRUCTURE.**
 
-1. **An empty parse ended pagination.** Rate limiting after ~350 requests returned empty pages, the loop read that as end-of-results, and 437 postings were silently dropped (queries reported 0 when a direct probe returned 25). **An empty result must be RETRIED, never terminal.** Stop on 3 consecutive all-duplicate pages, not 1.
-2. **`len(response) > 5000` as the validity test.** Degraded pages pass it; 41% of 474 "no band" records were wrong (195 recovered on a clean re-fetch). Accept a JD page only if it carries a `JobPosting` block or the removal banner.
-3. **A missing `validThrough` read as "removed".** 23 of 104 such rows had a live-window page. Same cause as 2: a degraded page parses as a page with nothing in it.
-4. **The company regex missed 42%** (310 of 742 records had `company: None`). Take the company from the JD body when the structured field is empty; never write a tracker row without one.
+1. **An empty parse ended pagination.** Rate limiting after a few hundred requests returned empty pages, the loop read that as end-of-results, and postings were silently dropped (queries reported 0 when a direct probe returned a full page). **An empty result must be RETRIED, never terminal.** Stop on 3 consecutive all-duplicate pages, not 1.
+2. **`len(response) > 5000` as the validity test.** Degraded pages pass it; a large share of "no band" records were wrong and recovered on a clean re-fetch. Accept a JD page only if it carries a `JobPosting` block or the removal banner.
+3. **A missing `validThrough` read as "removed".** Many such rows had a live-window page. Same cause as 2: a degraded page parses as a page with nothing in it.
+4. **The company regex missed a large share** of records (`company: None`). Take the company from the JD body when the structured field is empty; never write a tracker row without one.
 5. **Bodies cut at 9,000 characters — the footer is where the restrictions live.** One employer's state-exclusion list sits **below the Apply button**, so scoring agents gated on residency without ever seeing it. Do not cap the body, or keep the tail as well as the head.
 6. **Exact-string dedup missed `(Remote)` and `(gh <id>)` suffixes**, so an already-applied role ranked first. Dedup on **normalised company + title** as well as the Built In id, and **never normalise away a team qualifier** (two reqs with the same title and different team parentheticals are different reqs). **Generic titles repeat across many reqs at large employers — a title match there is not a duplicate.**
 

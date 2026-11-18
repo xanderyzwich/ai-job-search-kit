@@ -17,8 +17,7 @@ The Candidate Experience UI is a JS-rendered SPA — a plain fetch of a job URL
 returns nothing, which is why sweeps of these boards used to need a live browser
 and cost a session. **The SPA's own backend is an unauthenticated REST endpoint
 that returns the full board as JSON, including whole JD bodies.** No browser, no
-extension, no rate limiting observed. Discovered 2026-10-14; a full board sweep
-plus JD reads took under two minutes.
+extension, no rate limiting observed. Discovered 2026-10-14.
 
 **This skill is vendor-scoped, not employer-scoped.** Treat any careers site
 whose HTML or redirect chain mentions `oraclecloud.com` as covered here.
@@ -81,11 +80,11 @@ posted**, which is itself a finding.
 
 ## Large boards: partition the pull
 
-A large retail or service employer's board can hold on the order of 10,000+
-requisitions, almost all store roles (measured 2026-11-13). Page size caps at
+A large retail or service employer's board can hold more requisitions than
+the offset cap allows, almost all store roles. Page size caps at
 200 and **`offset` stops returning rows at 10,000**, so a full pull has to be
 partitioned with `selectedCategoriesFacet` and `selectedPostingDatesFacet`.
-Further quirks measured on that board:
+Further quirks measured on such a board:
 
 - Sort options other than posting date descending are ignored.
 - `WorkplaceTypeCode` was **null** on list and detail items there, so only the

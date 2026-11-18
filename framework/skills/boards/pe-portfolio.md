@@ -110,8 +110,8 @@ before falling back to manual scroll.
 - **Some Consider boards expose their own API that allows COMPLETE
   enumeration** — `POST /api-boards/search-jobs` with an `x-csrf-token` scraped
   from the inline `"csrfToken"` in `document.scripts`; `grouped:false`,
-  `size:200`, cursor paging pulled all 4,185 jobs of one board in ~21 requests
-  with salary objects attached. When a board offers this, filter locally instead
+  `size:200`, cursor paging pulled a whole board in about one request per 200
+  jobs with salary objects attached. When a board offers this, filter locally instead
   of guessing keywords.
 - **Reader quirks:** iCIMS serves the req inside an iframe
   (`document.body.innerText` came back at 116 chars) — read
@@ -123,9 +123,9 @@ before falling back to manual scroll.
 - **Session flakiness:** screenshots occasionally time out ("renderer may be
   frozen") mid-session; closing the tab and opening a fresh one in the same tab
   group resolved it each time.
-- **Cadence:** three days is too short for the small boards — a small board swept
-  three days earlier produced zero new rows while every large board yielded.
-  Re-sweep small boards weekly at most; large ones reward returning sooner
+- **Cadence:** three days is too short for the small boards (measured on one
+  run: a small board swept three days earlier produced no new rows while the
+  large boards did). Re-sweep small boards weekly at most; large ones reward returning sooner
   because they have never been fully swept. Aggregator listings can read closed
   while the employer reposts similar reqs under new ids; check the employer's own
   careers page.

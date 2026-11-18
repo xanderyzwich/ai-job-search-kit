@@ -42,16 +42,16 @@ print(d['props']['pageProps']['network']['id'])"
 ### Pagination and filters — measured, not assumed
 
 - **20 jobs per page, hard.** `per_page`, `size` and `limit` are all accepted
-  and all **silently ignored**. `page` works. A board of ~1,600 jobs = ~81 requests.
+  and all **silently ignored**. `page` works. Requests per full pull = jobs / 20.
 - **`{"query": "<text>"}` works** and narrows the count. **`{"filters":{"q":…}}`
   does NOT** — it returns the unfiltered count and looks like it worked.
 - **`{"filters":{"seniority":["director"]}}` works.**
 - **`{"filters":{"work_mode":["remote"]}}` works.**
 - Response is `{"results":{"jobs":[…],"count":N}}`.
 
-**A full pull of ~1,600 returned ~1,585 unique ids** — about 1.3% lost to churn
-between page requests. **Expect a small shortfall; do not read it as an error,
-and do not read the count as exact.**
+**A full pull returns slightly fewer unique ids than the reported count** —
+a small share is lost to churn between page requests. **Expect a small
+shortfall; do not read it as an error, and do not read the count as exact.**
 
 ## What the records carry
 
@@ -60,35 +60,31 @@ Each job object has: `title` · **`seniority`** · **`work_mode`** ·
 `locations` · `searchable_locations` · `skills` · `url` · and
 **`organization.head_count`**, `organization.stage`, `organization.name`.
 
-**Compensation is structured and only about a third of rows have it** (547 of
-1,585 on one board carried real cents). **`compensation_public` was TRUE on every
+**Compensation is structured and only some rows have it.** **`compensation_public` was TRUE on every
 row and means nothing**; read the cents field, not the flag.
 
 ### Two fields that look authoritative and are not
 
-1. **`organization.head_count` is a coarse bucket, not a number.** Only values
-   2-6 appeared across a whole board. Roughly ascending with size, but at least
+1. **`organization.head_count` is a coarse bucket, not a number.** Roughly ascending with size, but at least
    one large, well-known company sat in the smallest bucket, which is wrong by
    any reading. **Use it to rank candidates for a closer look; never use it as an
    org-size gate on its own.**
-2. **`seniority` can disagree with the JD.** A "Manager, Software Engineering"
-   req was tagged `director` while its JD asked for three years managing a
-   development team — a first-line role. **Treat `seniority` as a hint for
+2. **`seniority` can disagree with the JD.** A first-line management req can
+   carry a `director` tag. **Treat `seniority` as a hint for
    bucketing, never as the lane decision.**
 
 ## Method: pull the whole board and classify locally
 
 **Do not sweep by title query.** A title query bakes the lane into the fetch, so
 a sweep run under one lane strategy can never find roles of another lane later —
-they were never fetched. Measured on ONE board: a title-query sweep logged one
-manager-shaped row; the full pull found nine, three of them US-remote with
-published bands.
+they were never fetched. Measured on one run, the full pull found several times as many
+manager-shaped rows as the title-query sweep had logged.
 
-**A whole-board pull costs ~81 requests and about a minute.** There is no reason
+**A whole-board pull costs one request per page of 20 jobs and about a minute.** There is no reason
 to pre-filter by title.
 
 **Also avoid the `work_mode: remote` filter for recall.** Some employers' jobs
-carry no remote tag at all (one employer's 87 jobs had none), so a remote filter
+carry no remote tag at all (one employer's jobs had none), so a remote filter
 silently drops all of them. Pull everything, classify locally, and the filter
 costs nothing.
 

@@ -11,7 +11,8 @@ three.>
 > is verifiable without a browser) and this private file is an OVERLAY: title,
 > `**Load when:**`, the line `Mechanics: framework/skills/<boards|ats>/<slug>.md
 > — read that first.`, then ONLY what is specific to this search (filters,
-> queries, results, decisions, dated history). If it does not exist yet, write
+> queries, verdicts, decisions), plus a line `Measurements: data/probe_logs/<slug>.md.`
+> — dated measurements and sweep results go in that log, never in a skill. If the framework file does not exist yet, write
 > the mechanics here and promote them later. Shared rules live in the
 > instance's board-strategy skill, if it has one.
 

@@ -18,6 +18,18 @@ converting an hourly rate to a salary comparison. The contract, bootstrap commen
 surface template and ripple map describe the overlay shape. A fourth review skill, `reviews/leak-triage.md`, is dispatched read-only when the leak scan reports hits; it classifies each as a common word, a technology or vendor, a real mention or an unnamed count and reports to the coordinator, who alone adds markers or stop words. Three single-employer
 careers sites and the deprecated apply-form ATS skills were deliberately not promoted.
 
+## 2026-11-18 — Public board skills carried one person's search results
+
+The first promotion of board mechanics copied measured counts straight from the
+instance: how many postings a query returned, how many were already tracked, how
+many a run dropped, what one state's sweep found. They read as platform facts but
+were a search's history, so the public skills disclosed how much work one person
+had done and where. Those figures now live in the instance's `data/probe_logs/<name>.md`,
+each overlay points there with a `Measurements:` line, the public files keep only the
+lesson, and the standards review checks that any figure in a public board skill is a
+platform fact. Dated capability tables and "never probed" status stay public because they
+describe the platform.
+
 ## 2026-11-18 — Post-change review is now a codified step
 
 Three review skills (`skills/reviews/standards.md`, `ripple.md`, `dogfood.md`)

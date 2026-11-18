@@ -32,7 +32,7 @@ https://wellfound.com/jobs?role=<role-slug>&remote=true&jobType=full-time&salary
 
 ## Query behaviour
 
-**Query style is the opposite of LinkedIn's.** An exact quoted phrase (for example `"Staff Software Engineer"`) works and returns a manageable, relevant pool (72 results observed). The bare phrase without the qualifier word and without quotes returns a *different and non-overlapping* set the exact phrase misses entirely. Run both per session; they are complementary, not redundant.
+**Query style is the opposite of LinkedIn's.** An exact quoted phrase (for example `"Staff Software Engineer"`) works and returns a manageable, relevant pool. The bare phrase without the qualifier word and without quotes returns a *different and non-overlapping* set the exact phrase misses entirely. Run both per session; they are complementary, not redundant.
 
 ## UI quirks
 
