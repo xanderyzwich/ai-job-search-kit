@@ -85,6 +85,8 @@ ai-job-search-kit/
 │   │                                  per-contact records, assessment cards,
 │   │                                  sweeps/ (generated search output) and
 │   │                                  analysis/ (dated one-off studies),
+│   │                                  probe_logs/ (the dated probe history behind each
+│   │                                  board or ATS skill),
 │   │                                  and dashboard/ — every rendered view the
 │   │                                  candidate reads (calendar, contact index,
 │   │                                  funnel, application history), committed so

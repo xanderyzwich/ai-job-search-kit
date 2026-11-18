@@ -44,6 +44,9 @@ DIRS = [
     # the handful of live-state files under forty of them is how a data layer
     # stops being browsable.
     "data/sweeps", "data/analysis",
+    # probe_logs/ keeps the dated probe history behind each board or ATS skill,
+    # which a skill no longer carries (a skill holds learnings, not history).
+    "data/probe_logs",
     "scripts", "feedback", "resume", "temp",
 ]
 

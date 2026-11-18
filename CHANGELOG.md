@@ -6,6 +6,38 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-18 — The linter learned to say true things, and a plain word broke the leak scan
+
+The leak scan broke the day after a batch of new company files landed. It derives
+its patterns from the private company briefs, and two of the new names defeated its
+generic-word guard: one employer whose entire name is the plain English word
+"ahead", and one whose name starts with a token containing a digit, which the
+alphabetic-only filter dropped, leaving the lone word "solutions" as a pattern. Four
+false hits in public files, and a scan that cries wolf on every close is a scan
+nobody reads. Name parts with a digit now count, and a pattern that reduces to one
+generic word is skipped.
+
+The communication-logging skill was trimmed from 484 to 437 lines: dated anecdotes,
+post-mortems and measured counts moved to a private history file, and the
+applied-only boundary for company briefs now points at the template that owns it.
+Every rule, field definition and parsed grammar stayed, and the scheduled-block
+section was left untouched on purpose.
+
+The skill linter gained four things, each traced to something that went wrong in a
+single day. An `absent-refs` annotation lets a skill say a file is deliberately
+missing, with the same guard as the moved-refs one: it errors the moment the file
+exists. Five of the morning's eight lint errors had been exactly that kind of true
+statement. A skill may declare its own size budget and reason, so a large skill warns
+at its own number and prompts a conversation instead of growing past a global
+limit nobody believes in. Board and ATS capability tables now warn at 60 days,
+because two were months stale while the skills said to re-probe every sweep. And a
+`--report` view prints dated-marker density without ever warning, since a date on
+a learning is legitimate and a raw count would be noise.
+
+The calendar renderer also stopped dropping hard dates it could not read: a bullet
+whose bold run wraps onto a second line is now joined, and the bold and trailing
+halves are both kept in the label.
+
 ## 2026-11-17 — The apply agent lost a measured race against the person it was built to help
 
 The apply flow delegated form-filling to a browser agent that filled and
@@ -60,36 +92,6 @@ change, is generated verbatim into the context map every session, and needs to b
 read in full only when someone edits it. It is now its own skill, and the
 maintenance skill keeps the rules for where things belong, at 288 lines with a
 pointer to the new file. The context-map generator reads the table from there.
-
-The leak scan broke the day after a batch of new company files landed. It derives
-its patterns from the private company briefs, and two of the new names defeated its
-generic-word guard: one employer whose entire name is the plain English word
-"ahead", and one whose name starts with a token containing a digit, which the
-alphabetic-only filter dropped, leaving the lone word "solutions" as a pattern. Four
-false hits in public files, and a scan that cries wolf on every close is a scan
-nobody reads. Name parts with a digit now count, and a pattern that reduces to one
-generic word is skipped.
-
-The communication-logging skill was trimmed from 484 to 437 lines: dated anecdotes,
-post-mortems and measured counts moved to a private history file, and the
-applied-only boundary for company briefs now points at the template that owns it.
-Every rule, field definition and parsed grammar stayed, and the scheduled-block
-section was left untouched on purpose.
-
-The skill linter gained four things, each traced to something that went wrong in a
-single day. An `absent-refs` annotation lets a skill say a file is deliberately
-missing, with the same guard as the moved-refs one: it errors the moment the file
-exists. Five of the morning's eight lint errors had been exactly that kind of true
-statement. A skill may declare its own size budget and reason, so a large skill warns
-at its own number and prompts a conversation instead of growing past a global
-limit nobody believes in. Board and ATS capability tables now warn at 60 days,
-because two were months stale while the skills said to re-probe every sweep. And a
-`--report` view prints dated-marker density without ever warning, since a date on
-a learning is legitimate and a raw count would be noise.
-
-The calendar renderer also stopped dropping hard dates it could not read: a bullet
-whose bold run wraps onto a second line is now joined, and the bold and trailing
-halves are both kept in the label.
 
 A consistency, ripple and dogfood review of the whole repo found the same kind
 of drift in smaller places, fixed in this change: the contact template lacked
