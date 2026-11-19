@@ -6,6 +6,10 @@ generally land after the pattern they describe survived real use. The
 private search data has its own repository and its own history — nothing
 from it appears here.
 
+## 2026-11-19 — A copy-and-paste bank for repeated application answers
+
+Short-answer questions recur across applications ("why this company", the hardest project, how you stay current), and each answer had been drafted from scratch and lived only in a chat. In one day nine answers across six employers were drafted from scratch, several leaning on the same two stories with slightly different wording, so a later application could contradict an earlier one without anyone noticing. The contract now describes an optional `private/data/application_answers.md`: plain text under each question, dated, with where it was used, each fact meant to trace to the experience summary. A review of twenty claims in the first version found six that went beyond the record, such as a count of failed payments and a claim of having built event-driven delivery, and they were corrected before the file was committed; the review is why the rule says to re-check new answers the same way. The generated data README flagged the file as "not in CONTRACT" as soon as it existed, which is how the missing contract row was caught. The cover-letter skill now says to check the bank before writing an answer, and the ripple map gained a row for a new file at the root of the data folder.
+
 ## 2026-11-18 — Board and ATS mechanics promoted; the sweep method written down
 
 The mechanics of reading each job board and ATS (endpoints, data shapes, how
