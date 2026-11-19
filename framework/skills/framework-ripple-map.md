@@ -8,7 +8,7 @@
 
 ## The ripple map: when X changes, also touch Y
 
-- **A new file at the root of `private/data/`** → a CONTRACT row (the generated `data/README.md` flags any file that has none), the skill that governs its use pointing at it by name (a file nothing reads is never opened), a CHANGELOG entry, and a regenerated data README.
+- **A new file or folder at the root of `private/data/`** → a CONTRACT row (the generated `data/README.md` flags any file that has none), the skill that governs its use pointing at it by name (a file nothing reads is never opened), a CHANGELOG entry, and a regenerated data README.
 - **Directory layout** (framework or the private contract) → CONTRACT's
   layout block · README tree · SESSION_INIT tree · **framework/README.md**
   (the public half's own index) · the private instance's session_init map

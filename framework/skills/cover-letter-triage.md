@@ -46,8 +46,8 @@ form is known to accept one.
 - **Essay or application-specific questions:** treat as the real artifact, not
   a formality. These get read, unlike many attached letters. Answer
   specifically and in the candidate's own voice, to the stated length.
-  **Check `private/data/application_answers.md` first** (if the instance keeps
-  one): a question that has been answered before reuses the stored answer,
+  **Check `private/data/answers/` first** (if the instance keeps one: a
+  `general.md` and a file per company): a question that has been answered before reuses the stored answer,
   adjusted to the company and role. Store every new answer there with its date
   and where it was used.
 

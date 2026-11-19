@@ -50,6 +50,8 @@ DIRS = [
     # probe_logs/ keeps the dated probe history behind each board or ATS skill,
     # which a skill no longer carries (a skill holds learnings, not history).
     "data/probe_logs",
+    # data/answers/ is deliberately NOT created here: it is optional and holds
+    # contact details, so it appears only when the owner starts using it.
     "scripts", "feedback", "resume", "temp",
 ]
 
