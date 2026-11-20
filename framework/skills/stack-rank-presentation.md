@@ -17,6 +17,16 @@ One row per role, in this order, with the fields the owner acts on first and nev
 
 Scores, the actual missed requirements (quoted), and flags ride on the row after those four. **The number is the least useful part**: "two missed management requirements, both performance machinery, on a team of 4-6" tells the owner what the screen will be about; "75" does not.
 
+## Table format — two deliveries, fixed columns, a caveat column that is required
+
+A stack rank goes out two ways: as a table in the reply, and as a file sent to the side panel (the display render) so it can sit beside the owner's browser tabs while they work through the links.
+
+**Columns, in this order:** `# | Score | Company | Title | Comp | Resume | Posting link | Caveat`. The Resume column names the resume variant the lane calls for (the instance's resume strategy says which); the Comp column follows the comp rule above.
+
+**The caveat column is required, not optional, and the reason is mechanical.** The desktop app offers its expand button and side-scroll view only when a table is wide enough to overflow. Measured in use: a table without caveats (about 150 characters per row) stayed narrow and the expand view never appeared, while caveats that brought rows to about 210 characters or more triggered it. A narrow table of four columns defeats the purpose of the side panel. Write the real one-line caveat for every row (it is also the most useful field after the link); never pad a caveat to reach a width.
+
+*Failure mode, recorded:* a reply once carried a narrow table without caveats and the owner had to ask again. Check the columns and the caveat column before sending either delivery.
+
 ## Ordering
 
 - Default order: strictly by the score (`tech_fit`, or `rank = min()` of the dimensions present), ties marked "=" instead of an invented order. **If `profile.yml` states an ordering rule for a lane (for example that comp decides), that rule governs that lane's ordering**; the score then breaks ties.
