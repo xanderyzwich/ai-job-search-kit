@@ -137,9 +137,10 @@ the boundary into an apparent verdict flip, which is worse for repeatability
 than the continuous number it replaces. Categorical language is fine in prose
 commentary about a specific role; it must never be the sort key.
 
-**Every stack-rank table shows the decomposition, not just the total:**
-requirement ratio and preference ratio (matched/total count, e.g. `6/6`),
-alongside remote/hybrid status and salary. This replaces writing a manual
+**Every stack-rank row shows the decomposition, not just the total:**
+requirement ratio and preference ratio (matched/total count, e.g. `6/6`)
+and remote/hybrid status ride in the Caveat cell (salary has its own Comp
+column; see `stack-rank-presentation.md` for the fixed columns). This replaces writing a manual
 override note when a score looks surprising (the old "artifact-suppressed,
 read as rank 1" pattern) — showing the ratios lets anyone reading the table
 see why a score landed where it did without a narrator having to remember to
